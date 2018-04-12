@@ -23,6 +23,11 @@ Being `<workdir>` the directory where your source code, scripts, etc. are.
 `-v` param creates a Docker volume mounted at `/workdir` inside the container,
 from which you can access to your files.
 
+.. note::
+
+  We differentiate commands launched from the host machine using `$` symbol and
+  commands launched from inside the Docker container using `#` symbol.
+
 .. todo::
 
   Upload the image to somewhere or use a Docker registry and fix step #2.
@@ -30,6 +35,8 @@ from which you can access to your files.
 .. todo::
 
   Test step #2, because VPN we can't test it.
+
+.. _authenticating-with-kerberos:
 
 Authenticating with Kerberos
 ----------------------------
@@ -58,7 +65,23 @@ You can check the status of your Kerberos ticket using the `klist` command:
   Valid starting     Expires            Service principal
   04/12/18 09:53:28  04/13/18 09:53:28  krbtgt/<REALM>@<REALM>
 
+Once you have a valid ticket, you can work at EDI Big Data Stack until the
+ticket expires. If the ticket expires, you must execute again `kinit` command.
 
 .. todo::
 
   Replace REALM by production realm.
+
+Tools provided by EDI Big Data Stack
+------------------------------------
+
+For illustrating the different tools provided by EDI Big Data Stack this
+documentations follows a workflow using the
+`Yelp Dataset from Kaggle <https://www.kaggle.com/yelp-dataset/yelp-dataset>`_.
+We recommend following proposed workflow from beggining to the end for getting
+a global view of tools provided by EDI Big Data Stack.
+
+.. toctree::
+   :maxdepth: 2
+
+   tools/hdfs

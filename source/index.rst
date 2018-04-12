@@ -14,10 +14,11 @@ Contents
 --------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
    big-data-stack/architecture
    big-data-stack/basic-concepts
+   big-data-stack/permission-management
 
 
 TODO-list
