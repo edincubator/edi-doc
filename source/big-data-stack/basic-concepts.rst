@@ -51,7 +51,7 @@ For authenticating yourself you must introduce the following command:
 .. code-block:: console
 
   # kinit <user>@REALM
-  Password for mikel@GAUSS.RES.ENG.IT: <enter your password>
+  Password for <user>@GAUSS.RES.ENG.IT: <enter your password>
   #
 
 You can check the status of your Kerberos ticket using the `klist` command:
@@ -85,3 +85,4 @@ a global view of tools provided by EDI Big Data Stack.
    :maxdepth: 2
 
    tools/hdfs
+   tools/map-reduce
