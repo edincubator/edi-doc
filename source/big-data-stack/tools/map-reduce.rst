@@ -1,3 +1,5 @@
+.. _mapreduce:
+
 MapReduce (YARN)
 =================
 
