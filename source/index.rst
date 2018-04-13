@@ -19,6 +19,7 @@ Contents
    big-data-stack/architecture
    big-data-stack/basic-concepts
    big-data-stack/permission-management
+   big-data-stack/deploying-local-hadoop
 
 
 TODO-list
