@@ -15,7 +15,7 @@ container, execute `pyspark` command.
 .. note::
 
   For executing Spark2 interactive shell on distributed mode (`--master yarn`),
-  don't forget '--deploy-mode cluster' parameter.
+  don't forget `--deploy-mode cluster` parameter.
 
 .. code-block:: console
 
