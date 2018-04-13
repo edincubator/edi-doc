@@ -50,8 +50,8 @@ For authenticating yourself you must introduce the following command:
 
 .. code-block:: console
 
-  # kinit <user>@REALM
-  Password for <user>@GAUSS.RES.ENG.IT: <enter your password>
+  # kinit <user>@<REALM>
+  Password for <user>@<REALM>: <enter your password>
   #
 
 You can check the status of your Kerberos ticket using the `klist` command:
