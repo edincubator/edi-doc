@@ -82,7 +82,7 @@ We recommend following proposed workflow from beggining to the end for getting
 a global view of tools provided by EDI Big Data Stack.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    tools/hdfs
    tools/map-reduce
