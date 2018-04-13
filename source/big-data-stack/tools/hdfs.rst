@@ -39,7 +39,7 @@ Every selected team at EDI has its own workspace at /user/<username> directory.
 
   # cd /workdir
   # hdfs dfs -mkdir /user/mikel/samples
-  # hdfs dfs -put *.csv /mikel/<username>/samples/
+  # hdfs dfs -put *.csv /mikel/samples/
   # hdfs dfs -ls /user/mikel/samples
   Found 7 items
   -rw-------   3 mikel mikel   31760674 2018-04-12 12:07 /user/mikel/samples/yelp_business.csv
