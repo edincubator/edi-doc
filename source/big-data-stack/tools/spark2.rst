@@ -17,6 +17,14 @@ container, execute `pyspark` command.
   For executing Spark2 interactive shell on distributed mode (`--master yarn`),
   don't forget `--deploy-mode cluster` parameter.
 
+
+.. warning::
+
+  Remember that for interacting with EDI Big Data Stack you must be
+  authenticated at the system using `kinit` command. For more information, read
+  the documentation at :ref:`authenticating-with-kerberos`.
+
+
 .. code-block:: console
 
   # pyspark --master yarn --deploy-mode cluster

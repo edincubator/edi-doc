@@ -87,3 +87,4 @@ a global view of tools provided by EDI Big Data Stack.
    tools/hdfs
    tools/map-reduce
    tools/spark2
+   tools/hive
