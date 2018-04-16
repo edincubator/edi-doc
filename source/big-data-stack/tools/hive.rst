@@ -42,6 +42,15 @@ parameters:
   Beeline version 1.2.1000.2.6.4.0-91 by Apache Hive
   0: jdbc:hive2://HIVE-HOST:10000/mikel_yelp>
 
+Before creating the Hive table, we must copy the desired CSV to an independent
+folder, as Hive ingests all files in a folder:
+
+.. code-block:: console
+
+  # hdfs dfs -mkdir /user/mikel/samples/hive/
+  # hdfs dfs -mkdir /user/mikel/samples/hive/yelp_business
+  # hdfs dfs -cp /user/mikel/samples/yelp_business.csv /user/mikel/samples/hive/yelp_business
+
 First we need to create table `yelp_business`. As we want to ingest CSV data, we
 are going to use `Hive CSV Serde <https://cwiki.apache.org/confluence/display/Hive/CSV+Serde>`_:
 
@@ -86,6 +95,8 @@ are going to use `Hive CSV Serde <https://cwiki.apache.org/confluence/display/Hi
   20 rows selected (0.115 seconds)
   0: jdbc:hive2://HIVE-HOST:10000/mikel_>
 
+Next, we can execute SQL queries over the table. In our case, we want to get the
+ordered list of states with more businesses:
 
 .. code-block:: console
 
