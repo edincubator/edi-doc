@@ -1,0 +1,434 @@
+HBase
+=====
+
+HBase is a random, realtime and read/write access database, which allows hosting
+very large tables (billion rows x millons of columns). In this tutorial we are going
+to show how to load data into HBase from a MapReduce job, and inspecting this data
+from both HBase shell and a Python script.
+
+Loading data
+............
+
+.. warning::
+
+  Before creating any table in HBase, you must contact with EDI Technical Support for
+  creating your namespace and give you the proper permissions. Once you have your
+  namespace set, you can continue with this tutorial.
+
+.. todo::
+
+  Link to EDI Technical Support.
+
+.. warning::
+
+  Remember that for interacting with EDI Big Data Stack you must be
+  authenticated at the system using `kinit` command. For more information, read
+  the documentation at :ref:`authenticating-with-kerberos`.
+
+Before loading data we must create the database using Hbase shell. All databases
+must follow the naming convention `workspace:database`. This database will be
+structured into two column families: `info` and `stats`.
+
+.. code-block:: console
+
+  # hbase shell
+  HBase Shell; enter 'help<RETURN>' for list of supported commands.
+  Type "exit<RETURN>" to leave the HBase Shell
+  Version 1.1.2.2.6.4.0-91, r2a88e694af7238290a5747f963a4fa0079c55bf9, Thu Jan  4 10:32:40 UTC 2018
+
+  hbase(main):001:0> create 'mikel:yelp_business', 'info', 'stats'
+  0 row(s) in 2.3740 seconds
+
+  => Hbase::Table - mikel:yelp_business
+  hbase(main):002:0> scan 'mikel:yelp_business'
+  ROW                                                   COLUMN+CELL
+  0 row(s) in 0.0440 seconds
+
+  hbase(main):003:0>
+
+Fist, you must clone the repository containing examples and move into
+hbaseexample dir.
+
+.. code-block:: console
+
+  $ git clone https://github.com/edincubator/stack-examples
+  $ cd stack-examples/hbaseexample
+
+`HBaseLoadExample.java` contains the unique and main class of this MapReduce job.
+`HBaseLoadExample` class contains only the `HBaseWriterMapper` class, as this
+job doesn't need a reducer.
+
+HBaseWriterMapper
+-----------------
+
+.. code-block:: java
+
+  public static class HBaseWriterMapper extends Mapper<Object, Text, ImmutableBytesWritable, Put> {
+
+        private long checkpoint = 100;
+        private long count = 0;
+
+        public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+            // Extract state using opencsv library
+            CSVReader reader = new CSVReader(new StringReader(value.toString()));
+            String[] line;
+
+            while ((line = reader.readNext()) != null) {
+                // Check that current line is not CSV's header
+                if (!line.equals("state")) {
+                    context.setStatus("Creating row");
+                    byte [] row = Bytes.toBytes(line[0]);
+                    Put put = new Put(row);
+
+                    // Insert info
+                    byte [] family = Bytes.toBytes("info");
+
+                    // name
+                    byte [] qualifier = Bytes.toBytes("name");
+                    byte [] hvalue = Bytes.toBytes(line[1]);
+                    put.addColumn(family, qualifier, hvalue);
+
+                    // neighborhood
+                    qualifier = Bytes.toBytes("neighborhood");
+                    hvalue = Bytes.toBytes(line[2]);
+                    put.addColumn(family, qualifier, hvalue);
+
+                    // Same with address, city, state, postal_code, latitude,
+                    // longitude, is_open and categories
+                    [...]
+
+                    // Insert stats
+                    family = Bytes.toBytes("stats");
+
+                    // stars
+                    qualifier = Bytes.toBytes("stars");
+                    hvalue = Bytes.toBytes(line[9]);
+                    put.addColumn(family, qualifier, hvalue);
+
+                    // review_count
+                    qualifier = Bytes.toBytes("review_count");
+                    hvalue = Bytes.toBytes(line[10]);
+                    put.addColumn(family, qualifier, hvalue);
+
+                    context.write(new ImmutableBytesWritable(row), put);
+
+                    // Set status every checkpoint lines for avoiding AM timeout
+                    if(++count % checkpoint == 0) {
+                        context.setStatus("Emitting Put " + count);
+                    }
+                }
+            }
+        }
+    }
+
+The `HBaseWriterMapper` class represents the mapper of our job. Its definition
+is very simple. It extends the `Mapper` class, receiving a tuple formed by a
+key of type `Object` and a value of type `Text` as input, and generating a tuple
+formed by a key of type `ImmutableBytesWritable` and a value of type `Put` as
+output.
+
+The map method is who processes the input and generates the output to be passed
+to the reducer. In this function, we take the value, representing a single CSV
+line and we create an object of type `org.apache.hadoop.hbase.client.Put`. This
+`Put` class represents a "put" action into the HBase database. Each column of
+the database must have a family, a qualifier and a value.
+
+
+main & run
+----------
+
+At last, check `main` and `run` method of the `HBaseLoadExample` class.
+
+.. code-block:: java
+
+  public int run(String[] otherArgs) throws Exception {
+        Configuration conf = getConf();
+
+        Job job = Job.getInstance(conf, "HBase load example");
+        job.setJarByClass(HBaseLoadExample.class);
+
+        FileInputFormat.setInputPaths(job, otherArgs[0]);
+        job.setInputFormatClass(TextInputFormat.class);
+        job.setMapperClass(HBaseWriterMapper.class);
+
+        TableMapReduceUtil.initTableReducerJob(
+                otherArgs[1],
+                null,
+                job
+        );
+        job.setNumReduceTasks(0);
+
+        return (job.waitForCompletion(true) ? 0 : 1);
+    }
+
+    public static void main(String [] args) throws Exception {
+        int status = ToolRunner.run(HBaseConfiguration.create(), new HBaseLoadExample(), args);
+        System.exit(status);
+    }
+
+In the `run` method, the MapReduce job is configured. Concretely, in this example
+mapper class, input directories and output table (taken from the CLI when
+launching the job) are set.
+
+pom.xml
+-------
+
+The `pom.xml` file compiles the project and generates the jar that we need to
+submit to EDI Big Data Stack.
+
+.. code-block:: xml
+
+  <?xml version="1.0" encoding="UTF-8"?>
+  <project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>eu.edincubator.stack.examples</groupId>
+    <artifactId>hbaseexample</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-mapreduce-client-core</artifactId>
+            <version>${hadoop.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-common</artifactId>
+            <version>${hbase.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>${hbase.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-protocol</artifactId>
+            <version>${hbase.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-server</artifactId>
+            <version>${hbase.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-thrift</artifactId>
+            <version>${hbase.version}</version>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <hadoop.version>2.7.3</hadoop.version>
+        <hbase.version>1.1.2</hbase.version>
+    </properties>
+  </project>
+
+Opposite to the `pom.xml` presented at :ref:`mapreduce`, this one doesn't
+generate a "fat jar", so we have to add third party libraries (com.opencsv) when
+submitting the job.
+
+Compiling and submitting the job
+--------------------------------
+
+At first, you must create the java package and copy it to your workspace:
+
+.. code-block:: console
+
+  $ mvn clean package
+  $ cp target/hbaseexample-1.0-SNAPSHOT.jar <workdir>
+
+Before launching the job, we must download required third party libraries:
+
+.. code-block:: console
+
+  $ mkdir libjars
+  $ wget http://central.maven.org/maven2/com/opencsv/opencsv/4.1/opencsv-4.1.jar
+
+
+Next, at stack-client docker cointainer, we can submit the job using the
+`hadoop jar` command. Notice the `-libjars` parameter:
+
+.. code-block:: console
+
+  # cd /workdir
+  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /user/mikel/samples/yelp_business.csv mikel:yelp_business
+  18/04/23 12:10:42 INFO zookeeper.RecoverableZooKeeper: Process identifier=hconnection-0x30f5a68a connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:zookeeper.version=3.4.6-91--1, built on 01/04/2018 09:27 GMT
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:host.name=944cf990549a
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:java.version=1.8.0_161
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:java.vendor=Oracle Corporation
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:java.home=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.161-0.b14.el7_4.x86_64/jre
+  [...]
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:java.library.path=:/usr/hdp/2.6.4.0-91/hadoop/lib/native/Linux-amd64-64:/usr/hdp/2.6.4.0-91/hadoop/lib/native
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:java.io.tmpdir=/tmp
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:java.compiler=<NA>
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:os.name=Linux
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:os.arch=amd64
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:os.version=3.10.0-693.11.6.el7.x86_64
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:user.name=root
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:user.home=/root
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:user.dir=/workdir
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@a5b0b86
+  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: Opening socket connection to server gauss.res.eng.it/192.168.125.113:2181. Will not attempt to authenticate using SASL (unknown error)
+  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /172.17.0.2:54576, server: gauss.res.eng.it/192.168.125.113:2181
+  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: Session establishment complete on server gauss.res.eng.it/192.168.125.113:2181, sessionid = 0x16189a8f21f15c8, negotiated timeout = 60000
+  18/04/23 12:10:42 INFO zookeeper.RecoverableZooKeeper: Process identifier=TokenUtil-getAuthToken connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@25ddbbbb
+  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: Opening socket connection to server gauss.res.eng.it/192.168.125.113:2181. Will not attempt to authenticate using SASL (unknown error)
+  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /172.17.0.2:54578, server: gauss.res.eng.it/192.168.125.113:2181
+  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: Session establishment complete on server gauss.res.eng.it/192.168.125.113:2181, sessionid = 0x16189a8f21f15c9, negotiated timeout = 60000
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Session: 0x16189a8f21f15c9 closed
+  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: EventThread shut down
+  18/04/23 12:10:42 INFO client.ConnectionManager$HConnectionImplementation: Closing zookeeper sessionid=0x16189a8f21f15c8
+  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Session: 0x16189a8f21f15c8 closed
+  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: EventThread shut down
+  18/04/23 12:10:43 INFO client.RMProxy: Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
+  18/04/23 12:10:43 INFO client.AHSProxy: Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
+  18/04/23 12:10:43 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 589 for mikel on 192.168.125.113:8020
+  18/04/23 12:10:44 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 589 for mikel)
+  18/04/23 12:10:44 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524485443891, maxDate=1525090243891, sequenceNumber=261, masterKeyId=61)
+  18/04/23 12:10:45 INFO input.FileInputFormat: Total input paths to process : 1
+  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: number of splits:1
+  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1523347765873_0039
+  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524485443891, maxDate=1525090243891, sequenceNumber=261, masterKeyId=61)
+  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 589 for mikel)
+  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Kind: HBASE_AUTH_TOKEN, Service: b66e21cc-4378-4766-be86-2034dcca995c, Ident: (org.apache.hadoop.hbase.security.token.AuthenticationTokenIdentifier@3)
+  18/04/23 12:10:46 INFO impl.TimelineClientImpl: Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
+  18/04/23 12:10:47 INFO impl.YarnClientImpl: Submitted application application_1523347765873_0039
+  18/04/23 12:10:47 INFO mapreduce.Job: The url to track the job: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0039/
+  18/04/23 12:10:47 INFO mapreduce.Job: Running job: job_1523347765873_0039
+  18/04/23 12:10:59 INFO mapreduce.Job: Job job_1523347765873_0039 running in uber mode : false
+  18/04/23 12:10:59 INFO mapreduce.Job:  map 0% reduce 0%
+  18/04/23 12:11:14 INFO mapreduce.Job:  map 11% reduce 0%
+  18/04/23 12:11:17 INFO mapreduce.Job:  map 19% reduce 0%
+  18/04/23 12:11:20 INFO mapreduce.Job:  map 28% reduce 0%
+  18/04/23 12:11:23 INFO mapreduce.Job:  map 36% reduce 0%
+  18/04/23 12:11:26 INFO mapreduce.Job:  map 43% reduce 0%
+  18/04/23 12:11:29 INFO mapreduce.Job:  map 52% reduce 0%
+  18/04/23 12:11:32 INFO mapreduce.Job:  map 60% reduce 0%
+  18/04/23 12:11:35 INFO mapreduce.Job:  map 68% reduce 0%
+  18/04/23 12:11:38 INFO mapreduce.Job:  map 76% reduce 0%
+  18/04/23 12:11:41 INFO mapreduce.Job:  map 85% reduce 0%
+  18/04/23 12:11:44 INFO mapreduce.Job:  map 93% reduce 0%
+  18/04/23 12:11:47 INFO mapreduce.Job:  map 100% reduce 0%
+  18/04/23 12:11:48 INFO mapreduce.Job: Job job_1523347765873_0039 completed successfully
+  18/04/23 12:11:48 INFO mapreduce.Job: Counters: 30
+  	File System Counters
+  		FILE: Number of bytes read=0
+  		FILE: Number of bytes written=195397
+  		FILE: Number of read operations=0
+  		FILE: Number of large read operations=0
+  		FILE: Number of write operations=0
+  		HDFS: Number of bytes read=31760804
+  		HDFS: Number of bytes written=0
+  		HDFS: Number of read operations=2
+  		HDFS: Number of large read operations=0
+  		HDFS: Number of write operations=0
+  	Job Counters
+  		Launched map tasks=1
+  		Data-local map tasks=1
+  		Total time spent by all maps in occupied slots (ms)=92560
+  		Total time spent by all reduces in occupied slots (ms)=0
+  		Total time spent by all map tasks (ms)=46280
+  		Total vcore-milliseconds taken by all map tasks=46280
+  		Total megabyte-milliseconds taken by all map tasks=71086080
+  	Map-Reduce Framework
+  		Map input records=174568
+  		Map output records=174568
+  		Input split bytes=130
+  		Spilled Records=0
+  		Failed Shuffles=0
+  		Merged Map outputs=0
+  		GC time elapsed (ms)=771
+  		CPU time spent (ms)=48760
+  		Physical memory (bytes) snapshot=299270144
+  		Virtual memory (bytes) snapshot=3266670592
+  		Total committed heap usage (bytes)=164626432
+  	File Input Format Counters
+  		Bytes Read=31760674
+  	File Output Format Counters
+  		Bytes Written=0
+  #
+
+
+If we return to HBase shell, we can check that the table has been filled with
+data:
+
+.. code-block:: console
+
+  hbase(main):004:0> scan 'mikel:yelp_business', {'LIMIT' => 5}
+  ROW                                                   COLUMN+CELL
+  --6MefnULPED_I942VcFNA                               column=info:address, timestamp=1524485480078, value="328 Highway 7 E, Chalmers Gate 11, Unit 10"
+  --6MefnULPED_I942VcFNA                               column=info:categories, timestamp=1524485480078, value=Chinese;Restaurants
+  --6MefnULPED_I942VcFNA                               column=info:city, timestamp=1524485480078, value=Richmond Hill
+  --6MefnULPED_I942VcFNA                               column=info:is_open, timestamp=1524485480078, value=1
+  --6MefnULPED_I942VcFNA                               column=info:longitude, timestamp=1524485480078, value=-79.3996044
+  --6MefnULPED_I942VcFNA                               column=info:name, timestamp=1524485480078, value="John's Chinese BBQ Restaurant"
+  --6MefnULPED_I942VcFNA                               column=info:neighborhood, timestamp=1524485480078, value=
+  --6MefnULPED_I942VcFNA                               column=info:postal_code, timestamp=1524485480078, value=43.840905
+  --6MefnULPED_I942VcFNA                               column=info:state, timestamp=1524485480078, value=ON
+  --6MefnULPED_I942VcFNA                               column=stats:review_count, timestamp=1524485480078, value=37
+  --6MefnULPED_I942VcFNA                               column=stats:stars, timestamp=1524485480078, value=3.0
+  --7zmmkVg-IMGaXbuVd0SQ                               column=info:address, timestamp=1524485499306, value="16432 Old Statesville Rd"
+  --7zmmkVg-IMGaXbuVd0SQ                               column=info:categories, timestamp=1524485499306, value=Food;Breweries
+  --7zmmkVg-IMGaXbuVd0SQ                               column=info:city, timestamp=1524485499306, value=Huntersville
+  --7zmmkVg-IMGaXbuVd0SQ                               column=info:is_open, timestamp=1524485499306, value=1
+  --7zmmkVg-IMGaXbuVd0SQ                               column=info:longitude, timestamp=1524485499306, value=-80.843688
+  --7zmmkVg-IMGaXbuVd0SQ                               column=info:name, timestamp=1524485499306, value="Primal Brewery"
+  --7zmmkVg-IMGaXbuVd0SQ                               column=info:neighborhood, timestamp=1524485499306, value=
+  --7zmmkVg-IMGaXbuVd0SQ                               column=info:postal_code, timestamp=1524485499306, value=35.437086
+  --7zmmkVg-IMGaXbuVd0SQ                               column=info:state, timestamp=1524485499306, value=NC
+  --7zmmkVg-IMGaXbuVd0SQ                               column=stats:review_count, timestamp=1524485499306, value=47
+  --7zmmkVg-IMGaXbuVd0SQ                               column=stats:stars, timestamp=1524485499306, value=4.0
+  --8LPVSo5i0Oo61X01sV9A                               column=info:address, timestamp=1524485503877, value="3941 E Baseline Rd, Ste 102"
+  --8LPVSo5i0Oo61X01sV9A                               column=info:categories, timestamp=1524485503877, value=Orthopedists;Weight Loss Centers;Sports Medicine;Health & Medical;Doctors
+  --8LPVSo5i0Oo61X01sV9A                               column=info:city, timestamp=1524485503877, value=Gilbert
+  --8LPVSo5i0Oo61X01sV9A                               column=info:is_open, timestamp=1524485503877, value=1
+  --8LPVSo5i0Oo61X01sV9A                               column=info:longitude, timestamp=1524485503877, value=-111.7283941
+  --8LPVSo5i0Oo61X01sV9A                               column=info:name, timestamp=1524485503877, value="Valley Bone and Joint Specialists"
+  --8LPVSo5i0Oo61X01sV9A                               column=info:neighborhood, timestamp=1524485503877, value=
+  --8LPVSo5i0Oo61X01sV9A                               column=info:postal_code, timestamp=1524485503877, value=33.3795094
+  --8LPVSo5i0Oo61X01sV9A                               column=info:state, timestamp=1524485503877, value=AZ
+  --8LPVSo5i0Oo61X01sV9A                               column=stats:review_count, timestamp=1524485503877, value=3
+  --8LPVSo5i0Oo61X01sV9A                               column=stats:stars, timestamp=1524485503877, value=4.5
+  --9QQLMTbFzLJ_oT-ON3Xw                               column=info:address, timestamp=1524485481330, value="1835 E Guadalupe Rd, Ste 106"
+  --9QQLMTbFzLJ_oT-ON3Xw                               column=info:categories, timestamp=1524485481330, value=Hair Salons;Beauty & Spas
+  --9QQLMTbFzLJ_oT-ON3Xw                               column=info:city, timestamp=1524485481330, value=Tempe
+  --9QQLMTbFzLJ_oT-ON3Xw                               column=info:is_open, timestamp=1524485481330, value=1
+  --9QQLMTbFzLJ_oT-ON3Xw                               column=info:longitude, timestamp=1524485481330, value=-111.9096233
+  --9QQLMTbFzLJ_oT-ON3Xw                               column=info:name, timestamp=1524485481330, value="Great Clips"
+  --9QQLMTbFzLJ_oT-ON3Xw                               column=info:neighborhood, timestamp=1524485481330, value=
+  --9QQLMTbFzLJ_oT-ON3Xw                               column=info:postal_code, timestamp=1524485481330, value=33.3616642
+  --9QQLMTbFzLJ_oT-ON3Xw                               column=info:state, timestamp=1524485481330, value=AZ
+  --9QQLMTbFzLJ_oT-ON3Xw                               column=stats:review_count, timestamp=1524485481330, value=11
+  --9QQLMTbFzLJ_oT-ON3Xw                               column=stats:stars, timestamp=1524485481330, value=3.5
+  --9e1ONYQuAa-CB_Rrw7Tw                               column=info:address, timestamp=1524485488519, value="3355 Las Vegas Blvd S"
+  --9e1ONYQuAa-CB_Rrw7Tw                               column=info:categories, timestamp=1524485488519, value=Cajun/Creole;Steakhouses;Restaurants
+  --9e1ONYQuAa-CB_Rrw7Tw                               column=info:city, timestamp=1524485488519, value=Las Vegas
+  --9e1ONYQuAa-CB_Rrw7Tw                               column=info:is_open, timestamp=1524485488519, value=1
+  --9e1ONYQuAa-CB_Rrw7Tw                               column=info:longitude, timestamp=1524485488519, value=-115.16919
+  --9e1ONYQuAa-CB_Rrw7Tw                               column=info:name, timestamp=1524485488519, value="Delmonico Steakhouse"
+  --9e1ONYQuAa-CB_Rrw7Tw                               column=info:neighborhood, timestamp=1524485488519, value=The Strip
+  --9e1ONYQuAa-CB_Rrw7Tw                               column=info:postal_code, timestamp=1524485488519, value=36.123183
+  --9e1ONYQuAa-CB_Rrw7Tw                               column=info:state, timestamp=1524485488519, value=NV
+  --9e1ONYQuAa-CB_Rrw7Tw                               column=stats:review_count, timestamp=1524485488519, value=1451
+  --9e1ONYQuAa-CB_Rrw7Tw                               column=stats:stars, timestamp=1524485488519, value=4.0
+  5 row(s) in 0.0200 seconds
+
+  hbase(main):005:0>
