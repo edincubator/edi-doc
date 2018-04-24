@@ -6,8 +6,8 @@ very large tables (billion rows x millons of columns). In this tutorial we are g
 to show how to load data into HBase from a MapReduce job, and inspecting this data
 from both HBase shell and a Python script.
 
-Loading data
-............
+Loading data into HBase
+.......................
 
 .. warning::
 
@@ -432,3 +432,312 @@ data:
   5 row(s) in 0.0200 seconds
 
   hbase(main):005:0>
+
+
+Reading data from Hbase
+.......................
+
+In this example, we read the data previously loaded into HBase `yelp_business`
+table, compute it and write it into an HDFS folder. For that, we are going to
+reproduce the example shown at :ref:`mapreduce`, but reading data from HBase
+instead of a CSV file.
+
+This example is developed at `HBaseReadExample.java`. Its structure is similar
+to previous examples, even the reducer is the same reducer explained at
+:ref:`mapreduce`. The mapper is coded as follows:
+
+.. code-block:: java
+
+  public static class HBaseReadMapper extends TableMapper<Text, IntWritable> {
+
+       private final static IntWritable one = new IntWritable(1);
+
+       public void map(ImmutableBytesWritable row, Result value, Context context) throws IOException, InterruptedException {
+           byte[] cell = value.getValue(Bytes.toBytes("info"), Bytes.toBytes("state"));
+           context.write(new Text(Bytes.toString(cell)), one);
+       }
+   }
+
+As you can notice, `HBaseReadMapper` extends from
+`org.apache.hadoop.hbase.mapreduce.TableMapper` instead of
+`org.apache.hadoop.mapreduce.Mapper`. In `TableMapper` class we only have to
+define output key and value types of the mapper, as input key and value types
+are fixed as they are read from HBase. `map` method receives a row id of
+`org.apache.hadoop.hbase.io.ImmutableBytesWritable` type and a value of type
+`org.apache.hadoop.hbase.client.Result`. Similar to the example shown at
+:ref:`mapreduce`, we take the value at column family `info` and qualifier `state`
+as output key and the value of `one` as output value. The reducer class is a
+replica of `StateSumReducer` that we coded at :ref:`mapreduce`, which aggregates
+all values for each key (state).
+
+main & run
+----------
+
+.. code-block:: java
+
+  public int run(String[] otherArgs) throws Exception {
+          Configuration conf = getConf();
+
+          Job job = Job.getInstance(conf, "HBase read example");
+          job.setJarByClass(HBaseReadExample.class);
+
+          Scan scan = new Scan();
+          scan.setCaching(500);
+          scan.setCacheBlocks(false);
+
+          TableMapReduceUtil.initTableMapperJob(
+                  otherArgs[0],
+                  scan,
+                  HBaseReadMapper.class,
+                  Text.class,
+                  IntWritable.class,
+                  job
+          );
+
+          job.setReducerClass(StateSumReducer.class);
+          job.setOutputKeyClass(Text.class);
+          job.setOutputValueClass(IntWritable.class);
+
+          FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+
+          return (job.waitForCompletion(true) ? 0 : 1);
+      }
+
+      public static void main(String [] args) throws Exception {
+          int status = ToolRunner.run(HBaseConfiguration.create(), new HBaseReadExample(), args);
+          System.exit(status);
+    }
+
+As can be seen, `run` method has some differences regarding to previous example.
+In this case, an instance of `org.apache.hadoop.hbase.client.Scan` class must be
+set for reading the database. In the same way, the mapper is set using the
+`initTableMapperJob` method from
+`org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil`. The reducer class is set
+in the same way as we saw in other examples.
+
+Compiling and submitting the job
+--------------------------------
+
+The package is compiled as we saw in the previous example:
+
+.. code-block:: console
+
+  $ mvn clean package
+  $ cp target/hbaseexample-1.0-SNAPSHOT.jar <workdir>
+
+Next, at stack-client docker cointainer, we can submit the job using the
+`hadoop jar` command.
+
+.. code-block:: console
+
+  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseReadExample mikel:yelp_business /user/mikel/hbase-output
+  18/04/24 08:05:37 INFO zookeeper.RecoverableZooKeeper: Process identifier=hconnection-0x2cb3d0f7 connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:zookeeper.version=3.4.6-91--1, built on 01/04/2018 09:27 GMT
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:host.name=a4272422f4c8
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:java.version=1.8.0_161
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:java.vendor=Oracle Corporation
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:java.home=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.161-0.b14.el7_4.x86_64/jre
+  [...]
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:java.library.path=:/usr/hdp/2.6.4.0-91/hadoop/lib/native/Linux-amd64-64:/usr/hdp/2.6.4.0-91/hadoop/lib/native
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:java.io.tmpdir=/tmp
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:java.compiler=<NA>
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:os.name=Linux
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:os.arch=amd64
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:os.version=3.10.0-693.11.6.el7.x86_64
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:user.name=root
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:user.home=/root
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:user.dir=/workdir
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@34a75079
+  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: Opening socket connection to server gauss.res.eng.it/192.168.125.113:2181. Will not attempt to authenticate using SASL (unknown error)
+  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /172.17.0.4:46834, server: gauss.res.eng.it/192.168.125.113:2181
+  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: Session establishment complete on server gauss.res.eng.it/192.168.125.113:2181, sessionid = 0x16189a8f21f15cc, negotiated timeout = 60000
+  18/04/24 08:05:37 INFO zookeeper.RecoverableZooKeeper: Process identifier=TokenUtil-getAuthToken connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@6a62689d
+  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: Opening socket connection to server heidi.res.eng.it/192.168.125.101:2181. Will not attempt to authenticate using SASL (unknown error)
+  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /172.17.0.4:50892, server: heidi.res.eng.it/192.168.125.101:2181
+  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: Session establishment complete on server heidi.res.eng.it/192.168.125.101:2181, sessionid = 0x26189a8e78b9e47, negotiated timeout = 60000
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Session: 0x26189a8e78b9e47 closed
+  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: EventThread shut down
+  18/04/24 08:05:37 INFO client.ConnectionManager$HConnectionImplementation: Closing zookeeper sessionid=0x16189a8f21f15cc
+  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Session: 0x16189a8f21f15cc closed
+  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: EventThread shut down
+  18/04/24 08:05:37 INFO client.RMProxy: Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
+  18/04/24 08:05:38 INFO client.AHSProxy: Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
+  18/04/24 08:05:38 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 593 for mikel on 192.168.125.113:8020
+  18/04/24 08:05:38 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 593 for mikel)
+  18/04/24 08:05:38 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524557138566, maxDate=1525161938566, sequenceNumber=265, masterKeyId=61)
+  18/04/24 08:05:40 INFO zookeeper.RecoverableZooKeeper: Process identifier=hconnection-0x545e57d7 connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
+  18/04/24 08:05:40 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@2bc9a775
+  18/04/24 08:05:40 INFO zookeeper.ClientCnxn: Opening socket connection to server heidi.res.eng.it/192.168.125.101:2181. Will not attempt to authenticate using SASL (unknown error)
+  18/04/24 08:05:40 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /172.17.0.4:50972, server: heidi.res.eng.it/192.168.125.101:2181
+  18/04/24 08:05:40 INFO zookeeper.ClientCnxn: Session establishment complete on server heidi.res.eng.it/192.168.125.101:2181, sessionid = 0x26189a8e78b9e48, negotiated timeout = 60000
+  18/04/24 08:05:40 INFO util.RegionSizeCalculator: Calculating region sizes for table "mikel:yelp_business".
+  18/04/24 08:05:40 INFO client.ConnectionManager$HConnectionImplementation: Closing master protocol: MasterService
+  18/04/24 08:05:40 INFO client.ConnectionManager$HConnectionImplementation: Closing zookeeper sessionid=0x26189a8e78b9e48
+  18/04/24 08:05:40 INFO zookeeper.ZooKeeper: Session: 0x26189a8e78b9e48 closed
+  18/04/24 08:05:40 INFO zookeeper.ClientCnxn: EventThread shut down
+  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: number of splits:1
+  18/04/24 08:05:40 INFO Configuration.deprecation: io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1523347765873_0041
+  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524557138566, maxDate=1525161938566, sequenceNumber=265, masterKeyId=61)
+  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 593 for mikel)
+  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Kind: HBASE_AUTH_TOKEN, Service: b66e21cc-4378-4766-be86-2034dcca995c, Ident: (org.apache.hadoop.hbase.security.token.AuthenticationTokenIdentifier@5)
+  18/04/24 08:05:42 INFO impl.TimelineClientImpl: Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
+  18/04/24 08:05:42 INFO impl.YarnClientImpl: Submitted application application_1523347765873_0041
+  18/04/24 08:05:42 INFO mapreduce.Job: The url to track the job: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0041/
+  18/04/24 08:05:42 INFO mapreduce.Job: Running job: job_1523347765873_0041
+  18/04/24 08:05:53 INFO mapreduce.Job: Job job_1523347765873_0041 running in uber mode : false
+  18/04/24 08:05:53 INFO mapreduce.Job:  map 0% reduce 0%
+  18/04/24 08:06:12 INFO mapreduce.Job:  map 100% reduce 0%
+  18/04/24 08:06:20 INFO mapreduce.Job:  map 100% reduce 100%
+  18/04/24 08:06:21 INFO mapreduce.Job: Job job_1523347765873_0041 completed successfully
+  18/04/24 08:06:21 INFO mapreduce.Job: Counters: 60
+  	File System Counters
+  		FILE: Number of bytes read=1575775
+  		FILE: Number of bytes written=3542671
+  		FILE: Number of read operations=0
+  		FILE: Number of large read operations=0
+  		FILE: Number of write operations=0
+  		HDFS: Number of bytes read=91
+  		HDFS: Number of bytes written=425
+  		HDFS: Number of read operations=5
+  		HDFS: Number of large read operations=0
+  		HDFS: Number of write operations=2
+  	Job Counters
+  		Launched map tasks=1
+  		Launched reduce tasks=1
+  		Rack-local map tasks=1
+  		Total time spent by all maps in occupied slots (ms)=32396
+  		Total time spent by all reduces in occupied slots (ms)=10978
+  		Total time spent by all map tasks (ms)=16198
+  		Total time spent by all reduce tasks (ms)=5489
+  		Total vcore-milliseconds taken by all map tasks=16198
+  		Total vcore-milliseconds taken by all reduce tasks=5489
+  		Total megabyte-milliseconds taken by all map tasks=24880128
+  		Total megabyte-milliseconds taken by all reduce tasks=11241472
+  	Map-Reduce Framework
+  		Map input records=174568
+  		Map output records=174568
+  		Map output bytes=1226633
+  		Map output materialized bytes=1575775
+  		Input split bytes=91
+  		Combine input records=0
+  		Combine output records=0
+  		Reduce input groups=69
+  		Reduce shuffle bytes=1575775
+  		Reduce input records=174568
+  		Reduce output records=69
+  		Spilled Records=349136
+  		Shuffled Maps =1
+  		Failed Shuffles=0
+  		Merged Map outputs=1
+  		GC time elapsed (ms)=1641
+  		CPU time spent (ms)=23180
+  		Physical memory (bytes) snapshot=1481342976
+  		Virtual memory (bytes) snapshot=7029194752
+  		Total committed heap usage (bytes)=1422917632
+  	HBase Counters
+  		BYTES_IN_REMOTE_RESULTS=134504069
+  		BYTES_IN_RESULTS=134504069
+  		MILLIS_BETWEEN_NEXTS=6335
+  		NOT_SERVING_REGION_EXCEPTION=0
+  		NUM_SCANNER_RESTARTS=0
+  		NUM_SCAN_RESULTS_STALE=0
+  		REGIONS_SCANNED=1
+  		REMOTE_RPC_CALLS=352
+  		REMOTE_RPC_RETRIES=0
+  		RPC_CALLS=352
+  		RPC_RETRIES=0
+  	Shuffle Errors
+  		BAD_ID=0
+  		CONNECTION=0
+  		IO_ERROR=0
+  		WRONG_LENGTH=0
+  		WRONG_MAP=0
+  		WRONG_REDUCE=0
+  	File Input Format Counters
+  		Bytes Read=0
+  	File Output Format Counters
+  		Bytes Written=425
+  #
+
+We can see the output at HDFS:
+
+.. code-block:: console
+
+  # hdfs dfs -ls /user/mikel/hbase-output
+  Found 2 items
+  -rw-r--r--   3 mikel mikel          0 2018-04-24 08:06 /user/mikel/hbase-output/_SUCCESS
+  -rw-r--r--   3 mikel mikel        425 2018-04-24 08:06 /user/mikel/hbase-output/part-r-00000
+  # hdfs dfs -cat /user/mikel/hbase-output/part-r-00000
+  1
+  01	10
+  3	1
+  30	1
+  6	3
+  AB	1
+  ABE	3
+  AK	1
+  AL	1
+  AR	2
+  AZ	52214
+  B	1
+  BW	3118
+  BY	4
+  C	28
+  CA	5
+  CHE	143
+  CMA	2
+  CO	2
+  CS	1
+  DE	1
+  EDH	3795
+  ELN	47
+  ESX	12
+  FAL	1
+  FIF	85
+  FL	1
+  FLN	2
+  GA	1
+  GLG	3
+  HLD	179
+  HU	1
+  IL	1852
+  IN	3
+  KHL	1
+  KY	1
+  MLN	208
+  MN	1
+  MT	1
+  NC	12956
+  NE	1
+  NI	10
+  NLK	1
+  NTH	2
+  NV	33086
+  NY	18
+  NYK	152
+  OH	12609
+  ON	30208
+  PA	10109
+  PKN	1
+  QC	8169
+  RCC	1
+  SC	679
+  SCB	5
+  SL	1
+  ST	11
+  STG	1
+  TAM	1
+  VA	1
+  VS	7
+  VT	2
+  WA	1
+  WHT	1
+  WI	4754
+  WLN	38
+  XGL	4
+  ZET	1
+  #
+
+As you can see, those results are the same obtained at :ref:`mapreduce` example.
