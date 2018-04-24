@@ -89,3 +89,4 @@ a global view of tools provided by EDI Big Data Stack.
    tools/spark2
    tools/hive
    tools/hbase
+   tools/kafka
