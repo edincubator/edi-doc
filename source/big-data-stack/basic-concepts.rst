@@ -7,17 +7,23 @@ container using this image, you must fill the following steps:
 
 #. Install Docker in your system following the `instructions <https://docs.docker.com/install/>`_.
 #. Download `EDI stack-client Docker image <http://foo/bar>`_.
-#. Import the docker image:
 
+.. #. Import the docker image:
 .. code-block:: console
 
   $ docker load -i stack-client.tar
+
+3. Pull docker image from EDI registry:
+
+.. code-block:: console
+
+  $ docker pull registry.edincubator.eu/stack-client
 
 4. Run and access to the container:
 
 .. code-block :: console
 
-  $ docker run -ti -v <workdir>:/workdir edincubator/stack-client /bin/bash
+  $ docker run -ti -v <workdir>:/workdir registry.edincubator.eu/stack-client /bin/bash
 
 Being `<workdir>` the directory where your source code, scripts, etc. are.
 `-v` param creates a Docker volume mounted at `/workdir` inside the container,
@@ -30,11 +36,9 @@ from which you can access to your files.
 
 .. todo::
 
-  Upload the image to somewhere or use a Docker registry and fix step #2.
-
-.. todo::
-
-  Test step #2, because VPN we can't test it.
+  At this moment, stack-client image is at an insecure private registry. We must
+  decide if we are going to use a custom registry for uploading EDI images or
+  if we are going to user Docker Hub.
 
 .. _authenticating-with-kerberos:
 
