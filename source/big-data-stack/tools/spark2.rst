@@ -45,9 +45,10 @@ container, execute `pyspark` command.
   SparkSession available as 'spark'.
   >>>
 
- At first, we will load the sample file yelp_business.csv:
 
- .. code-block:: console
+At first, we will load the sample file yelp_business.csv:
+
+.. code-block:: console
 
   >>> business_df = spark.read.csv('/user/mikel/samples/yelp_business.csv', header=True, quote='"', escape='"')
   >>> business_df.show()
