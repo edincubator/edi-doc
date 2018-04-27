@@ -22,6 +22,15 @@ Contents
    big-data-stack/deploying-local-hadoop
 
 
+Big Data Stack Operations Guide
+-------------------------------
+
+This guide is for operating and administrating the EDI Big Data Stack.
+
+.. toctree::
+
+  operations/index
+
 TODO-list
 ---------
 
