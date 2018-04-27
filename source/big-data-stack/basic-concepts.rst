@@ -1,3 +1,5 @@
+.. _basicconcepts:
+
 EDI client's basic concepts
 ===========================
 
@@ -7,13 +9,7 @@ container using this image, you must fill the following steps:
 
 #. Install Docker in your system following the `instructions <https://docs.docker.com/install/>`_.
 #. Download `EDI stack-client Docker image <http://foo/bar>`_.
-
-.. #. Import the docker image:
-.. code-block:: console
-
-  $ docker load -i stack-client.tar
-
-3. Pull docker image from EDI registry:
+#. Pull docker image from EDI registry:
 
 .. code-block:: console
 
