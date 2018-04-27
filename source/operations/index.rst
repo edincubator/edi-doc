@@ -1,0 +1,56 @@
+Operating the Big Data Stack
+============================
+
+.. note::
+
+  This documentation is only for EDI Big Data Stack administrators. If you are
+  a user, check :ref:`basicconcepts`.
+
+
+For operating the Big Data Stack, there is a `Fabric <http://www.fabfile.org/>`_
+script available at https://github.com/edincubator/stack-operations. For using
+this fabric script follow these steps:
+
+.. code-block:: console
+
+  $ git clone  https://github.com/edincubator/stack-operations
+  $ cd stack-operations
+  $ pip install -r requirements.txt
+
+You can list available tasks executing `fab --list`:
+
+.. code-block:: console
+
+  $ fab --list
+  Available commands:
+
+    create_user
+    delete_user
+  $
+
+.. todo::
+
+  Update according to the development of new tasks.
+
+You can execute a task as:
+
+.. code-block:: console
+
+  $ fab create_user:username=newuser,email=newuser@company.org
+
+
+Available tasks
+---------------
+
+create_user(username, email)
+............................
+
+This task creates a new user named `username` in EDI Big Data Stack. After
+creating it, an email is sent to provided `email` indicating her Kerberos principal
+and password.
+
+
+delete_user(username)
+.....................
+
+Deletes a username from the system. Maintains her home directory at HDFS.
