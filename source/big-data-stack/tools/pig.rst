@@ -1,3 +1,9 @@
+.. warning::
+
+  Remember that for interacting with EDI Big Data Stack you must be
+  authenticated at the system using `kinit` command. For more information, read
+  the documentation at :ref:`authenticating-with-kerberos`.
+
 Pig
 ---
 
@@ -11,11 +17,6 @@ In this tutorial we explain how to reproduce the example that we have been worki
 with (counting how many businesses each USA state has from Yelp) using Pig. For
 starting a Pig shell you must type `pig` command:
 
-.. warning::
-
-  Remember that for interacting with EDI Big Data Stack you must be
-  authenticated at the system using `kinit` command. For more information, read
-  the documentation at :ref:`authenticating-with-kerberos`.
 
 .. code-block:: console
 
@@ -43,23 +44,38 @@ Next, we can load and operate over sample data:
 
   grunt> REGISTER /usr/hdp/current/pig-client/piggybank.jar
   grunt> define CSVLoader org.apache.pig.piggybank.storage.CSVLoader();
-  grunt> yelp_business = LOAD '/user/mikel/samples/yelp_business.csv' using CSVLoader AS (
-  >>     business_id:chararray,
-  >>     name:chararray,
-  >>     neighborhood:chararray,
-  >>     address:chararray,
-  >>     city:chararray,
-  >>     state:chararray,
-  >>     postal_code:int,
-  >>     latitude:double,
-  >>     longitude:double,
-  >>     stars:float,
-  >>     review_count:int,
-  >>     is_open:boolean,
-  >>     categories:chararray);
+
+
+.. code-block:: console
+
+    grunt> yelp_business = LOAD '/user/<username>/samples/yelp_business.csv' using CSVLoader AS (
+      business_id:chararray,
+      name:chararray,
+      neighborhood:chararray,
+      address:chararray,
+      city:chararray,
+      state:chararray,
+      postal_code:int,
+      latitude:double,
+      longitude:double,
+      stars:float,
+      review_count:int,
+      is_open:boolean,
+      categories:chararray
+    );
+
+.. code-block:: console
+
   grunt> grouped_business = GROUP yelp_business BY state;
+
+.. code-block:: console
+
   grunt> DESCRIBE grouped_business;
+
   grouped_business: {group: chararray,yelp_business: {(business_id: chararray,name: chararray,neighborhood: chararray,address: chararray,city: chararray,state: chararray,postal_code: int,latitude: double,longitude: double,stars: float,review_count: int,is_open: boolean,categories: chararray)}}
+
+.. code-block:: console
+
   grunt> counted_business = FOREACH grouped_business GENERATE group, COUNT(yelp_business);
 
 The code above is very intuitive. First, we load the
@@ -87,9 +103,9 @@ Next, we can dump the result into the shell.
 .. code-block:: console
 
   grunt> DUMP counted_business;
-  2018-04-24 15:19:46,891 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 600 for mikel on 192.168.125.113:8020
-  2018-04-24 15:19:47,000 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 600 for mikel)
-  2018-04-24 15:19:47,000 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524583186940, maxDate=1525187986940, sequenceNumber=272, masterKeyId=62)
+  2018-04-24 15:19:46,891 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 600 for <username> on 192.168.125.113:8020
+  2018-04-24 15:19:47,000 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 600 for <username>)
+  2018-04-24 15:19:47,000 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524583186940, maxDate=1525187986940, sequenceNumber=272, masterKeyId=62)
   2018-04-24 15:19:47,006 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: GROUP_BY
   2018-04-24 15:19:47,055 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
   2018-04-24 15:19:47,059 [main] INFO  org.apache.pig.data.SchemaTupleBackend - Key [pig.schematuple] was not set... will not generate code.
@@ -100,9 +116,9 @@ Next, we can dump the result into the shell.
   2018-04-24 15:19:47,502 [main] INFO  org.apache.pig.backend.hadoop.executionengine.tez.plan.TezCompiler - File concatenation threshold: 100 optimistic? false
   2018-04-24 15:19:47,551 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.CombinerOptimizerUtil - Choosing to move algebraic foreach to combiner
   2018-04-24 15:19:47,616 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapreduce.inputformat.class is deprecated. Instead, use mapreduce.job.inputformat.class
-  2018-04-24 15:19:47,686 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 601 for mikel on 192.168.125.113:8020
-  2018-04-24 15:19:47,712 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 601 for mikel)
-  2018-04-24 15:19:47,712 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524583187706, maxDate=1525187987706, sequenceNumber=273, masterKeyId=62)
+  2018-04-24 15:19:47,686 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 601 for <username> on 192.168.125.113:8020
+  2018-04-24 15:19:47,712 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 601 for <username>)
+  2018-04-24 15:19:47,712 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524583187706, maxDate=1525187987706, sequenceNumber=273, masterKeyId=62)
   2018-04-24 15:19:47,716 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
   2018-04-24 15:19:47,717 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
   2018-04-24 15:19:47,784 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
@@ -130,9 +146,9 @@ Next, we can dump the result into the shell.
   2018-04-24 15:19:49,345 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.AHSProxy - Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
   2018-04-24 15:19:49,351 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Session mode. Starting session.
   2018-04-24 15:19:49,356 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClientUtils - Using tez.lib.uris value from configuration: /hdp/apps/2.6.4.0-91/tez/tez.tar.gz
-  2018-04-24 15:19:49,377 [PigTezLauncher-0] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 602 for mikel on 192.168.125.113:8020
-  2018-04-24 15:19:49,411 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 602 for mikel)
-  2018-04-24 15:19:49,412 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524583189407, maxDate=1525187989407, sequenceNumber=274, masterKeyId=62)
+  2018-04-24 15:19:49,377 [PigTezLauncher-0] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 602 for <username> on 192.168.125.113:8020
+  2018-04-24 15:19:49,411 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 602 for <username>)
+  2018-04-24 15:19:49,412 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524583189407, maxDate=1525187989407, sequenceNumber=274, masterKeyId=62)
   2018-04-24 15:19:49,466 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Tez system stage directory hdfs://gauss.res.eng.it:8020/tmp/root/staging/.tez/application_1523347765873_0043 doesn't exist and is created
   2018-04-24 15:19:49,473 [PigTezLauncher-0] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
   2018-04-24 15:19:49,748 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl - Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
@@ -302,14 +318,14 @@ Next, we can dump the result into the shell.
   scope-53           1          1              0                   69             69            677                0              0              772 counted_business	GROUP_BY	hdfs://gauss.res.eng.it:8020/tmp/temp-735280935/tmp-1627710868,
 
   Input(s):
-  Successfully read 174568 records (31760674 bytes) from: "/user/mikel/samples/yelp_business.csv"
+  Successfully read 174568 records (31760674 bytes) from: "/user/<username>/samples/yelp_business.csv"
 
   Output(s):
   Successfully stored 69 records (772 bytes) in: "hdfs://gauss.res.eng.it:8020/tmp/temp-735280935/tmp-1627710868"
 
-  2018-04-24 15:20:14,010 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 603 for mikel on 192.168.125.113:8020
-  2018-04-24 15:20:14,033 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 603 for mikel)
-  2018-04-24 15:20:14,034 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524583214028, maxDate=1525188014028, sequenceNumber=275, masterKeyId=62)
+  2018-04-24 15:20:14,010 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 603 for <username> on 192.168.125.113:8020
+  2018-04-24 15:20:14,033 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 603 for <username>)
+  2018-04-24 15:20:14,034 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524583214028, maxDate=1525188014028, sequenceNumber=275, masterKeyId=62)
   2018-04-24 15:20:14,047 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
   2018-04-24 15:20:14,047 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
   (,1)
@@ -388,12 +404,12 @@ can store this output into HDFS as a CSV file:
 
 .. code-block:: console
 
-  grunt> STORE counted_business INTO '/user/mikel/pig-output' USING PigStorage(',');
+  grunt> STORE counted_business INTO '/user/<username>/pig-output' USING PigStorage(',');
   2018-04-24 15:44:10,488 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
   2018-04-24 15:44:10,500 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.textoutputformat.separator is deprecated. Instead, use mapreduce.output.textoutputformat.separator
-  2018-04-24 15:44:10,504 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 604 for mikel on 192.168.125.113:8020
-  2018-04-24 15:44:10,765 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 604 for mikel)
-  2018-04-24 15:44:10,765 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524584650761, maxDate=1525189450761, sequenceNumber=276, masterKeyId=62)
+  2018-04-24 15:44:10,504 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 604 for <username> on 192.168.125.113:8020
+  2018-04-24 15:44:10,765 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 604 for <username>)
+  2018-04-24 15:44:10,765 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524584650761, maxDate=1525189450761, sequenceNumber=276, masterKeyId=62)
   2018-04-24 15:44:10,809 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: GROUP_BY
   2018-04-24 15:44:10,842 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
   2018-04-24 15:44:10,843 [main] INFO  org.apache.pig.data.SchemaTupleBackend - Key [pig.schematuple] was not set... will not generate code.
@@ -402,9 +418,9 @@ can store this output into HDFS as a CSV file:
   2018-04-24 15:44:10,883 [main] INFO  org.apache.pig.backend.hadoop.executionengine.tez.TezLauncher - Tez staging directory is /tmp/root/staging and resources directory is /tmp/temp1168673119
   2018-04-24 15:44:10,884 [main] INFO  org.apache.pig.backend.hadoop.executionengine.tez.plan.TezCompiler - File concatenation threshold: 100 optimistic? false
   2018-04-24 15:44:10,887 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.CombinerOptimizerUtil - Choosing to move algebraic foreach to combiner
-  2018-04-24 15:44:10,910 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 605 for mikel on 192.168.125.113:8020
-  2018-04-24 15:44:10,933 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 605 for mikel)
-  2018-04-24 15:44:10,933 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524584650929, maxDate=1525189450929, sequenceNumber=277, masterKeyId=62)
+  2018-04-24 15:44:10,910 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 605 for <username> on 192.168.125.113:8020
+  2018-04-24 15:44:10,933 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 605 for <username>)
+  2018-04-24 15:44:10,933 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524584650929, maxDate=1525189450929, sequenceNumber=277, masterKeyId=62)
   2018-04-24 15:44:10,935 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
   2018-04-24 15:44:10,935 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
   2018-04-24 15:44:10,938 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
@@ -430,9 +446,9 @@ can store this output into HDFS as a CSV file:
   2018-04-24 15:44:11,278 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.AHSProxy - Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
   2018-04-24 15:44:11,279 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Session mode. Starting session.
   2018-04-24 15:44:11,279 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClientUtils - Using tez.lib.uris value from configuration: /hdp/apps/2.6.4.0-91/tez/tez.tar.gz
-  2018-04-24 15:44:11,289 [PigTezLauncher-0] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 606 for mikel on 192.168.125.113:8020
-  2018-04-24 15:44:11,323 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 606 for mikel)
-  2018-04-24 15:44:11,323 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524584651318, maxDate=1525189451318, sequenceNumber=278, masterKeyId=62)
+  2018-04-24 15:44:11,289 [PigTezLauncher-0] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 606 for <username> on 192.168.125.113:8020
+  2018-04-24 15:44:11,323 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 606 for <username>)
+  2018-04-24 15:44:11,323 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524584651318, maxDate=1525189451318, sequenceNumber=278, masterKeyId=62)
   2018-04-24 15:44:11,335 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Tez system stage directory hdfs://gauss.res.eng.it:8020/tmp/root/staging/.tez/application_1523347765873_0044 doesn't exist and is created
   2018-04-24 15:44:11,339 [PigTezLauncher-0] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
   2018-04-24 15:44:11,555 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl - Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
@@ -598,13 +614,13 @@ can store this output into HDFS as a CSV file:
   Vertex Stats:
   VertexId Parallelism TotalTasks   InputRecords   ReduceInputRecords  OutputRecords  FileBytesRead FileBytesWritten  HdfsBytesRead HdfsBytesWritten Alias	Feature	Outputs
   scope-124          1          1         174568                    0         174568             32              677       31760674                0 counted_business,grouped_business,yelp_business
-  scope-125          1          1              0                   69             69            677                0              0              425 counted_business	GROUP_BY	/user/mikel/pig-output,
+  scope-125          1          1              0                   69             69            677                0              0              425 counted_business	GROUP_BY	/user/<username>/pig-output,
 
   Input(s):
-  Successfully read 174568 records (31760674 bytes) from: "/user/mikel/samples/yelp_business.csv"
+  Successfully read 174568 records (31760674 bytes) from: "/user/<username>/samples/yelp_business.csv"
 
   Output(s):
-  Successfully stored 69 records (425 bytes) in: "/user/mikel/pig-output"
+  Successfully stored 69 records (425 bytes) in: "/user/<username>/pig-output"
 
   grunt>
 
@@ -612,11 +628,11 @@ We can check the result at HDFS:
 
 .. code-block:: console
 
-  # hdfs dfs -ls /user/mikel/pig-output
+  # hdfs dfs -ls /user/<username>/pig-output
   Found 2 items
-  -rw-------   3 mikel mikel          0 2018-04-24 15:44 /user/mikel/pig-output/_SUCCESS
-  -rw-------   3 mikel mikel        425 2018-04-24 15:44 /user/mikel/pig-output/part-v001-o000-r-00000
-  # hdfs dfs -cat /user/mikel/pig-output/part-v001-o000-r-00000
+  -rw-------   3 <username> <username>          0 2018-04-24 15:44 /user/<username>/pig-output/_SUCCESS
+  -rw-------   3 <username> <username>        425 2018-04-24 15:44 /user/<username>/pig-output/part-v001-o000-r-00000
+  # hdfs dfs -cat /user/<username>/pig-output/part-v001-o000-r-00000
   ,1
   3,1
   6,3
@@ -698,7 +714,7 @@ This job can be coded as a Pig file (`*.pig`):
   REGISTER /usr/hdp/current/pig-client/piggybank.jar
   define CSVLoader org.apache.pig.piggybank.storage.CSVLoader();
 
-  yelp_business = LOAD '/user/mikel/samples/yelp_business.csv' using CSVLoader AS (
+  yelp_business = LOAD '/user/<username>/samples/yelp_business.csv' using CSVLoader AS (
     business_id:chararray,
     name:chararray,
     neighborhood:chararray,
@@ -715,7 +731,7 @@ This job can be coded as a Pig file (`*.pig`):
 
   grouped_business = GROUP yelp_business BY state;
   counted_business = FOREACH grouped_business GENERATE group, COUNT(yelp_business);
-  STORE counted_business INTO '/user/mikel/pig-output' USING PigStorage(',');
+  STORE counted_business INTO '/user/<username>/pig-output' USING PigStorage(',');
 
 
 And execute using `pig <script>.pig`:

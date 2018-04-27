@@ -1,3 +1,9 @@
+.. warning::
+
+  Remember that for interacting with EDI Big Data Stack you must be
+  authenticated at the system using `kinit` command. For more information, read
+  the documentation at :ref:`authenticating-with-kerberos`.
+
 .. _mapreduce:
 
 MapReduce (YARN)
@@ -210,27 +216,21 @@ Next, at stack-client docker cointainer, we can submit the job using the
   your projects before submitting them to EDI Big Data Stack. Read
   :ref:`deploying-local-hadoop` for more information about how to do this.
 
-.. warning::
-
-  Remember that for interacting with EDI Big Data Stack you must be
-  authenticated at the system using `kinit` command. For more information, read
-  the documentation at :ref:`authenticating-with-kerberos`.
-
 .. code-block:: console
 
   # cd /workdir
-  # hadoop jar mr-example-1.0-SNAPSHOT-jar-with-dependencies.jar /user/mikel/samples/yelp_business.csv /user/mikel/state-count-output
+  # hadoop jar mr-example-1.0-SNAPSHOT-jar-with-dependencies.jar /user/<username>/samples/yelp_business.csv /user/<username>/state-count-output
   18/04/13 08:10:38 INFO client.RMProxy: Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
   18/04/13 08:10:38 INFO client.AHSProxy: Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
-  18/04/13 08:10:38 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 532 for mikel on 192.168.125.113:8020
-  18/04/13 08:10:39 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 532 for mikel)
-  18/04/13 08:10:39 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1523607038981, maxDate=1524211838981, sequenceNumber=204, masterKeyId=50)
+  18/04/13 08:10:38 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 532 for <username> on 192.168.125.113:8020
+  18/04/13 08:10:39 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 532 for <username>)
+  18/04/13 08:10:39 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1523607038981, maxDate=1524211838981, sequenceNumber=204, masterKeyId=50)
   18/04/13 08:10:39 WARN mapreduce.JobResourceUploader: Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
   18/04/13 08:10:39 INFO input.FileInputFormat: Total input paths to process : 1
   18/04/13 08:10:39 INFO mapreduce.JobSubmitter: number of splits:1
   18/04/13 08:10:40 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1523347765873_0008
-  18/04/13 08:10:40 INFO mapreduce.JobSubmitter: Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1523607038981, maxDate=1524211838981, sequenceNumber=204, masterKeyId=50)
-  18/04/13 08:10:40 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 532 for mikel)
+  18/04/13 08:10:40 INFO mapreduce.JobSubmitter: Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1523607038981, maxDate=1524211838981, sequenceNumber=204, masterKeyId=50)
+  18/04/13 08:10:40 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 532 for <username>)
   18/04/13 08:10:41 INFO impl.TimelineClientImpl: Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
   18/04/13 08:10:42 INFO impl.YarnClientImpl: Submitted application application_1523347765873_0008
   18/04/13 08:10:42 INFO mapreduce.Job: The url to track the job: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0008/
@@ -299,7 +299,7 @@ Next, at stack-client docker cointainer, we can submit the job using the
   #
 
 The job is executed successfully and the result put at
-`/user/mikel/state-count-output` directory. In case of any error, it will be
+`/user/<username>/state-count-output` directory. In case of any error, it will be
 shown at console. For further details about the job, you can check the
 ResourceManager UI at `<http://RESOURCEMANAGERURL:8088/cluster>`_.
 
@@ -313,11 +313,11 @@ single reducer is executed.
 
 .. code-block:: console
 
-  # hdfs dfs -ls /user/mikel/state-count-output
+  # hdfs dfs -ls /user/<username>/state-count-output
   Found 2 items
-  -rw-------   3 mikel mikel          0 2018-04-13 08:11 /user/mikel/state-count-output/_SUCCESS
-  -rw-------   3 mikel mikel        425 2018-04-13 08:11 /user/mikel/state-count-output/part-r-00000
-  # hdfs dfs -cat /user/mikel/state-count-output/part-r-00000
+  -rw-------   3 <username> <username>          0 2018-04-13 08:11 /user/<username>/state-count-output/_SUCCESS
+  -rw-------   3 <username> <username>        425 2018-04-13 08:11 /user/<username>/state-count-output/part-r-00000
+  # hdfs dfs -cat /user/<username>/state-count-output/part-r-00000
   1
   01	10
   3	1

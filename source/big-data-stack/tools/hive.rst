@@ -1,3 +1,9 @@
+.. warning::
+
+  Remember that for interacting with EDI Big Data Stack you must be
+  authenticated at the system using `kinit` command. For more information, read
+  the documentation at :ref:`authenticating-with-kerberos`.
+
 Hive
 ====
 
@@ -6,11 +12,7 @@ SQL-like language name HQL (Hive Query Language). In this tutorial we explain
 how to use Hive with sample files introduced in :ref:`hdfs` within EDI Big Data
 Stack.
 
-.. warning::
-  For security reasons, `hive` client is not available for its usage on EDI
-  Big Data Stack, being the new client `beeline` the one to be used.
-
-.. warning::
+.. note::
   If you need a new Hive database, you need to contact with EDI Technical Support for
   creating the database and give you the proper permissions. Once you have your
   database set, you can continue with this tutorial. For avoiding conflicts, all
@@ -23,51 +25,74 @@ Stack.
 
   Link to EDI Technical Support.
 
-.. warning::
-
-  Remember that for interacting with EDI Big Data Stack you must be
-  authenticated at the system using `kinit` command. For more information, read
-  the documentation at :ref:`authenticating-with-kerberos`.
-
-For connecting to Hive database `mikel_yelp`, we must execute the `beeline` client with the following
+For connecting to the Hive database `test_yelp`, we must execute the `beeline` client with the following
 parameters:
 
 .. code-block:: console
 
-  # beeline -u "jdbc:hive2://HIVE-HOST:10000/mikel_yelp;principal=hive/HOST@HDP.REALM;"
-  Connecting to jdbc:hive2://HIVE-HOST:10000/mikel_yelp;principal=hive/HOST@HDP.REALM;
+  # beeline -u "jdbc:hive2://<hive_host>:10000/test_yelp;principal=hive/<hive_host>@HDP.REALM;"
+  Connecting to jdbc:hive2://<hive_host>:10000/test_yelp;principal=hive/<hive-hist>@HDP.REALM;
   Connected to: Apache Hive (version 1.2.1000.2.6.4.0-91)
   Driver: Hive JDBC (version 1.2.1000.2.6.4.0-91)
   Transaction isolation: TRANSACTION_REPEATABLE_READ
   Beeline version 1.2.1000.2.6.4.0-91 by Apache Hive
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_yelp>
+  0: jdbc:hive2://<hive_host>:10000/test_yelp>
+
+.. warning::
+  For security reasons, `hive` client is not available for its usage on EDI
+  Big Data Stack, being the new client `beeline` the one to be used.
 
 Before creating the Hive table, we must copy the desired CSV to an independent
 folder, as Hive ingests all files in a folder:
 
 .. code-block:: console
 
-  # hdfs dfs -mkdir /user/mikel/samples/hive/
-  # hdfs dfs -mkdir /user/mikel/samples/hive/yelp_business
-  # hdfs dfs -cp /user/mikel/samples/yelp_business.csv /user/mikel/samples/hive/yelp_business
+  # hdfs dfs -mkdir /user/<username>/samples/hive/
+  # hdfs dfs -mkdir /user/<username>/samples/hive/yelp_business
+  # hdfs dfs -cp /user/<username>/samples/yelp_business.csv /user/<username>/samples/hive/yelp_business
 
 First we need to create table `yelp_business`. As we want to ingest CSV data, we
 are going to use `Hive CSV Serde <https://cwiki.apache.org/confluence/display/Hive/CSV+Serde>`_:
 
+.. code-block:: SQL
+
+    CREATE EXTERNAL TABLE IF NOT EXISTS yelp_business (
+      business_id string,
+      name string,
+      neighborhood string,
+      address string,
+      city string,
+      state string,
+      postal_code int,
+      latitude double,
+      longitude double,
+      stars float,
+      review_count int,
+      is_open boolean,
+      categories string
+    )
+    ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+    WITH SERDEPROPERTIES (
+       "separatorChar" = ",",
+       "quoteChar"     = '"',
+       "escapeChar"    = '"'
+    )
+    STORED AS TEXTFILE
+    LOCATION '/user/<username>/samples/hive/yelp_business'
+    TBLPROPERTIES("skip.header.line.count"="1");
+
+
+Once the data has been imported from the CSV into the table you can execute SQL
+commands to query the data
+
+.. code-block:: SQL
+
+  select business_id, name, city, state from yelp_business limit 20;
+
 .. code-block:: console
 
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_> CREATE EXTERNAL TABLE IF NOT EXISTS yelp_business (business_id string, name string, neighborhood string, address string, city string, state string, postal_code int, latitude double, longitude double, stars float, review_count int, is_open boolean, categories string)
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_> ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_> WITH SERDEPROPERTIES (
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_>    "separatorChar" = ",",
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_>    "quoteChar"     = '"',
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_>    "escapeChar"    = '"'
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_> )
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_> STORED AS TEXTFILE
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_> LOCATION '/user/mikel/samples/hive/yelp_business'
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_> TBLPROPERTIES("skip.header.line.count"="1");
   No rows affected (0.412 seconds)
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_> select business_id, name, city, state from yelp_business limit 20;
+  0: jdbc:hive2://<hive_host>:10000/test_y>
   +-------------------------+-------------------------------+-----------------+--------+--+
   |       business_id       |             name              |      city       | state  |
   +-------------------------+-------------------------------+-----------------+--------+--+
@@ -93,14 +118,17 @@ are going to use `Hive CSV Serde <https://cwiki.apache.org/confluence/display/Hi
   | Gu-xs3NIQTj3Mj2xYoN2aw  | "Maxim Bakery & Restaurant"   | Richmond Hill   | ON     |
   +-------------------------+-------------------------------+-----------------+--------+--+
   20 rows selected (0.115 seconds)
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_>
+  0: jdbc:hive2://<hive_host>:10000/test_y>
 
 Next, we can execute SQL queries over the table. In our case, we want to get the
 ordered list of states with more businesses:
 
+.. code-block:: SQL
+
+  select state, count(state) as count from yelp_business group by state order by count desc;
+
 .. code-block:: console
 
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_> select state, count(state) as count from yelp_business group by state order by count desc;
   INFO  : Session is already open
   INFO  : Dag name: select state, count(state) as count f...desc(Stage-1)
   INFO  : Status: Running (Executing on YARN cluster with App id application_1523347765873_0016)
@@ -187,4 +215,4 @@ ordered list of states with more businesses:
   | ZET    | 1      |
   +--------+--------+--+
   68 rows selected (6.436 seconds)
-  0: jdbc:hive2://HIVE-HOST:10000/mikel_>
+  0: jdbc:hive2://<hive_host>:10000/test_>

@@ -1,5 +1,11 @@
 .. _hbase:
 
+.. warning::
+
+  Remember that for interacting with EDI Big Data Stack you must be
+  authenticated at the system using `kinit` command. For more information, read
+  the documentation at :ref:`authenticating-with-kerberos`.
+
 HBase
 =====
 
@@ -11,7 +17,7 @@ from both HBase shell and a Python script.
 Loading data into HBase
 .......................
 
-.. warning::
+.. note::
 
   Before creating any table in HBase, you must contact with EDI Technical Support for
   creating your namespace and give you the proper permissions. Once you have your
@@ -20,12 +26,6 @@ Loading data into HBase
 .. todo::
 
   Link to EDI Technical Support.
-
-.. warning::
-
-  Remember that for interacting with EDI Big Data Stack you must be
-  authenticated at the system using `kinit` command. For more information, read
-  the documentation at :ref:`authenticating-with-kerberos`.
 
 Before loading data we must create the database using Hbase shell. All databases
 must follow the naming convention `workspace:database`. This database will be
@@ -38,17 +38,19 @@ structured into two column families: `info` and `stats`.
   Type "exit<RETURN>" to leave the HBase Shell
   Version 1.1.2.2.6.4.0-91, r2a88e694af7238290a5747f963a4fa0079c55bf9, Thu Jan  4 10:32:40 UTC 2018
 
-  hbase(main):001:0> create 'mikel:yelp_business', 'info', 'stats'
-  0 row(s) in 2.3740 seconds
+Once the shell is started run the following command to create your database
 
-  => Hbase::Table - mikel:yelp_business
-  hbase(main):002:0> scan 'mikel:yelp_business'
+.. code-block:: console
+
+  hbase(main):001:0> create '<username>:yelp_business', 'info', 'stats'
+  0 row(s) in 2.3740 seconds
+  => Hbase::Table - <username>:yelp_business
+  hbase(main):002:0> scan '<username>:yelp_business'
   ROW                                                   COLUMN+CELL
   0 row(s) in 0.0440 seconds
 
-  hbase(main):003:0>
 
-Fist, you must clone the repository containing examples and move into
+Clone the repository containing examples and move into
 hbaseexample dir.
 
 .. code-block:: console
@@ -269,7 +271,10 @@ Next, at stack-client docker cointainer, we can submit the job using the
 .. code-block:: console
 
   # cd /workdir
-  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /user/mikel/samples/yelp_business.csv mikel:yelp_business
+  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /user/<username>/samples/yelp_business.csv <username>:yelp_business
+
+.. code-block:: console
+
   18/04/23 12:10:42 INFO zookeeper.RecoverableZooKeeper: Process identifier=hconnection-0x30f5a68a connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
   18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:zookeeper.version=3.4.6-91--1, built on 01/04/2018 09:27 GMT
   18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:host.name=944cf990549a
@@ -302,14 +307,14 @@ Next, at stack-client docker cointainer, we can submit the job using the
   18/04/23 12:10:42 INFO zookeeper.ClientCnxn: EventThread shut down
   18/04/23 12:10:43 INFO client.RMProxy: Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
   18/04/23 12:10:43 INFO client.AHSProxy: Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
-  18/04/23 12:10:43 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 589 for mikel on 192.168.125.113:8020
-  18/04/23 12:10:44 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 589 for mikel)
-  18/04/23 12:10:44 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524485443891, maxDate=1525090243891, sequenceNumber=261, masterKeyId=61)
+  18/04/23 12:10:43 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 589 for <username> on 192.168.125.113:8020
+  18/04/23 12:10:44 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 589 for <username>)
+  18/04/23 12:10:44 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524485443891, maxDate=1525090243891, sequenceNumber=261, masterKeyId=61)
   18/04/23 12:10:45 INFO input.FileInputFormat: Total input paths to process : 1
   18/04/23 12:10:45 INFO mapreduce.JobSubmitter: number of splits:1
   18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1523347765873_0039
-  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524485443891, maxDate=1525090243891, sequenceNumber=261, masterKeyId=61)
-  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 589 for mikel)
+  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524485443891, maxDate=1525090243891, sequenceNumber=261, masterKeyId=61)
+  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 589 for <username>)
   18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Kind: HBASE_AUTH_TOKEN, Service: b66e21cc-4378-4766-be86-2034dcca995c, Ident: (org.apache.hadoop.hbase.security.token.AuthenticationTokenIdentifier@3)
   18/04/23 12:10:46 INFO impl.TimelineClientImpl: Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
   18/04/23 12:10:47 INFO impl.YarnClientImpl: Submitted application application_1523347765873_0039
@@ -374,7 +379,10 @@ data:
 
 .. code-block:: console
 
-  hbase(main):004:0> scan 'mikel:yelp_business', {'LIMIT' => 5}
+  hbase(main):004:0> scan '<username>:yelp_business', {'LIMIT' => 5}
+
+.. code-block:: console
+
   ROW                                                   COLUMN+CELL
   --6MefnULPED_I942VcFNA                               column=info:address, timestamp=1524485480078, value="328 Highway 7 E, Chalmers Gate 11, Unit 10"
   --6MefnULPED_I942VcFNA                               column=info:categories, timestamp=1524485480078, value=Chinese;Restaurants
@@ -432,8 +440,6 @@ data:
   --9e1ONYQuAa-CB_Rrw7Tw                               column=stats:review_count, timestamp=1524485488519, value=1451
   --9e1ONYQuAa-CB_Rrw7Tw                               column=stats:stars, timestamp=1524485488519, value=4.0
   5 row(s) in 0.0200 seconds
-
-  hbase(main):005:0>
 
 
 Reading data from Hbase
@@ -532,7 +538,10 @@ Next, at stack-client docker cointainer, we can submit the job using the
 
 .. code-block:: console
 
-  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseReadExample mikel:yelp_business /user/mikel/hbase-output
+  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseReadExample <username>:yelp_business /user/<username>/hbase-output
+
+.. code-block:: console
+
   18/04/24 08:05:37 INFO zookeeper.RecoverableZooKeeper: Process identifier=hconnection-0x2cb3d0f7 connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
   18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:zookeeper.version=3.4.6-91--1, built on 01/04/2018 09:27 GMT
   18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:host.name=a4272422f4c8
@@ -565,15 +574,15 @@ Next, at stack-client docker cointainer, we can submit the job using the
   18/04/24 08:05:37 INFO zookeeper.ClientCnxn: EventThread shut down
   18/04/24 08:05:37 INFO client.RMProxy: Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
   18/04/24 08:05:38 INFO client.AHSProxy: Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
-  18/04/24 08:05:38 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 593 for mikel on 192.168.125.113:8020
-  18/04/24 08:05:38 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 593 for mikel)
-  18/04/24 08:05:38 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524557138566, maxDate=1525161938566, sequenceNumber=265, masterKeyId=61)
+  18/04/24 08:05:38 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 593 for <username> on 192.168.125.113:8020
+  18/04/24 08:05:38 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 593 for <username>)
+  18/04/24 08:05:38 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524557138566, maxDate=1525161938566, sequenceNumber=265, masterKeyId=61)
   18/04/24 08:05:40 INFO zookeeper.RecoverableZooKeeper: Process identifier=hconnection-0x545e57d7 connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
   18/04/24 08:05:40 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@2bc9a775
   18/04/24 08:05:40 INFO zookeeper.ClientCnxn: Opening socket connection to server heidi.res.eng.it/192.168.125.101:2181. Will not attempt to authenticate using SASL (unknown error)
   18/04/24 08:05:40 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /172.17.0.4:50972, server: heidi.res.eng.it/192.168.125.101:2181
   18/04/24 08:05:40 INFO zookeeper.ClientCnxn: Session establishment complete on server heidi.res.eng.it/192.168.125.101:2181, sessionid = 0x26189a8e78b9e48, negotiated timeout = 60000
-  18/04/24 08:05:40 INFO util.RegionSizeCalculator: Calculating region sizes for table "mikel:yelp_business".
+  18/04/24 08:05:40 INFO util.RegionSizeCalculator: Calculating region sizes for table "<username>:yelp_business".
   18/04/24 08:05:40 INFO client.ConnectionManager$HConnectionImplementation: Closing master protocol: MasterService
   18/04/24 08:05:40 INFO client.ConnectionManager$HConnectionImplementation: Closing zookeeper sessionid=0x26189a8e78b9e48
   18/04/24 08:05:40 INFO zookeeper.ZooKeeper: Session: 0x26189a8e78b9e48 closed
@@ -581,8 +590,8 @@ Next, at stack-client docker cointainer, we can submit the job using the
   18/04/24 08:05:40 INFO mapreduce.JobSubmitter: number of splits:1
   18/04/24 08:05:40 INFO Configuration.deprecation: io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
   18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1523347765873_0041
-  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=mikel, renewer=yarn, realUser=, issueDate=1524557138566, maxDate=1525161938566, sequenceNumber=265, masterKeyId=61)
-  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 593 for mikel)
+  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524557138566, maxDate=1525161938566, sequenceNumber=265, masterKeyId=61)
+  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 593 for <username>)
   18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Kind: HBASE_AUTH_TOKEN, Service: b66e21cc-4378-4766-be86-2034dcca995c, Ident: (org.apache.hadoop.hbase.security.token.AuthenticationTokenIdentifier@5)
   18/04/24 08:05:42 INFO impl.TimelineClientImpl: Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
   18/04/24 08:05:42 INFO impl.YarnClientImpl: Submitted application application_1523347765873_0041
@@ -667,11 +676,20 @@ We can see the output at HDFS:
 
 .. code-block:: console
 
-  # hdfs dfs -ls /user/mikel/hbase-output
+  # hdfs dfs -ls /user/<username>/hbase-output
+
+.. code-block:: console
+
   Found 2 items
-  -rw-r--r--   3 mikel mikel          0 2018-04-24 08:06 /user/mikel/hbase-output/_SUCCESS
-  -rw-r--r--   3 mikel mikel        425 2018-04-24 08:06 /user/mikel/hbase-output/part-r-00000
-  # hdfs dfs -cat /user/mikel/hbase-output/part-r-00000
+  -rw-r--r--   3 <username> <username>          0 2018-04-24 08:06 /user/<username>/hbase-output/_SUCCESS
+  -rw-r--r--   3 <username> <username>        425 2018-04-24 08:06 /user/<username>/hbase-output/part-r-00000
+
+.. code-block:: console
+
+  # hdfs dfs -cat /user/<username>/hbase-output/part-r-00000
+
+.. code-block:: console
+
   1
   01	10
   3	1
@@ -740,6 +758,5 @@ We can see the output at HDFS:
   WLN	38
   XGL	4
   ZET	1
-  #
 
 As you can see, those results are the same obtained at :ref:`mapreduce` example.
