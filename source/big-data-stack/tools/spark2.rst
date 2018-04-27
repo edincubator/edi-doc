@@ -14,9 +14,8 @@ container, execute `pyspark` command.
 
 .. note::
 
-  For executing Spark2 interactive shell on distributed mode (`--master yarn`),
-  don't forget `--deploy-mode cluster` parameter.
-
+  It is not possible to execute Spark2 interactive shell on EDI Big Data Stack
+  on distributed mode.
 
 .. warning::
 
@@ -27,7 +26,7 @@ container, execute `pyspark` command.
 
 .. code-block:: console
 
-  # pyspark --master yarn --deploy-mode cluster
+  # pyspark
   # Python 2.7.5 (default, Aug  4 2017, 00:39:18)
   [GCC 4.8.5 20150623 (Red Hat 4.8.5-16)] on linux2
   Type "help", "copyright", "credits" or "license" for more information.
@@ -45,7 +44,7 @@ container, execute `pyspark` command.
   SparkSession available as 'spark'.
   >>>
 
- At first, we will load the sample file yelp_business.csv:
+At first, we will load the sample file yelp_business.csv:
 
  .. code-block:: console
 
