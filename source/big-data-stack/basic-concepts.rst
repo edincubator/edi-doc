@@ -20,6 +20,8 @@ container using this image, you must fill the following steps:
 .. code-block :: console
 
   $ docker run -ti -v <workdir>:/workdir registry.edincubator.eu/stack-client /bin/bash
+  Enter your username : <username>
+  $
 
 Being `<workdir>` the directory where your source code, scripts, etc. are.
 `-v` param creates a Docker volume mounted at `/workdir` inside the container,
