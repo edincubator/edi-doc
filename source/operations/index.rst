@@ -45,8 +45,9 @@ Available tasks
 create_user(username, email)
 ............................
 
-This task creates a new user named `username` in EDI Big Data Stack. After
-creating it, an email is sent to provided `email` indicating her Kerberos principal
+This task creates a new user named `username` in EDI Big Data Stack, plus its
+HDFS home directory and a Ranger policy for managing it. After its creation,
+an email is sent to provided `email` indicating her Kerberos principal
 and password.
 
 
