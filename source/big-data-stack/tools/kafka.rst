@@ -1,3 +1,9 @@
+.. warning::
+
+  Remember that for interacting with EDI Big Data Stack you must be
+  authenticated at the system using `kinit` command. For more information, read
+  the documentation at :ref:`authenticating-with-kerberos`.
+
 Kafka
 =====
 
@@ -7,12 +13,6 @@ Kafka topics.
 
 Basic functionalities
 ---------------------
-
-.. warning::
-
-  Remember that for interacting with EDI Big Data Stack you must be
-  authenticated at the system using `kinit` command. For more information, read
-  the documentation at :ref:`authenticating-with-kerberos`.
 
 .. warning::
 

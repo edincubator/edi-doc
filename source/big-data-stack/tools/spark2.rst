@@ -1,3 +1,9 @@
+.. warning::
+
+  Remember that for interacting with EDI Big Data Stack you must be
+  authenticated at the system using `kinit` command. For more information, read
+  the documentation at :ref:`authenticating-with-kerberos`.
+
 Spark2
 ======
 
@@ -16,13 +22,6 @@ container, execute `pyspark` command.
 
   It is not possible to execute Spark2 interactive shell on EDI Big Data Stack
   on distributed mode.
-
-.. warning::
-
-  Remember that for interacting with EDI Big Data Stack you must be
-  authenticated at the system using `kinit` command. For more information, read
-  the documentation at :ref:`authenticating-with-kerberos`.
-
 
 .. code-block:: console
 
@@ -44,9 +43,10 @@ container, execute `pyspark` command.
   SparkSession available as 'spark'.
   >>>
 
-At first, we will load the sample file yelp_business.csv:
 
- .. code-block:: console
+First, we will load the sample file yelp_business.csv:
+
+.. code-block:: console
 
   >>> business_df = spark.read.csv('/user/mikel/samples/yelp_business.csv', header=True, quote='"', escape='"')
   >>> business_df.show()
