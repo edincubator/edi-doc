@@ -24,7 +24,11 @@ You can list available tasks executing `fab --list`:
   $ fab --list
   Available commands:
 
+    create_hbase_namespace
+    create_hive_database
     create_user
+    delete_hbase_namespace
+    delete_hive_database
     delete_user
   $
 
@@ -55,3 +59,27 @@ delete_user(username)
 .....................
 
 Deletes a username from the system. Maintains her home directory at HDFS.
+
+
+create_hive_database(database_name, username)
+.............................................
+
+Creates Hive database `database_name` and gives permissions to `username`.
+
+
+delete_hive_database(database_name)
+...................................
+
+Deletes Hive database `database_name`.
+
+
+create_hbase_namespace(namespace_name, username)
+................................................
+
+Creates HBase namespace `namespace_name` and gives permissions to `username`.
+
+
+delete_hbase_namespace(namespace_name)
+......................................
+
+Deletes HBase namespace `namespace_name`
