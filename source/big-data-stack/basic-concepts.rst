@@ -8,14 +8,13 @@ interacting with the Big Data Stack already installed. For creating a Docker
 container using this image, you must fill the following steps:
 
 #. Install Docker in your system following the `instructions <https://docs.docker.com/install/>`_.
-#. Download `EDI stack-client Docker image <http://foo/bar>`_.
 #. Pull docker image from EDI registry:
 
 .. code-block:: console
 
   $ docker pull registry.edincubator.eu/stack-client
 
-4. Run and access to the container:
+3. Run and access to the container:
 
 .. code-block :: console
 
