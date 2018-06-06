@@ -27,3 +27,14 @@ Files View (WebHDFS)
 The Files View allows exploring and manipulating folders and files at HDFS.
 
 .. image:: img/ambari-files-view.png
+
+
+.. _hiveview:
+
+Hive View 2.0
+-------------
+
+Hive View 2.0 allows querying Hive databases and tables through a graphical
+interface. You can also save Worksheets and generated results.
+
+.. image:: img/ambari-hive-view.png

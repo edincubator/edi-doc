@@ -121,7 +121,7 @@ commands to query the data
   0: jdbc:hive2://<hive_host>:10000/test_y>
 
 Next, we can execute SQL queries over the table. In our case, we want to get the
-ordered list of states with more businesses:
+ordered list of states with most businesses:
 
 .. code-block:: SQL
 
@@ -216,3 +216,7 @@ ordered list of states with more businesses:
   +--------+--------+--+
   68 rows selected (6.436 seconds)
   0: jdbc:hive2://<hive_host>:10000/test_>
+
+.. note::
+
+  In addition to CLI tools, you can query Hive databases using :ref:`hiveview`.
