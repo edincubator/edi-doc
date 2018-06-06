@@ -48,7 +48,7 @@ First, we will load the sample file yelp_business.csv:
 
 .. code-block:: console
 
-  >>> business_df = spark.read.csv('/user/mikel/samples/yelp_business.csv', header=True, quote='"', escape='"')
+  >>> business_df = spark.read.csv('/user/<username>/samples/yelp_business.csv', header=True, quote='"', escape='"')
   >>> business_df.show()
   +--------------------+--------------------+------------------+--------------------+--------------+-----+-----------+-------------+--------------+-----+------------+-------+--------------------+
   |         business_id|                name|      neighborhood|             address|          city|state|postal_code|     latitude|     longitude|stars|review_count|is_open|          categories|
@@ -146,48 +146,48 @@ Now, we are going to sort the result and store into HDFS.
   +-----+-----+
   only showing top 20 rows
 
-  >>> sorted_state_count.write.csv('/user/mikel/spark-csv-output')
+  >>> sorted_state_count.write.csv('/user/<username>/spark-csv-output')
 
-If we check contents of '/user/mikel/spark-csv-output', we can see that a set
+If we check contents of '/user/<username>/spark-csv-output', we can see that a set
 of CSV files have been generated, one for each partition.
 
 .. code-block:: console
 
-  # hdfs dfs -ls /user/mikel/spark-csv-output
+  # hdfs dfs -ls /user/<username>/spark-csv-output
   Found 32 items
-  -rw-------   3 mikel mikel          0 2018-04-13 12:34 /user/mikel/spark-csv-output/_SUCCESS
-  -rw-------   3 mikel mikel          9 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00000-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          9 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00001-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          9 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00002-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          9 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00003-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          9 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00004-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          9 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00005-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          8 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00006-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          8 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00007-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          9 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00008-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          8 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00009-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          8 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00010-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          7 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00011-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          8 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00012-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          8 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00013-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          8 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00014-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          8 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00015-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          7 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00016-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          7 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00017-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          7 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00018-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          5 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00019-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          6 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00020-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          7 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00021-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          6 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00022-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel         12 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00023-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          5 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00024-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel         11 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00025-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel         11 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00026-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel         21 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00027-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel         33 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00028-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel        145 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00029-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 mikel mikel          0 2018-04-13 12:34 /user/mikel/spark-csv-output/part-00030-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  # hdfs dfs -cat /user/mikel/spark-csv-output/part-00000-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          0 2018-04-13 12:34 /user/<username>/spark-csv-output/_SUCCESS
+  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00000-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00001-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00002-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00003-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00004-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00005-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00006-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00007-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00008-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00009-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00010-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          7 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00011-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00012-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00013-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00014-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00015-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          7 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00016-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          7 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00017-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          7 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00018-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          5 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00019-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          6 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00020-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          7 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00021-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          6 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00022-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>         12 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00023-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          5 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00024-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>         11 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00025-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>         11 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00026-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>         21 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00027-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>         33 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00028-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>        145 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00029-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  -rw-------   3 <username> <username>          0 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00030-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  # hdfs dfs -cat /user/<username>/spark-csv-output/part-00000-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
   AZ,52214
   #
 
@@ -195,45 +195,45 @@ In the same way, we can also export those results in JSON format:
 
 .. code-block:: console
 
-  >>> sorted_state_count.write.json('/user/mikel/spark-json-output')
+  >>> sorted_state_count.write.json('/user/<username>/spark-json-output')
 
 .. code-block:: console
 
-  # hdfs dfs -ls /user/mikel/spark-json-output
+  # hdfs dfs -ls /user/<username>/spark-json-output
   Found 32 items
-  -rw-------   3 mikel mikel          0 2018-04-13 12:40 /user/mikel/spark-json-output/_SUCCESS
-  -rw-------   3 mikel mikel         29 2018-04-13 12:40 /user/mikel/spark-json-output/part-00000-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         29 2018-04-13 12:40 /user/mikel/spark-json-output/part-00001-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         29 2018-04-13 12:40 /user/mikel/spark-json-output/part-00002-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         29 2018-04-13 12:40 /user/mikel/spark-json-output/part-00003-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         29 2018-04-13 12:40 /user/mikel/spark-json-output/part-00004-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         29 2018-04-13 12:40 /user/mikel/spark-json-output/part-00005-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         28 2018-04-13 12:40 /user/mikel/spark-json-output/part-00006-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         28 2018-04-13 12:40 /user/mikel/spark-json-output/part-00007-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         29 2018-04-13 12:40 /user/mikel/spark-json-output/part-00008-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         28 2018-04-13 12:40 /user/mikel/spark-json-output/part-00009-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         28 2018-04-13 12:40 /user/mikel/spark-json-output/part-00010-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         27 2018-04-13 12:40 /user/mikel/spark-json-output/part-00011-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         28 2018-04-13 12:40 /user/mikel/spark-json-output/part-00012-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         28 2018-04-13 12:40 /user/mikel/spark-json-output/part-00013-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         28 2018-04-13 12:40 /user/mikel/spark-json-output/part-00014-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         28 2018-04-13 12:40 /user/mikel/spark-json-output/part-00015-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         27 2018-04-13 12:40 /user/mikel/spark-json-output/part-00016-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         27 2018-04-13 12:40 /user/mikel/spark-json-output/part-00017-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         27 2018-04-13 12:40 /user/mikel/spark-json-output/part-00018-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         25 2018-04-13 12:40 /user/mikel/spark-json-output/part-00019-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         26 2018-04-13 12:40 /user/mikel/spark-json-output/part-00020-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         27 2018-04-13 12:40 /user/mikel/spark-json-output/part-00021-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         26 2018-04-13 12:40 /user/mikel/spark-json-output/part-00022-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         52 2018-04-13 12:40 /user/mikel/spark-json-output/part-00023-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         25 2018-04-13 12:40 /user/mikel/spark-json-output/part-00024-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         51 2018-04-13 12:40 /user/mikel/spark-json-output/part-00025-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel         51 2018-04-13 12:40 /user/mikel/spark-json-output/part-00026-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel        101 2018-04-13 12:40 /user/mikel/spark-json-output/part-00027-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel        153 2018-04-13 12:40 /user/mikel/spark-json-output/part-00028-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel        694 2018-04-13 12:40 /user/mikel/spark-json-output/part-00029-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  -rw-------   3 mikel mikel          0 2018-04-13 12:40 /user/mikel/spark-json-output/part-00030-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
-  # hdfs dfs -cat /user/mikel/spark-json-output/part-00000-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>          0 2018-04-13 12:40 /user/<username>/spark-json-output/_SUCCESS
+  -rw-------   3 <username> <username>         29 2018-04-13 12:40 /user/<username>/spark-json-output/part-00000-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         29 2018-04-13 12:40 /user/<username>/spark-json-output/part-00001-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         29 2018-04-13 12:40 /user/<username>/spark-json-output/part-00002-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         29 2018-04-13 12:40 /user/<username>/spark-json-output/part-00003-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         29 2018-04-13 12:40 /user/<username>/spark-json-output/part-00004-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         29 2018-04-13 12:40 /user/<username>/spark-json-output/part-00005-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         28 2018-04-13 12:40 /user/<username>/spark-json-output/part-00006-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         28 2018-04-13 12:40 /user/<username>/spark-json-output/part-00007-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         29 2018-04-13 12:40 /user/<username>/spark-json-output/part-00008-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         28 2018-04-13 12:40 /user/<username>/spark-json-output/part-00009-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         28 2018-04-13 12:40 /user/<username>/spark-json-output/part-00010-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         27 2018-04-13 12:40 /user/<username>/spark-json-output/part-00011-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         28 2018-04-13 12:40 /user/<username>/spark-json-output/part-00012-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         28 2018-04-13 12:40 /user/<username>/spark-json-output/part-00013-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         28 2018-04-13 12:40 /user/<username>/spark-json-output/part-00014-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         28 2018-04-13 12:40 /user/<username>/spark-json-output/part-00015-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         27 2018-04-13 12:40 /user/<username>/spark-json-output/part-00016-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         27 2018-04-13 12:40 /user/<username>/spark-json-output/part-00017-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         27 2018-04-13 12:40 /user/<username>/spark-json-output/part-00018-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         25 2018-04-13 12:40 /user/<username>/spark-json-output/part-00019-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         26 2018-04-13 12:40 /user/<username>/spark-json-output/part-00020-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         27 2018-04-13 12:40 /user/<username>/spark-json-output/part-00021-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         26 2018-04-13 12:40 /user/<username>/spark-json-output/part-00022-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         52 2018-04-13 12:40 /user/<username>/spark-json-output/part-00023-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         25 2018-04-13 12:40 /user/<username>/spark-json-output/part-00024-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         51 2018-04-13 12:40 /user/<username>/spark-json-output/part-00025-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>         51 2018-04-13 12:40 /user/<username>/spark-json-output/part-00026-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>        101 2018-04-13 12:40 /user/<username>/spark-json-output/part-00027-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>        153 2018-04-13 12:40 /user/<username>/spark-json-output/part-00028-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>        694 2018-04-13 12:40 /user/<username>/spark-json-output/part-00029-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  -rw-------   3 <username> <username>          0 2018-04-13 12:40 /user/<username>/spark-json-output/part-00030-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
+  # hdfs dfs -cat /user/<username>/spark-json-output/part-00000-dbbde83a-f730-459f-a8bb-54b50cbab72e-c000.json
   {"state":"AZ","count":52214}
   #
 
@@ -251,12 +251,12 @@ previous instructions into a Python file. You can find yelp_example.py in
   from pyspark.sql import SparkSession
 
   spark = SparkSession.builder.appName("YelpExample").getOrCreate()
-  business_df = spark.read.csv('/user/mikel/samples/yelp_business.csv',
+  business_df = spark.read.csv('/user/<username>/samples/yelp_business.csv',
                                header=True, quote='"', escape='"')
 
   state_count = business_df.groupBy(business_df.state).count()
   sorted_state_count = state_count.sort("count", ascending=False)
-  sorted_state_count.write.csv('/user/mikel/spark-csv-output')
+  sorted_state_count.write.csv('/user/<username>/spark-csv-output')
 
 Copy the `yelp_example.py` file to your workspace and execute `spark-submit`
 command:
@@ -273,19 +273,19 @@ command:
   18/04/13 13:06:50 INFO yarn.Client: Setting up container launch context for our AM
   18/04/13 13:06:50 INFO yarn.Client: Setting up the launch environment for our AM container
   18/04/13 13:06:50 INFO yarn.Client: Preparing resources for our AM container
-  18/04/13 13:06:50 INFO security.HadoopFSCredentialProvider: getting token for: hdfs://gauss.res.eng.it:8020/user/mikel
-  18/04/13 13:06:50 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 535 for mikel on 192.168.125.113:8020
+  18/04/13 13:06:50 INFO security.HadoopFSCredentialProvider: getting token for: hdfs://gauss.res.eng.it:8020/user/<username>
+  18/04/13 13:06:50 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 535 for <username> on 192.168.125.113:8020
   18/04/13 13:06:52 INFO yarn.Client: Use hdfs cache file as spark.yarn.archive for HDP, hdfsCacheFile:hdfs://gauss.res.eng.it:8020/hdp/apps/2.6.4.0-91/spark2/spark2-hdp-yarn-archive.tar.gz
   18/04/13 13:06:52 INFO yarn.Client: Source and destination file systems are the same. Not copying hdfs://gauss.res.eng.it:8020/hdp/apps/2.6.4.0-91/spark2/spark2-hdp-yarn-archive.tar.gz
-  18/04/13 13:06:52 INFO yarn.Client: Uploading resource file:/workdir/yelp_example.py -> hdfs://gauss.res.eng.it:8020/user/mikel/.sparkStaging/application_1523347765873_0011/yelp_example.py
-  18/04/13 13:06:53 INFO yarn.Client: Uploading resource file:/usr/hdp/current/spark2-client/python/lib/pyspark.zip -> hdfs://gauss.res.eng.it:8020/user/mikel/.sparkStaging/application_1523347765873_0011/pyspark.zip
-  18/04/13 13:06:53 INFO yarn.Client: Uploading resource file:/usr/hdp/current/spark2-client/python/lib/py4j-0.10.4-src.zip -> hdfs://gauss.res.eng.it:8020/user/mikel/.sparkStaging/application_1523347765873_0011/py4j-0.10.4-src.zip
-  18/04/13 13:06:53 INFO yarn.Client: Uploading resource file:/tmp/spark-49a33464-cde1-46bb-9662-9ff14a26db39/__spark_conf__2421542858529915483.zip -> hdfs://gauss.res.eng.it:8020/user/mikel/.sparkStaging/application_1523347765873_0011/__spark_conf__.zip
-  18/04/13 13:06:53 INFO spark.SecurityManager: Changing view acls to: root,mikel
-  18/04/13 13:06:53 INFO spark.SecurityManager: Changing modify acls to: root,mikel
+  18/04/13 13:06:52 INFO yarn.Client: Uploading resource file:/workdir/yelp_example.py -> hdfs://gauss.res.eng.it:8020/user/<username>/.sparkStaging/application_1523347765873_0011/yelp_example.py
+  18/04/13 13:06:53 INFO yarn.Client: Uploading resource file:/usr/hdp/current/spark2-client/python/lib/pyspark.zip -> hdfs://gauss.res.eng.it:8020/user/<username>/.sparkStaging/application_1523347765873_0011/pyspark.zip
+  18/04/13 13:06:53 INFO yarn.Client: Uploading resource file:/usr/hdp/current/spark2-client/python/lib/py4j-0.10.4-src.zip -> hdfs://gauss.res.eng.it:8020/user/<username>/.sparkStaging/application_1523347765873_0011/py4j-0.10.4-src.zip
+  18/04/13 13:06:53 INFO yarn.Client: Uploading resource file:/tmp/spark-49a33464-cde1-46bb-9662-9ff14a26db39/__spark_conf__2421542858529915483.zip -> hdfs://gauss.res.eng.it:8020/user/<username>/.sparkStaging/application_1523347765873_0011/__spark_conf__.zip
+  18/04/13 13:06:53 INFO spark.SecurityManager: Changing view acls to: root,<username>
+  18/04/13 13:06:53 INFO spark.SecurityManager: Changing modify acls to: root,<username>
   18/04/13 13:06:53 INFO spark.SecurityManager: Changing view acls groups to:
   18/04/13 13:06:53 INFO spark.SecurityManager: Changing modify acls groups to:
-  18/04/13 13:06:53 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(root, mikel); groups with view permissions: Set(); users  with modify permissions: Set(root, mikel); groups with modify permissions: Set()
+  18/04/13 13:06:53 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(root, <username>); groups with view permissions: Set(); users  with modify permissions: Set(root, <username>); groups with modify permissions: Set()
   18/04/13 13:06:53 INFO yarn.Client: Submitting application application_1523347765873_0011 to ResourceManager
   18/04/13 13:06:53 INFO impl.YarnClientImpl: Submitted application application_1523347765873_0011
   18/04/13 13:06:54 INFO yarn.Client: Application report for application_1523347765873_0011 (state: ACCEPTED)
@@ -298,7 +298,7 @@ command:
   	 start time: 1523624813615
   	 final status: UNDEFINED
   	 tracking URL: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0011/
-  	 user: mikel
+  	 user: <username>
   18/04/13 13:06:55 INFO yarn.Client: Application report for application_1523347765873_0011 (state: ACCEPTED)
   ...
   18/04/13 13:07:03 INFO yarn.Client: Application report for application_1523347765873_0011 (state: ACCEPTED)
@@ -312,7 +312,7 @@ command:
   	 start time: 1523624813615
   	 final status: UNDEFINED
   	 tracking URL: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0011/
-  	 user: mikel
+  	 user: <username>
   18/04/13 13:07:05 INFO yarn.Client: Application report for application_1523347765873_0011 (state: RUNNING)
   ...
   18/04/13 13:08:36 INFO yarn.Client: Application report for application_1523347765873_0011 (state: RUNNING)
@@ -326,13 +326,13 @@ command:
   	 start time: 1523624813615
   	 final status: SUCCEEDED
   	 tracking URL: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0011/
-  	 user: mikel
+  	 user: <username>
   18/04/13 13:08:37 INFO util.ShutdownHookManager: Shutdown hook called
   18/04/13 13:08:37 INFO util.ShutdownHookManager: Deleting directory /tmp/spark-49a33464-cde1-46bb-9662-9ff14a26db39
 
 You can find more information about the job at
 `ResourceManager UI <http://RESOURCEMANAGERURL:8088/cluster>`_. Check
-`/user/mikel/spark-csv-output` directory for the results.
+`/user/<username>/spark-csv-output` directory for the results.
 
 .. todo::
 
