@@ -68,3 +68,8 @@ complete overview of all operations provided by this command at
 
   You can find more information about permission management in EDI Big Data
   Stack at :ref:`permision-management`.
+
+
+.. note::
+
+  You can also manage files and folders at HDFS using the :ref:`webhdfs`.
