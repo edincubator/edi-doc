@@ -262,6 +262,7 @@ Before launching the job, we must download required third party libraries:
 .. code-block:: console
 
   $ mkdir libjars
+  $ cd libjars
   $ wget http://central.maven.org/maven2/com/opencsv/opencsv/4.1/opencsv-4.1.jar
 
 
