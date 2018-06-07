@@ -29,16 +29,17 @@ For interacting with Kafka, you must point at its directory, located at
 
 .. code-block:: console
 
+  # cd /usr/hdp/current/kafka-broker
   # bin/kafka-topics.sh --list --zookeeper gauss.res.eng.it:2181
   [...]
-  mikel_yelp_business
+  <username>_yelp_business
 
 
 Launch a message producer and start typing messages:
 
 .. code-block:: console
 
-  # bin/kafka-console-producer.sh --broker-list gauss.res.eng.it:6667,heidi.res.eng.it:6667 --security-protocol SASL_PLAINTEXT --topic mikel_test
+  # bin/kafka-console-producer.sh --broker-list gauss.res.eng.it:6667,heidi.res.eng.it:6667 --security-protocol SASL_PLAINTEXT --topic <username>_test
   Hi!
   How are you?
 
@@ -46,7 +47,7 @@ In another terminal, launch a message consumer:
 
 .. code-block:: console
 
-  # bin/kafka-console-consumer.sh --bootstrap-server gauss.res.eng.it:6667,heidi.res.eng.it:6667 --security-protocol SASL_PLAINTEXT --topic mikel_test --from-beginning
+  # bin/kafka-console-consumer.sh --bootstrap-server gauss.res.eng.it:6667,heidi.res.eng.it:6667 --security-protocol SASL_PLAINTEXT --topic <username>_test --from-beginning
   Hi!
   How are you?
 
