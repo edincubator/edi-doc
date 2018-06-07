@@ -38,3 +38,13 @@ Hive View 2.0 allows querying Hive databases and tables through a graphical
 interface. You can also save Worksheets and generated results.
 
 .. image:: img/ambari-hive-view.png
+
+
+.. _pigview:
+
+Pig View
+--------
+
+Pig View allows launching and saving Pig jobs.
+
+.. image:: img/ambari-pig-view.png

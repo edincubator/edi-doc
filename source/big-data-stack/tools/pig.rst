@@ -85,7 +85,7 @@ implementing a sort of very useful functions and tools. We define the
 `CSVLoader` function from the Piggybank, and we use it for loading our sample
 CSV file.
 
-Next, we group data by `state` column. `DESCRIBE `command describes the structure
+Next, we group data by `state` column. `DESCRIBE` command describes the structure
 of an identifier. In this case, we can see that the identifier `grouped_business`
 is a `bag` in which each element is formed by a `charrarray` called `group` and
 a `bag` called `yelp_business`. `group` refers to the state and `yelp_business`
@@ -741,3 +741,7 @@ And execute using `pig <script>.pig`:
   # pig yelp_business.pig
 
 And the same result is generated.
+
+.. note::
+
+  You can also launch jobs using Ambari :ref:`pigview`.
