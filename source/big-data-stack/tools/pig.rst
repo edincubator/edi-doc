@@ -4,6 +4,9 @@
   authenticated at the system using `kinit` command. For more information, read
   the documentation at :ref:`authenticating-with-kerberos`.
 
+.. _pig:
+
+
 Pig
 ---
 

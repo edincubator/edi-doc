@@ -92,4 +92,5 @@ a global view of tools provided by EDI Big Data Stack.
    tools/hbase
    tools/kafka
    tools/pig
+   tools/oozie
    tools/views

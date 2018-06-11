@@ -48,3 +48,13 @@ Pig View
 Pig View allows launching and saving Pig jobs.
 
 .. image:: img/ambari-pig-view.png
+
+
+.. _workflow:
+
+Workflow Manager View
+---------------------
+
+Workflow Manager View allows designing and running Oozie jobs easily.
+
+.. image:: img/ambari-workflow-view.png
