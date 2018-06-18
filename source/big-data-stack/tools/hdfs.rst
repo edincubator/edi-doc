@@ -59,17 +59,6 @@ As you can see, the command for manipulating files and directories at HDFS is
 complete overview of all operations provided by this command at
 `Apache Hadoop File System Shell Guide <https://hadoop.apache.org/docs/r2.7.3/hadoop-project-dist/hadoop-common/FileSystemShell.html>`_.
 
-.. warning::
-
-  EDI Big Data Stack leverages all permissions in
-  `Apache Ranger <https://ranger.apache.org/>`_. For avoiding conflicts, don't
-  modify file permissions manually using `hdfs -dfs -chmod` or
-  `hdfs -dfs -chown` commands.
-
-  You can find more information about permission management in EDI Big Data
-  Stack at :ref:`permision-management`.
-
-
 .. note::
 
   You can also manage files and folders at HDFS using the :ref:`webhdfs`.

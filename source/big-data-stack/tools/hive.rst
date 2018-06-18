@@ -18,9 +18,6 @@ Stack.
   database set, you can continue with this tutorial. For avoiding conflicts, all
   databases must follow the `username_databasename` convention.
 
-  For learning how to manage permissions on your Hive databases, tables and
-  columns read :ref:`permision-management`.
-
 .. todo::
 
   Link to EDI Technical Support.

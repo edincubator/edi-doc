@@ -27,29 +27,60 @@ Basic functionalities
 For interacting with Kafka, you must point at its directory, located at
 `/usr/hdp/current/kafka-broker`. From here you can list existing topics:
 
-.. code-block:: console
+.. ifconfig:: releaselevel in ('dev')
 
-  # cd /usr/hdp/current/kafka-broker
-  # bin/kafka-topics.sh --list --zookeeper gauss.res.eng.it:2181
-  [...]
-  <username>_yelp_business
+  .. code-block:: console
+
+    # cd /usr/hdp/current/kafka-broker
+    # bin/kafka-topics.sh --list --zookeeper gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
+    [...]
+    <username>_yelp_business
+
+.. ifconfig:: releaselevel in ('prod')
+
+  .. code-block:: console
+
+    # cd /usr/hdp/current/kafka-broker
+    # bin/kafka-topics.sh --list --zookeeper <ZOOKEEPER_SERVERS>
+    [...]
+    <username>_yelp_business
 
 
 Launch a message producer and start typing messages:
 
-.. code-block:: console
+.. ifconfig:: releaselevel in ('dev')
 
-  # bin/kafka-console-producer.sh --broker-list gauss.res.eng.it:6667,heidi.res.eng.it:6667 --security-protocol SASL_PLAINTEXT --topic <username>_test
-  Hi!
-  How are you?
+  .. code-block:: console
+
+    # bin/kafka-console-producer.sh --broker-list gauss.res.eng.it:6667 --security-protocol SASL_PLAINTEXT --topic <username>_test
+    Hi!
+    How are you?
+
+.. ifconfig:: releaselevel in ('prod')
+
+  .. code-block:: console
+
+    # bin/kafka-console-producer.sh --broker-list <KAFKA_BROKERS> --security-protocol SASL_PLAINTEXT --topic <username>_test
+    Hi!
+    How are you?
 
 In another terminal, launch a message consumer:
 
-.. code-block:: console
+.. ifconfig:: releaselevel in ('dev')
 
-  # bin/kafka-console-consumer.sh --bootstrap-server gauss.res.eng.it:6667,heidi.res.eng.it:6667 --security-protocol SASL_PLAINTEXT --topic <username>_test --from-beginning
-  Hi!
-  How are you?
+  .. code-block:: console
+
+    # bin/kafka-console-consumer.sh --bootstrap-server gauss.res.eng.it:6667 --security-protocol SASL_PLAINTEXT --topic <username>_test --from-beginning
+    Hi!
+    How are you?
+
+.. ifconfig:: releaselevel in ('prod')
+
+  .. code-block:: console
+
+    # bin/kafka-console-consumer.sh --bootstrap-server <KAFKA_BROKERS> --security-protocol SASL_PLAINTEXT --topic <username>_test --from-beginning
+    Hi!
+    How are you?
 
 You can see that messages typed in the message producer appear in the consumer.
 

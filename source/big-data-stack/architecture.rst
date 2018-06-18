@@ -78,8 +78,7 @@ For managing authorization, the platform provides `Apache Ranger <https://ranger
 security framework that allows establishing fine-grained authorization policies for multiple components
 from Hadoop ecosystem. Ranger allows granting access to different user or groups of users, at different
 permission levels like read, write, update, create, drop, alter, index, and other operations, depending on
-the component. More information about permission management at EDI Big Data Stack
-can be found at :ref:`permision-management`.
+the component.
 
 For learning how to interact with the Big Data Stack, check :ref:`basicconcepts`.
 
