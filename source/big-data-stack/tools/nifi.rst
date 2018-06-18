@@ -116,4 +116,4 @@ the grid. After few seconds, the flow will start working and sending data from
 HBase to HDFS. Check the folder at HDFS and you will see a JSON file for each
 HBase row.
 
-.. image:: img/nifi-hbase.png
+.. image:: img/nifi-json.png
