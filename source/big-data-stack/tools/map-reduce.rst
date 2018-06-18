@@ -6,8 +6,8 @@
 
 .. _mapreduce:
 
-MapReduce (YARN)
-=================
+MapReduce
+=========
 
 EDI Big Data Stack provides the MapReduce implementation over YARN. Following the
 example started at :ref:`hdfs`, we have created a simple example that shows how
@@ -209,12 +209,6 @@ At first, you must create the java package and copy it to your workspace:
 
 Next, at stack-client docker cointainer, we can submit the job using the
 `hadoop jar` command:
-
-.. note::
-
-  We recommend deploying a local hadoop instance in your own machine for testing
-  your projects before submitting them to EDI Big Data Stack. Read
-  :ref:`deploying-local-hadoop` for more information about how to do this.
 
 .. code-block:: console
 
