@@ -88,10 +88,10 @@ For learning how to interact with the Big Data Stack, check :ref:`basicconcepts`
 Tools and versions
 ------------------
 
-In the following table versions of the different components of the stack are shown:
+In the following table versions of the different tools of the stack are shown:
 
 +-----------+---------+
-| Component | Version |
+| Tool      | Version |
 +===========+=========+
 | Hadoop    | 2.7.3   |
 +-----------+---------+
@@ -115,3 +115,30 @@ In the following table versions of the different components of the stack are sho
 +-----------+---------+
 | Slider    | 0.92.0  |
 +-----------+---------+
+
+Cluster URLs
+------------
+
+The following table shows useful URLs in the cluster:
+
+.. ifconfig:: releaselevel in ('dev')
+
+  +-----------+--------------------+-------------------------------------------------------------------+
+  | Tool      | Component          | URL                                                               |
+  +===========+====================+===================================================================+
+  | HDFS      | Namenode           | gauss.res.eng.it:8020                                             |
+  +-----------+--------------------+-------------------------------------------------------------------+
+  | YARN      | Resourcemanager UI | gauss.res.eng.it:8088/cluster                                     |
+  +-----------+--------------------+-------------------------------------------------------------------+
+  | Hive2     | HiveServer2        | gauss.res.eng.it:10000                                            |
+  +-----------+--------------------+-------------------------------------------------------------------+
+  | Ambari    | Ambari Dashboard   | heidi.res.eng.it:8080                                             |
+  +-----------+--------------------+-------------------------------------------------------------------+
+  | Kafka     | Brokers            | gauss.res.eng.it:6667,heidi.res.eng.it:6667,peter.res.eng.it:6667 |
+  +-----------+--------------------+-------------------------------------------------------------------+
+  | Zookeeper | Servers            | gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181 |
+  +-----------+--------------------+-------------------------------------------------------------------+
+  | Oozie     | Server             | gauss.res.eng.it:11000                                            |
+  +-----------+--------------------+-------------------------------------------------------------------+
+  | NiFi      | Web UI             | gauss.res.eng.it:9091/nifi                                        |
+  +-----------+--------------------+-------------------------------------------------------------------+
