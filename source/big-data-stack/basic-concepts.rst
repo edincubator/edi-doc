@@ -49,22 +49,45 @@ client/server applications by using secret-key cryptography.
 
 For authenticating yourself you must introduce the following command:
 
-.. code-block:: console
+.. ifconfig:: releaselevel in ('dev')
 
-  # kinit <user>@<REALM>
-  Password for <user>@<REALM>: <enter your password>
-  #
+  .. code-block:: console
+
+    # kinit <user>@GAUSS.RES.ENG.IT
+    Password for <user>@GAUSS.RES.ENG.IT: <enter your password>
+    #
+
+.. ifconfig:: releaselevel in ('prod')
+
+  .. code-block:: console
+
+    # kinit <user>@<REALM>
+    Password for <user>@<REALM>: <enter your password>
+    #
 
 You can check the status of your Kerberos ticket using the `klist` command:
 
-.. code-block:: console
+.. ifconfig:: releaselevel in ('dev')
 
-  # klist
-  Ticket cache: FILE:/tmp/krb5cc_0
-  Default principal: <user>@<REALM>
+  .. code-block:: console
 
-  Valid starting     Expires            Service principal
-  04/12/18 09:53:28  04/13/18 09:53:28  krbtgt/<REALM>@<REALM>
+    # klist
+    Ticket cache: FILE:/tmp/krb5cc_0
+    Default principal: <user>@GAUSS.RES.ENG.IT
+
+    Valid starting     Expires            Service principal
+    04/12/18 09:53:28  04/13/18 09:53:28  krbtgt/gauss.res.eng.it@GAUSS.RES.ENG.IT
+
+.. ifconfig:: releaselevel in ('prod')
+
+  .. code-block:: console
+
+    # klist
+    Ticket cache: FILE:/tmp/krb5cc_0
+    Default principal: <user>@<REALM>
+
+    Valid starting     Expires            Service principal
+    04/12/18 09:53:28  04/13/18 09:53:28  krbtgt/<REALM>@<REALM>
 
 Once you have a valid ticket, you can work at EDI Big Data Stack until the
 ticket expires. If the ticket expires, you must execute again `kinit` command.

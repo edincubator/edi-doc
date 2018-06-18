@@ -40,6 +40,7 @@ release = ''
 # ones.
 extensions = [
     'sphinx.ext.todo',
+    'sphinx.ext.ifconfig'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -162,3 +163,18 @@ texinfo_documents = [
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+
+# EDI configuration
+# realm = 'GAUSS.RES.ENG.IT'
+#
+# rst_prolog = """
+# .. |realm| replace:: {0}
+# """.format(
+#     realm
+# )
+
+releaselevel = 'dev'
+
+
+def setup(app):
+    app.add_config_value('releaselevel', '', 'env')
