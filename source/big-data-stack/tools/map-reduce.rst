@@ -295,11 +295,7 @@ Next, at stack-client docker cointainer, we can submit the job using the
 The job is executed successfully and the result put at
 `/user/<username>/state-count-output` directory. In case of any error, it will be
 shown at console. For further details about the job, you can check the
-ResourceManager UI at `<http://RESOURCEMANAGERURL:8088/cluster>`_.
-
-.. todo::
-
-  Replace RESOURCEMANAGERURL by production URL.
+ResourceManager UI at |resourcemanager_url|.
 
 At last, if you check the output directory, you will see the result of the job
 at part-r-00000 file. The execution of this job generated a single file as a

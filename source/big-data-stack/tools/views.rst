@@ -6,12 +6,8 @@ interacting with the cluster. Those views are Files View (WebHDFS), Pig View,
 Hive View 2.0, Workflow Manager View (Oozie) and Tez View.
 
 For accessing Ambari Views, access to
-`Ambari dashboard <http://heidi.res.eng.it:8080>`_. using your user and
+Ambari dashboard (|ambari_dashboard_url|) using your user and
 password.
-
-.. todo::
-
-  Replace Ambari dashboard URL with production URL
 
 .. image:: img/ambari-login.png
 

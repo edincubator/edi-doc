@@ -165,13 +165,16 @@ texinfo_documents = [
 todo_include_todos = True
 
 # EDI configuration
-# realm = 'GAUSS.RES.ENG.IT'
-#
-# rst_prolog = """
-# .. |realm| replace:: {0}
-# """.format(
-#     realm
-# )
+resourcemanager_url = 'http://gauss.res.eng.it:8088/cluster'
+ambari_dashboard_url = 'http://heidi.res.eng.it:8080'
+
+rst_prolog = """
+.. |resourcemanager_url| replace:: {0}
+.. |ambari_dashboard_url| replace:: {1}
+""".format(
+    resourcemanager_url,
+    ambari_dashboard_url
+)
 
 releaselevel = 'dev'
 

@@ -331,9 +331,5 @@ command:
   18/04/13 13:08:37 INFO util.ShutdownHookManager: Deleting directory /tmp/spark-49a33464-cde1-46bb-9662-9ff14a26db39
 
 You can find more information about the job at
-`ResourceManager UI <http://RESOURCEMANAGERURL:8088/cluster>`_. Check
+|resourcemanager_url|. Check
 `/user/<username>/spark-csv-output` directory for the results.
-
-.. todo::
-
-  Replace RESOURCEMANAGERURL by production URL.
