@@ -761,3 +761,80 @@ We can see the output at HDFS:
   ZET	1
 
 As you can see, those results are the same obtained at :ref:`mapreduce` example.
+
+Querying HBase using Apache Phoenix
+...................................
+
+Another option for querying HBase provided by EDI's Big Data Stack is Apache
+Phoenix. Apache Phoenix allows querying HBase tables using SQL queries.
+
+.. note::
+
+  For security issues, users can't create new tables or views in Apache Phoenix.
+  If you need a new table or view, provide this table or view definition to
+  EDI Technical Support.
+
+.. todo::
+
+  Link to EDI Technical Support.
+
+For querying the table created previously in this tutorial, we must define
+a table view in Phoenix. Rember that this step has to be requested to EDI's
+Technical Support:
+
+.. code-block:: console
+
+  # phoenix-sqlline
+  Setting property: [incremental, false]
+  Setting property: [isolation, TRANSACTION_READ_COMMITTED]
+  issuing: !connect jdbc:phoenix: none none org.apache.phoenix.jdbc.PhoenixDriver
+  Connecting to jdbc:phoenix:
+  SLF4J: Class path contains multiple SLF4J bindings.
+  SLF4J: Found binding in [jar:file:/usr/hdp/2.6.5.0-292/phoenix/phoenix-4.7.0.2.6.5.0-292-client.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+  SLF4J: Found binding in [jar:file:/usr/hdp/2.6.5.0-292/hadoop/lib/slf4j-log4j12-1.7.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+  SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+  18/07/09 12:41:47 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+  18/07/09 12:41:50 WARN shortcircuit.DomainSocketFactory: The short-circuit local reads feature cannot be used because libhadoop cannot be loaded.
+  Connected to: Phoenix (version 4.7)
+  Driver: PhoenixEmbeddedDriver (version 4.7)
+  Autocommit status: true
+  Transaction isolation: TRANSACTION_READ_COMMITTED
+  Building list of tables and columns for tab-completion (set fastconnect to true to skip)...
+  96/96 (100%) Done
+  Done
+  sqlline version 1.1.8
+  0: jdbc:phoenix:> CREATE VIEW "<username>"."yelp_business" (ROWKEY VARCHAR PRIMARY KEY, "info"."address" VARCHAR, "info"."categories" VARCHAR, "info"."city" VARCHAR, "info"."is_open" VARCHAR, "info"."longitude" VARCHAR, "info"."name" VARCHAR, "info"."neighborhood" VARCHAR, "info"."postal_code" VARCHAR, "info"."state" VARCHAR, "stats"."review_count" VARCHAR, "stats"."stars" VARCHAR) as select * from "docuser"."yelp_business";
+  No rows affected (0,218 seconds)
+  0: jdbc:phoenix:> !tables
+  +------------+---------------+------------------------+---------------+----------+------------+----------------------------+-----------------+--------------+-----------------+---------------+---------------+---+
+  | TABLE_CAT  |  TABLE_SCHEM  |       TABLE_NAME       |  TABLE_TYPE   | REMARKS  | TYPE_NAME  | SELF_REFERENCING_COL_NAME  | REF_GENERATION  | INDEX_STATE  | IMMUTABLE_ROWS  | SALT_BUCKETS  | MULTI_TENANT  | V |
+  +------------+---------------+------------------------+---------------+----------+------------+----------------------------+-----------------+--------------+-----------------+---------------+---------------+---+
+  |            | SYSTEM        | CATALOG                | SYSTEM TABLE  |          |            |                            |                 |              | false           | null          | false         |   |
+  |            | SYSTEM        | FUNCTION               | SYSTEM TABLE  |          |            |                            |                 |              | false           | null          | false         |   |
+  |            | SYSTEM        | SEQUENCE               | SYSTEM TABLE  |          |            |                            |                 |              | false           | null          | false         |   |
+  |            | SYSTEM        | STATS                  | SYSTEM TABLE  |          |            |                            |                 |              | false           | null          | false         |   |
+  |            | <username>    | yelp_business          | VIEW          |          |            |                            |                 |              | false           | null          | false         |   |
+  +------------+---------------+------------------------+---------------+----------+------------+----------------------------+-----------------+--------------+-----------------+---------------+---------------+---+
+  0: jdbc:phoenix:>
+
+Next, you can query the database using SQL queries:
+
+.. code-block:: console
+
+  0: jdbc:phoenix:> select * from "<username>"."yelp_business" limit 10;
+  +-------------------------+-----------------------------------------------+----------------------------------------------------------------------------+----------------+----------+---------------+--------------+
+  |         ROWKEY          |                    address                    |                                 categories                                 |      city      | is_open  |   longitude   |              |
+  +-------------------------+-----------------------------------------------+----------------------------------------------------------------------------+----------------+----------+---------------+--------------+
+  | --6MefnULPED_I942VcFNA  | "328 Highway 7 E, Chalmers Gate 11, Unit 10"  | Chinese;Restaurants                                                        | Richmond Hill  | 1        | -79.3996044   | "John's Chin |
+  | --7zmmkVg-IMGaXbuVd0SQ  | "16432 Old Statesville Rd"                    | Food;Breweries                                                             | Huntersville   | 1        | -80.843688    | "Primal Brew |
+  | --8LPVSo5i0Oo61X01sV9A  | "3941 E Baseline Rd, Ste 102"                 | Orthopedists;Weight Loss Centers;Sports Medicine;Health & Medical;Doctors  | Gilbert        | 1        | -111.7283941  | "Valley Bone |
+  | --9QQLMTbFzLJ_oT-ON3Xw  | "1835 E Guadalupe Rd, Ste 106"                | Hair Salons;Beauty & Spas                                                  | Tempe          | 1        | -111.9096233  | "Great Clips |
+  | --9e1ONYQuAa-CB_Rrw7Tw  | "3355 Las Vegas Blvd S"                       | Cajun/Creole;Steakhouses;Restaurants                                       | Las Vegas      | 1        | -115.16919    | "Delmonico S |
+  | --DaPTJW3-tB1vP-PfdTEg  | "1218 Saint Clair Avenue W"                   | Restaurants;Breakfast & Brunch                                             | Toronto        | 1        | -79.4446742   | "Sunnyside G |
+  | --DdmeR16TRb3LsjG0ejrQ  | "3645 Las Vegas Blvd S"                       | Arts & Entertainment;Festivals                                             | Las Vegas      | 1        | -115.1709748  | "World Food  |
+  | --EF5N7P70J_UYBTPypYlA  | "24139 Lorain Rd"                             | Beauty & Spas;Nail Salons                                                  | North Olmsted  | 1        | -81.889223    | "MV Nail Spa |
+  | --EX4rRznJrltyn-34Jz1w  | "6801 Northlake Mall Dr, Ste 172"             | Shopping;Cosmetics & Beauty Supply;Beauty & Spas                           | Charlotte      | 1        | -80.8512352   | "Bath & Body |
+  | --FBCX-N37CMYDfs790Bnw  | "11624 Bermuda Rd"                            | Food;American (New);Nightlife;Bars;Beer;Wine & Spirits;Restaurants         | Henderson      | 1        | -115.1550159  | "The Bar At  |
+  +-------------------------+-----------------------------------------------+----------------------------------------------------------------------------+----------------+----------+---------------+--------------+
+  10 rows selected (0,234 seconds)
+  0: jdbc:phoenix:>
