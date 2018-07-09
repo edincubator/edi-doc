@@ -762,6 +762,8 @@ We can see the output at HDFS:
 
 As you can see, those results are the same obtained at :ref:`mapreduce` example.
 
+.. _phoenix:
+
 Querying HBase using Apache Phoenix
 ...................................
 
