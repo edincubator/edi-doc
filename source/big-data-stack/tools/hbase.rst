@@ -42,10 +42,10 @@ Once the shell is started run the following command to create your database
 
 .. code-block:: console
 
-  hbase(main):001:0> create '<username>:yelp_business', 'info', 'stats'
+  hbase(main):001:0> create '<username>.yelp_business', 'info', 'stats'
   0 row(s) in 2.3740 seconds
-  => Hbase::Table - <username>:yelp_business
-  hbase(main):002:0> scan '<username>:yelp_business'
+  => Hbase::Table - <username>.yelp_business
+  hbase(main):002:0> scan '<username>.yelp_business'
   ROW                                                   COLUMN+CELL
   0 row(s) in 0.0440 seconds
 
@@ -272,7 +272,7 @@ Next, at stack-client docker cointainer, we can submit the job using the
 .. code-block:: console
 
   # cd /workdir
-  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /user/<username>/samples/yelp_business.csv <username>:yelp_business
+  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /user/<username>/samples/yelp_business.csv <username>.yelp_business
 
 .. code-block:: console
 
@@ -380,7 +380,7 @@ data:
 
 .. code-block:: console
 
-  hbase(main):004:0> scan '<username>:yelp_business', {'LIMIT' => 5}
+  hbase(main):004:0> scan '<username>.yelp_business', {'LIMIT' => 5}
 
 .. code-block:: console
 
@@ -539,7 +539,7 @@ Next, at stack-client docker cointainer, we can submit the job using the
 
 .. code-block:: console
 
-  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseReadExample <username>:yelp_business /user/<username>/hbase-output
+  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseReadExample <username>.yelp_business /user/<username>/hbase-output
 
 .. code-block:: console
 
@@ -583,7 +583,7 @@ Next, at stack-client docker cointainer, we can submit the job using the
   18/04/24 08:05:40 INFO zookeeper.ClientCnxn: Opening socket connection to server heidi.res.eng.it/192.168.125.101:2181. Will not attempt to authenticate using SASL (unknown error)
   18/04/24 08:05:40 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /172.17.0.4:50972, server: heidi.res.eng.it/192.168.125.101:2181
   18/04/24 08:05:40 INFO zookeeper.ClientCnxn: Session establishment complete on server heidi.res.eng.it/192.168.125.101:2181, sessionid = 0x26189a8e78b9e48, negotiated timeout = 60000
-  18/04/24 08:05:40 INFO util.RegionSizeCalculator: Calculating region sizes for table "<username>:yelp_business".
+  18/04/24 08:05:40 INFO util.RegionSizeCalculator: Calculating region sizes for table "<username>.yelp_business".
   18/04/24 08:05:40 INFO client.ConnectionManager$HConnectionImplementation: Closing master protocol: MasterService
   18/04/24 08:05:40 INFO client.ConnectionManager$HConnectionImplementation: Closing zookeeper sessionid=0x26189a8e78b9e48
   18/04/24 08:05:40 INFO zookeeper.ZooKeeper: Session: 0x26189a8e78b9e48 closed
