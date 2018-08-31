@@ -13,14 +13,11 @@ how to use Hive with sample files introduced in :ref:`hdfs` within EDI Big Data
 Stack.
 
 .. note::
-  If you need a new Hive database, you need to contact with EDI Technical Support for
+  If you need a new Hive database, you need to contact with :ref:`technical-support` for
   creating the database and give you the proper permissions. Once you have your
   database set, you can continue with this tutorial. For avoiding conflicts, all
   databases must follow the `username_databasename` convention.
 
-.. todo::
-
-  Link to EDI Technical Support.
 
 For connecting to the Hive database `test_yelp`, we must execute the `beeline` client with the following
 parameters:

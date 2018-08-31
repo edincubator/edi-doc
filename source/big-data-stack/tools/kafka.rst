@@ -16,13 +16,10 @@ Basic functionalities
 
 .. warning::
 
-  Before creating a Kafka topic, you must contact with EDI Technical Support for
+  Before creating a Kafka topic, you must contact with :ref:`technical-support` for
   giving you the proper permissions. Once you have your topic set, you can
   continue with this tutorial.
 
-.. todo::
-
-  Link to EDI Technical Support.
 
 For interacting with Kafka, you must point at its directory, located at
 `/usr/hdp/current/kafka-broker`. From here you can list existing topics:

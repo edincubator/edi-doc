@@ -87,12 +87,8 @@ we are going to save results at HDFS. For that, we are going to use the
   credentials. These components could be used by an otherwise authorized NiFi
   user to go beyond the intended use of the application, escalate privilege,
   or could expose data about the internals of the NiFi process or the host
-  system. If you want to use any of those components, contact with EDI
-  Technical Support.
+  system. If you want to use any of those components, contact with :ref:`technical-support`.
 
-.. todo::
-
-  Link to EDI Technical Support.
 
 For configuring the `PutHDFS` processor, the EDI technical support team must
 know at least the value for the following properties:

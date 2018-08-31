@@ -19,13 +19,9 @@ Loading data into HBase
 
 .. note::
 
-  Before creating any table in HBase, you must contact with EDI Technical Support for
+  Before creating any table in HBase, you must contact with :ref:`technical-support` for
   creating your namespace and give you the proper permissions. Once you have your
   namespace set, you can continue with this tutorial.
-
-.. todo::
-
-  Link to EDI Technical Support.
 
 Before loading data we must create the database using Hbase shell. All databases
 must follow the naming convention `workspace:database`. This database will be
@@ -774,11 +770,7 @@ Phoenix. Apache Phoenix allows querying HBase tables using SQL queries.
 
   For security issues, users can't create new tables or views in Apache Phoenix.
   If you need a new table or view, provide this table or view definition to
-  EDI Technical Support.
-
-.. todo::
-
-  Link to EDI Technical Support.
+  :ref:`technical-support`.
 
 For querying the table created previously in this tutorial, we must define
 a table view in Phoenix. Rember that this step has to be requested to EDI's
