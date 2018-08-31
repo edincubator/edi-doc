@@ -12,7 +12,7 @@ container using this image, you must fill the following steps:
 
 .. code-block:: console
 
-  $ docker pull registry.edincubator.eu/stack-client
+  $ docker pull edincubator/stack-client
 
 3. Run and access to the container:
 
@@ -31,11 +31,6 @@ from which you can access to your files.
   We differentiate commands launched from the host machine using `$` symbol and
   commands launched from inside the Docker container using `#` symbol.
 
-.. todo::
-
-  At this moment, stack-client image is at an insecure private registry. We must
-  decide if we are going to use a custom registry for uploading EDI images or
-  if we are going to user Docker Hub.
 
 .. _authenticating-with-kerberos:
 
