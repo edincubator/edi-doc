@@ -55,8 +55,8 @@ Every selected team at EDI has its own workspace at /user/<username> directory.
 
 
 As you can see, the command for manipulating files and directories at HDFS is
-`hdfs dfs`. Indistinctly, you can youse `hadoop fs` command too. You can get a
-complete overview of all operations provided by this command at
+`hdfs dfs`. Indistinctly, you can use `hadoop fs` command too. The complete
+description of all the operations provided by this command is available at
 `Apache Hadoop File System Shell Guide <https://hadoop.apache.org/docs/r2.7.3/hadoop-project-dist/hadoop-common/FileSystemShell.html>`_.
 
 .. note::

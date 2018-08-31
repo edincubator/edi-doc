@@ -3,12 +3,12 @@
 EDI client's basic concepts
 ===========================
 
-EDI provides a `Docker <http://docker.io>`_ image with all required tools for
-interacting with the Big Data Stack already installed. For creating a Docker
-container using this image, you must fill the following steps:
+EDI provides a `Docker <http://docker.io>`_ image with a set of already installed
+tools for interacting with the Big Data Stack . In order to create a Docker
+container using this image, you must perform the following steps:
 
-#. Install Docker in your system following the `instructions <https://docs.docker.com/install/>`_.
-#. Pull docker image from EDI registry:
+#. Install Docker in your system according to the following `instructions <https://docs.docker.com/install/>`_.
+#. Pull the docker image from EDI registry:
 
 .. code-block:: console
 
@@ -23,13 +23,14 @@ container using this image, you must fill the following steps:
   $
 
 Being `<workdir>` the directory where your source code, scripts, etc. are.
-`-v` param creates a Docker volume mounted at `/workdir` inside the container,
+The `-v` param creates a Docker volume mounted at `/workdir` inside the container,
 from which you can access to your files.
 
 .. note::
 
-  We differentiate commands launched from the host machine using `$` symbol and
-  commands launched from inside the Docker container using `#` symbol.
+  We differentiate commands launched from the host machine, identified by the
+  `$` symbol, from those commands launched inside the Docker container, which
+  are identified by the `#` symbol.
 
 
 .. _authenticating-with-kerberos:

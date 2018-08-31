@@ -115,7 +115,7 @@ See that with Spark2 we can easily load and preview a CSV file. Like in the
 
   >>>
 
-Although some data cleaning is need, with Spark2 we can operate over data easily.
+Although some data cleaning is needed, with Spark2 we can operate over data easily.
 Now, we are going to sort the result and store into HDFS.
 
 .. code-block:: console
@@ -244,8 +244,8 @@ spark-submit
 ------------
 
 In order to execute the same job in a distributed way, we are going to code the
-previous instructions into a Python file. You can find yelp_example.py in
-`spark2example` folder from
+previous instructions into a Python file. You can find yelp_example.py inside
+the `spark2example` folder from
 `stack-client examples <https://github.com/edincubator/stack-examples>`_.
 
 .. code-block:: python
