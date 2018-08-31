@@ -51,6 +51,7 @@ Contents
 
    big-data-stack/architecture
    big-data-stack/basic-concepts
+   technical-support/index
 
 
 TODO-list
