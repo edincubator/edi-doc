@@ -67,7 +67,7 @@ Kerberos, OpenLDAP and Apache Ranger is used in the Big Data Stack.
 
 `Kerberos <https://web.mit.edu/kerberos/>`_ is an authentication protocol for client/server applications by using secret-key
 cryptography. Ambari uses Kerberos to avoid identity impersonation inside de cluster, avoiding non-
-authenticated users accessing to its resources. As explained in section 2.5, a client must authenticate
+authenticated users accessing to its resources. As explained in :ref:`authenticating-with-kerberos`, a client must authenticate
 itself using the kinit command and insert her Kerberos principal (username@realm) and password. As
 Kerberos is limited to the command line interface (CLI), an `OpenLDAP <https://www.openldap.org/,>`_ service is used as Kerberos
 backend for storing user credentials. As Ambari allows synchronizing its users with the ones at an
