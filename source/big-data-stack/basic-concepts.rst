@@ -18,7 +18,7 @@ container using this image, you must perform the following steps:
 
 .. code-block :: console
 
-  $ docker run -ti -v <workdir>:/workdir registry.edincubator.eu/stack-client /bin/bash
+  $ docker run -ti -v <workdir>:/workdir edincubator/stack-client /bin/bash
   Enter your username : <username>
   $
 
