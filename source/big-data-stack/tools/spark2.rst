@@ -17,40 +17,93 @@ operations over the sample dataset introduced at :ref:`hdfs`.
 spark-shell
 -----------
 
-For accessing the Spark2 interactive shell, from inside stack-client Docker
-container, execute `pyspark` command.
+.. note::
+
+  Spark shell is intented to be used for testing your scripts and algorithms
+  before putting them in production. Please, be sure to use a small sample of
+  your data (~10%) instead using the entire dataset when using Spark shell.
+
+For accessing the Spark2 interactive shell, there are two alternatives:
+
+* `--master yarn`: the computation is executed on cluster's YARN deployment.
+* `--master local`: the computation is executed locally in user's computer.
+
+We recommend using YARN as execution engine whenever possible for avoiding
+network overload caused by the data transfer between the cluster and your
+local machine.
+
+.. _yarn-as-execution-engine:
+
+YARN as execution engine
+........................
+
+For computing shell commands in the cluster, at first, you must execute EDI's
+Big Data Stack docker image with the following parameters:
 
 .. note::
 
-  It is not possible to execute Spark2 interactive shell on EDI Big Data Stack
-  on distributed mode.
+  `--network host` Docker parameter is available only in UNIX host machines.
+  For executing spark-shell in Docker containers hosted at Windows or OSX
+  machines, please follow guidelines at :ref:`local-machine-execution`.
 
 .. code-block:: console
 
-  # pyspark
-  # Python 2.7.5 (default, Aug  4 2017, 00:39:18)
-  [GCC 4.8.5 20150623 (Red Hat 4.8.5-16)] on linux2
+  $ docker run -ti -p 43247:43247 -v ${PWD}:/workdir --network host edincubator/stack-client /bin/bash
+
+Once logged with Kerberos, you can launch spark-shell (in this example we use
+Python shell):
+
+.. code-block:: console
+
+  # pyspark --master yarn --conf spark.driver.port=43247 --conf spark.driver.host=<my-public-ip>
+  Python 2.7.5 (default, Apr 11 2018, 07:36:10)
+  [GCC 4.8.5 20150623 (Red Hat 4.8.5-28)] on linux2
   Type "help", "copyright", "credits" or "license" for more information.
   Setting default log level to "WARN".
   To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-  18/04/13 10:27:55 WARN metastore.ObjectStore: Failed to get database global_temp, returning NoSuchObjectException
+  18/09/05 10:44:29 WARN util.Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
+  18/09/05 10:44:29 WARN util.Utils: Service 'SparkUI' could not bind on port 4041. Attempting port 4042.
   Welcome to
         ____              __
        / __/__  ___ _____/ /__
       _\ \/ _ \/ _ `/ __/  '_/
-     /__ / .__/\_,_/_/ /_/\_\   version 2.2.0.2.6.4.0-91
+     /__ / .__/\_,_/_/ /_/\_\   version 2.3.0.2.6.5.0-292
         /_/
 
-  Using Python version 2.7.5 (default, Aug  4 2017 00:39:18)
+  Using Python version 2.7.5 (default, Apr 11 2018 07:36:10)
   SparkSession available as 'spark'.
-  >>>
 
 
-First, we will load the sample file yelp_business.csv:
+.. _local-machine-execution:
+
+Local machine as execution engine
+.................................
+
+If you cannot use :ref:`yarn-as-execution-engine`, you can compute commands
+launched at the shell locally. For that, you only have to execute the `pyspark`
+command.
+
+.. warning::
+
+  Computing Spark shell commands locally produces a wide amount of data transfer
+  between the HDFS cluster and your machine, as data has to be downloaded to
+  your machine to be computed. For avoiding this problem, Spark allows sampling
+  the data. **Be sure to always use a sample of size of 0.1 (10%) when executing
+  spark-shell locally!** The network usage is monitored at the cluster for
+  detecting huge amounts of data transfers outside the cluster.
+  See the :ref:`spark-yelp-example` for learning how to sample data in Spark2.
+
+
+.. _spark-yelp-example:
+
+Yelp example
+............
+
+First, we will load the sample file yelp_business.csv and get a sample of 10%:
 
 .. code-block:: console
 
-  >>> business_df = spark.read.csv('/user/<username>/samples/yelp_business.csv', header=True, quote='"', escape='"')
+  >>> business_df = spark.read.csv('/user/<username>/samples/yelp_business.csv', header=True, quote='"', escape='"').sample(False, 0.1, 77)
   >>> business_df.show()
   +--------------------+--------------------+------------------+--------------------+--------------+-----+-----------+-------------+--------------+-----+------------+-------+--------------------+
   |         business_id|                name|      neighborhood|             address|          city|state|postal_code|     latitude|     longitude|stars|review_count|is_open|          categories|
@@ -262,6 +315,11 @@ the `spark2example` folder from
 
 Copy the `yelp_example.py` file to your workspace and execute `spark-submit`
 command:
+
+.. note::
+
+  Don't forget to include `--master yarn` and `--deploy-mode cluster` parameters
+  in order to compute the job in the cluster instead of locally.
 
 .. code-block:: console
 
