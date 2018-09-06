@@ -50,11 +50,12 @@ Big Data Stack docker image with the following parameters:
 
   $ docker run -ti -p 43247:43247 -v ${PWD}:/workdir --network host edincubator/stack-client /bin/bash
 
-Once logged with Kerberos, you can launch spark-shell (in this example we use
-Python shell):
+Once logged with Kerberos, you must set SPARK_LOCAL_IP environment variable and
+you can launch spark-shell (in this example we use Python shell):
 
 .. code-block:: console
 
+  # export SPARK_LOCAL_IP=<my-public-ip>
   # pyspark --master yarn --conf spark.driver.port=43247 --conf spark.driver.host=<my-public-ip>
   Python 2.7.5 (default, Apr 11 2018, 07:36:10)
   [GCC 4.8.5 20150623 (Red Hat 4.8.5-28)] on linux2
