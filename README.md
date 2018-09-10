@@ -4,7 +4,7 @@ European Data Incubator Documentation
 Requirements
 ------------
 
-* Python 2.7
+* Python 2.7 
 * Pip
 
 
