@@ -47,12 +47,13 @@ Contents
 --------
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
 
    big-data-stack/architecture
    big-data-stack/basic-concepts
    application-infrastructure/index
    technical-support/index
+   reference/index
 
 
 TODO-list
