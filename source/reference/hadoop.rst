@@ -18,8 +18,9 @@ good starting point to learn about the technology, API and related tools.
 Architecture overview
 ---------------------
 
-This `external resource <http://ercoppa.github.io/HadoopInternals/HadoopArchitectureOverview.html>`_
-provides a general view of the internal architecture of the Hadoop framework.
+The following resource provides a general view of the internal
+`architecture <http://ercoppa.github.io/HadoopInternals/HadoopArchitectureOverview.html>`_
+of the Hadoop framework.
 Although all this processes are transparently managed by Hadoop framework, it is
 important to understand the relation between the different components in order
 to develop solutions that behave efficiently and use all the resources in a
@@ -29,8 +30,8 @@ correct manner.
 MapReduce process
 -----------------
 
-A general MapReduce job involves different phases that must be correctly
-understand by the developers to create scalable processes and make a correct use
+A general MapReduce job involves different phases that must be understood by
+developers to create scalable processes and make a correct use
 of the distributed computation environment. The following
 `Wikipedia entry <https://en.wikipedia.org/wiki/MapReduce>`_ provides a good
 tarting poing to understand the general process of a MapReduce job.

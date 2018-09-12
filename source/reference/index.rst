@@ -5,3 +5,4 @@ Tool reference
    :maxdepth: 3
 
    hadoop
+   spark
