@@ -2,7 +2,7 @@ EDI's Application infrastructure
 ================================
 The **Application Infrastructure** integrates the Big Data Infrastructure in order to enable the applicants to expose interfaces, temporarly store data and, more 
 in general, to deploy specific applications and APIs. Starting from the Explore Phase, the selected applicants can use a set of assigned virtual  machines with 
-pre-determined features in term of processing power and memory: furthermore it is possible to legerage some pre-built services that can be integrated to the deployed
+pre-determined features in term of processing power and memory: furthermore it is possible to legerage some pre-built services that can be used to support the deployed
 application providing more complex functionalities. In the Experiment phase the resources provided to the applicants could be increased, since it is supposed 
 that it was the period in which the applications will be developed and deployed. 
 
@@ -12,7 +12,7 @@ The Application Infrastructure tries to meet the following requirements:
 * **Public IP addresses**. At least a public IP address for each sub-grantees must be provided in order to expose the deployed application on the internet: the possibility to have more than a single public address will depend on the availabilities of the infrastructure provider.
 * **Possibility to deploy** different services supporting the final application. In particular, it could be necessary to deploy local databases, brokers and other services interoperating with the application container. 
 * **Data and application security**. Possibility and easiness to apply the usage terms established by the data providers and the legislations about data and application security. 
-* **Pre-built Services**. Provided to integrate and extend what has been developed. 
+* **Pre-built Services**. Provided to support and extend what has been developed. 
 
 FI-WARE Lab
 -----------
