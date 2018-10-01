@@ -1,3 +1,5 @@
+.. _ambari-views:
+
 Ambari Views
 ============
 
