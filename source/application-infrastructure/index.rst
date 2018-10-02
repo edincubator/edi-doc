@@ -45,9 +45,11 @@ In order to create a *Trial Account* the following operations are needed:
 
 .. image:: ./img/fiware-lab-account-form.png
 
+3. Wait for the confirmation from FI-WARE staff
+
 .. raw:: html
 
-   <p>3. Send an email to <a class="reference external" href="mailto:support&#37;&#52;&#48;edincubator&#46;eu">support<span>&#64;</span>edincubator<span>&#46;</span>eu</a> asking for the extension of the trial period from 14 days (standard) to the whole Explore Period. This point is
+   <p>4. Send an email to <a class="reference external" href="mailto:support&#37;&#52;&#48;edincubator&#46;eu">support<span>&#64;</span>edincubator<span>&#46;</span>eu</a> asking for the extension of the trial period from 14 days (standard) to the whole Explore Period. The email must contain the email associated with the account. This point is
    <strong>mandatory</strong> to obtain the extension of the trial period. <font color="red"> Please do not forget to send the request</font>.</p>
 
 
