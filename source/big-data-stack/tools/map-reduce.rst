@@ -9,10 +9,25 @@
 MapReduce
 =========
 
-EDI Big Data Stack provides the MapReduce implementation over YARN. Following the
-example started at :ref:`hdfs`, we have created a minimal example that shows how
+EDI Big Data Stack provides the MapReduce implementation over YARN. We have
+created a minimal example, based on
+`Yelp dataset <https://www.kaggle.com/yelp-dataset/yelp-dataset/version/6>`_ that shows how
 to count how many Yelp businesses are in each USA state, and how to submit
 this MapReduce to EDI Big Data Stack.
+
+Yelp dataset is available for every user at `/samples/yelp`:
+
+.. code-block:: console
+
+  # hdfs dfs -ls -h /samples/yelp
+  -rw-------   3 hdfs hdfs     30.3 M 2018-10-10 09:51 /samples/yelp/yelp_business.csv
+  -rw-------   3 hdfs hdfs     39.5 M 2018-10-10 09:51 /samples/yelp/yelp_business_attributes.csv
+  -rw-------   3 hdfs hdfs     13.2 M 2018-10-10 09:51 /samples/yelp/yelp_business_hours.csv
+  -rw-------   3 hdfs hdfs    129.7 M 2018-10-10 09:51 /samples/yelp/yelp_checkin.csv
+  -rw-------   3 hdfs hdfs      3.5 G 2018-10-10 09:51 /samples/yelp/yelp_review.csv
+  -rw-------   3 hdfs hdfs    141.2 M 2018-10-10 09:51 /samples/yelp/yelp_tip.csv
+  -rw-------   3 hdfs hdfs      1.3 G 2018-10-10 09:51 /samples/yelp/yelp_user.csv
+
 
 First, you must clone the repository containing the examples and move into the
 `mrexample` dir.
@@ -214,35 +229,33 @@ Next, using stack-client docker cointainer, we can submit the job with the
 .. code-block:: console
 
   # cd /workdir
-  # hadoop jar mr-example-1.0-SNAPSHOT-jar-with-dependencies.jar /user/<username>/samples/yelp_business.csv /user/<username>/state-count-output
-  18/04/13 08:10:38 INFO client.RMProxy: Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
-  18/04/13 08:10:38 INFO client.AHSProxy: Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
-  18/04/13 08:10:38 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 532 for <username> on 192.168.125.113:8020
-  18/04/13 08:10:39 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 532 for <username>)
-  18/04/13 08:10:39 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1523607038981, maxDate=1524211838981, sequenceNumber=204, masterKeyId=50)
-  18/04/13 08:10:39 WARN mapreduce.JobResourceUploader: Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
-  18/04/13 08:10:39 INFO input.FileInputFormat: Total input paths to process : 1
-  18/04/13 08:10:39 INFO mapreduce.JobSubmitter: number of splits:1
-  18/04/13 08:10:40 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1523347765873_0008
-  18/04/13 08:10:40 INFO mapreduce.JobSubmitter: Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1523607038981, maxDate=1524211838981, sequenceNumber=204, masterKeyId=50)
-  18/04/13 08:10:40 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 532 for <username>)
-  18/04/13 08:10:41 INFO impl.TimelineClientImpl: Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
-  18/04/13 08:10:42 INFO impl.YarnClientImpl: Submitted application application_1523347765873_0008
-  18/04/13 08:10:42 INFO mapreduce.Job: The url to track the job: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0008/
-  18/04/13 08:10:42 INFO mapreduce.Job: Running job: job_1523347765873_0008
-  18/04/13 08:11:02 INFO mapreduce.Job: Job job_1523347765873_0008 running in uber mode : false
-  18/04/13 08:11:02 INFO mapreduce.Job:  map 0% reduce 0%
-  18/04/13 08:11:24 INFO mapreduce.Job:  map 100% reduce 0%
-  18/04/13 08:11:31 INFO mapreduce.Job:  map 100% reduce 100%
-  18/04/13 08:11:31 INFO mapreduce.Job: Job job_1523347765873_0008 completed successfully
-  18/04/13 08:11:32 INFO mapreduce.Job: Counters: 49
+  # hadoop jar mr-example-1.0-SNAPSHOT-jar-with-dependencies.jar /samples/yelp/yelp_business.csv /user/<username>/state-count-output
+  18/10/10 08:03:49 INFO client.RMProxy: Connecting to ResourceManager at master.edincubator.eu/192.168.1.12:8050
+  18/10/10 08:03:49 INFO client.AHSProxy: Connecting to Application History server at master.edincubator.eu/192.168.1.12:10200
+  18/10/10 08:03:51 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 475 for <username> on 192.168.1.12:8020
+  18/10/10 08:03:51 INFO security.TokenCache: Got dt for hdfs://master.edincubator.eu:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.1.12:8020, Ident: (HDFS_DELEGATION_TOKEN token 475 for <username>)
+  18/10/10 08:03:53 WARN mapreduce.JobResourceUploader: Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
+  18/10/10 08:03:59 INFO input.FileInputFormat: Total input paths to process : 1
+  18/10/10 08:04:02 INFO mapreduce.JobSubmitter: number of splits:1
+  18/10/10 08:04:04 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1539081561867_0003
+  18/10/10 08:04:04 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.1.12:8020, Ident: (HDFS_DELEGATION_TOKEN token 475 for <username>)
+  18/10/10 08:04:06 INFO impl.TimelineClientImpl: Timeline service address: http://master.edincubator.eu:8188/ws/v1/timeline/
+  18/10/10 08:04:09 INFO impl.YarnClientImpl: Submitted application application_1539081561867_0003
+  18/10/10 08:04:09 INFO mapreduce.Job: The url to track the job: http://master.edincubator.eu:8088/proxy/application_1539081561867_0003/
+  18/10/10 08:04:09 INFO mapreduce.Job: Running job: job_1539081561867_0003
+  18/10/10 08:04:16 INFO mapreduce.Job: Job job_1539081561867_0003 running in uber mode : false
+  18/10/10 08:04:16 INFO mapreduce.Job:  map 0% reduce 0%
+  18/10/10 08:04:22 INFO mapreduce.Job:  map 100% reduce 0%
+  18/10/10 08:04:30 INFO mapreduce.Job:  map 100% reduce 100%
+  18/10/10 08:04:31 INFO mapreduce.Job: Job job_1539081561867_0003 completed successfully
+  18/10/10 08:04:31 INFO mapreduce.Job: Counters: 49
   	File System Counters
   		FILE: Number of bytes read=1575775
-  		FILE: Number of bytes written=3468115
+  		FILE: Number of bytes written=3466869
   		FILE: Number of read operations=0
   		FILE: Number of large read operations=0
   		FILE: Number of write operations=0
-  		HDFS: Number of bytes read=31760804
+  		HDFS: Number of bytes read=31760803
   		HDFS: Number of bytes written=425
   		HDFS: Number of read operations=6
   		HDFS: Number of large read operations=0
@@ -251,20 +264,20 @@ Next, using stack-client docker cointainer, we can submit the job with the
   		Launched map tasks=1
   		Launched reduce tasks=1
   		Data-local map tasks=1
-  		Total time spent by all maps in occupied slots (ms)=40282
-  		Total time spent by all reduces in occupied slots (ms)=8552
-  		Total time spent by all map tasks (ms)=20141
-  		Total time spent by all reduce tasks (ms)=4276
-  		Total vcore-milliseconds taken by all map tasks=20141
-  		Total vcore-milliseconds taken by all reduce tasks=4276
-  		Total megabyte-milliseconds taken by all map tasks=30936576
-  		Total megabyte-milliseconds taken by all reduce tasks=8757248
+  		Total time spent by all maps in occupied slots (ms)=165180
+  		Total time spent by all reduces in occupied slots (ms)=130380
+  		Total time spent by all map tasks (ms)=5506
+  		Total time spent by all reduce tasks (ms)=4346
+  		Total vcore-milliseconds taken by all map tasks=5506
+  		Total vcore-milliseconds taken by all reduce tasks=4346
+  		Total megabyte-milliseconds taken by all map tasks=169144320
+  		Total megabyte-milliseconds taken by all reduce tasks=133509120
   	Map-Reduce Framework
   		Map input records=174568
   		Map output records=174568
   		Map output bytes=1226633
   		Map output materialized bytes=1575775
-  		Input split bytes=130
+  		Input split bytes=129
   		Combine input records=0
   		Combine output records=0
   		Reduce input groups=69
@@ -275,11 +288,11 @@ Next, using stack-client docker cointainer, we can submit the job with the
   		Shuffled Maps =1
   		Failed Shuffles=0
   		Merged Map outputs=1
-  		GC time elapsed (ms)=1325
-  		CPU time spent (ms)=16090
-  		Physical memory (bytes) snapshot=1443233792
-  		Virtual memory (bytes) snapshot=6987718656
-  		Total committed heap usage (bytes)=1478492160
+  		GC time elapsed (ms)=684
+  		CPU time spent (ms)=11800
+  		Physical memory (bytes) snapshot=3349094400
+  		Virtual memory (bytes) snapshot=57387188224
+  		Total committed heap usage (bytes)=3968335872
   	Shuffle Errors
   		BAD_ID=0
   		CONNECTION=0
@@ -296,7 +309,13 @@ Next, using stack-client docker cointainer, we can submit the job with the
 If the job is successfully executed, the result is written to the
 `/user/<username>/state-count-output` directory. In case of any problem during
 its execution, the error will be printed to the console. For further details
-about the job, you can check the ResourceManager UI at |resourcemanager_url|.
+about the job, you can check the ResourceManager UI at
+`<http://master.edincubator.eu:8088/cluster>`_.
+
+.. warning::
+
+  Remember that due VPN restrictions, you must launch a browser in a container
+  connected to the VPN. See :ref:`firefox` for more information.
 
 Finally, if you check the output directory, you will see the result of the job
 as a part-r-00000 file. The execution of this job generated a single file because
