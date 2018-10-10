@@ -62,7 +62,7 @@ First, we will load the sample file yelp_business.csv and get a sample of 10%:
 
 .. code-block:: console
 
-  >>> business_df = spark.read.csv('/samples/yelp/yelp_business.csv', header=True, quote='"', escape='"').sample(False, 0.1, 77)
+  >>> business_df = spark.read.csv('/samples/yelp/yelp_business/yelp_business.csv', header=True, quote='"', escape='"').sample(False, 0.1, 77)
   >>> business_df.show()
   +--------------------+--------------------+------------------+--------------------+--------------+-----+-----------+-------------+--------------+-----+------------+-------+--------------------+
   |         business_id|                name|      neighborhood|             address|          city|state|postal_code|     latitude|     longitude|stars|review_count|is_open|          categories|
@@ -296,7 +296,7 @@ command:
 
 .. code-block:: console
 
-  # spark-submit --master yarn --deploy-mode cluster yelp_example.py /samples/yelp/yelp_business.csv /user/<username>/spark-csv-output --app_name <username>YelpExample
+  # spark-submit --master yarn --deploy-mode cluster yelp_example.py /samples/yelp/yelp_business/yelp_business.csv /user/<username>/spark-csv-output --app_name <username>YelpExample
   18/10/10 10:38:14 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
   18/10/10 10:38:15 WARN shortcircuit.DomainSocketFactory: The short-circuit local reads feature cannot be used because libhadoop cannot be loaded.
   18/10/10 10:38:15 INFO client.RMProxy: Connecting to ResourceManager at master.edincubator.eu/192.168.1.12:8050

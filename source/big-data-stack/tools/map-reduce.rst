@@ -20,13 +20,14 @@ Yelp dataset is available for every user at `/samples/yelp`:
 .. code-block:: console
 
   # hdfs dfs -ls -h /samples/yelp
-  -rw-------   3 hdfs hdfs     30.3 M 2018-10-10 09:51 /samples/yelp/yelp_business.csv
-  -rw-------   3 hdfs hdfs     39.5 M 2018-10-10 09:51 /samples/yelp/yelp_business_attributes.csv
-  -rw-------   3 hdfs hdfs     13.2 M 2018-10-10 09:51 /samples/yelp/yelp_business_hours.csv
-  -rw-------   3 hdfs hdfs    129.7 M 2018-10-10 09:51 /samples/yelp/yelp_checkin.csv
-  -rw-------   3 hdfs hdfs      3.5 G 2018-10-10 09:51 /samples/yelp/yelp_review.csv
-  -rw-------   3 hdfs hdfs    141.2 M 2018-10-10 09:51 /samples/yelp/yelp_tip.csv
-  -rw-------   3 hdfs hdfs      1.3 G 2018-10-10 09:51 /samples/yelp/yelp_user.csv
+  Found 7 items
+  drwx------   - hdfs hdfs          0 2018-10-10 15:05 /samples/yelp/yelp_business
+  drwx------   - hdfs hdfs          0 2018-10-10 15:06 /samples/yelp/yelp_business_attributes
+  drwx------   - hdfs hdfs          0 2018-10-10 15:06 /samples/yelp/yelp_business_hours
+  drwx------   - hdfs hdfs          0 2018-10-10 15:06 /samples/yelp/yelp_checkin
+  drwx------   - hdfs hdfs          0 2018-10-10 15:06 /samples/yelp/yelp_review
+  drwx------   - hdfs hdfs          0 2018-10-10 15:07 /samples/yelp/yelp_tip
+  drwx------   - hdfs hdfs          0 2018-10-10 15:07 /samples/yelp/yelp_user
 
 
 First, you must clone the repository containing the examples and move into the
@@ -229,7 +230,7 @@ Next, using stack-client docker cointainer, we can submit the job with the
 .. code-block:: console
 
   # cd /workdir
-  # hadoop jar mr-example-1.0-SNAPSHOT-jar-with-dependencies.jar /samples/yelp/yelp_business.csv /user/<username>/state-count-output
+  # hadoop jar mr-example-1.0-SNAPSHOT-jar-with-dependencies.jar /samples/yelp/yelp_business/yelp_business.csv /user/<username>/state-count-output
   18/10/10 08:03:49 INFO client.RMProxy: Connecting to ResourceManager at master.edincubator.eu/192.168.1.12:8050
   18/10/10 08:03:49 INFO client.AHSProxy: Connecting to Application History server at master.edincubator.eu/192.168.1.12:10200
   18/10/10 08:03:51 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 475 for <username> on 192.168.1.12:8020

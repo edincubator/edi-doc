@@ -24,26 +24,25 @@ parameters:
 
 .. code-block:: console
 
-  # beeline -u "jdbc:hive2://<hive_host>:10000/test_yelp;principal=hive/<hive_host>@HDP.REALM;"
-  Connecting to jdbc:hive2://<hive_host>:10000/test_yelp;principal=hive/<hive-hist>@HDP.REALM;
-  Connected to: Apache Hive (version 1.2.1000.2.6.4.0-91)
-  Driver: Hive JDBC (version 1.2.1000.2.6.4.0-91)
+  # beeline -u "jdbc:hive2://master.edincubator.eu:10000/<username>_yelp;principal=hive/master.edincubator.eu@HDP.REALM;"
+  Connecting to jdbc:hive2://master.edincubator.eu:10000/test23_yelp;principal=hive/master.edincubator.eu@HDP.REALM;
+  Connected to: Apache Hive (version 1.2.1000.2.6.5.0-292)
+  Driver: Hive JDBC (version 1.2.1000.2.6.5.0-292)
   Transaction isolation: TRANSACTION_REPEATABLE_READ
-  Beeline version 1.2.1000.2.6.4.0-91 by Apache Hive
-  0: jdbc:hive2://<hive_host>:10000/test_yelp>
+  Beeline version 1.2.1000.2.6.5.0-292 by Apache Hive
+  0: jdbc:hive2://master.edincubator.eu:10000/t>
+
 
 .. warning::
   For security reasons, `hive` client is not available for its usage on EDI
   Big Data Stack, being the new client `beeline` the one to be used.
 
-Before creating the Hive table, we must copy the desired CSV to an independent
-folder, as Hive ingests all files in a folder:
+As Hive needs `all` permissions on dataset's folder, you must copy the `yelp_business`
+folder to your home directory.
 
 .. code-block:: console
 
-  # hdfs dfs -mkdir /user/<username>/samples/hive/
-  # hdfs dfs -mkdir /user/<username>/samples/hive/yelp_business
-  # hdfs dfs -cp /user/<username>/samples/yelp_business.csv /user/<username>/samples/hive/yelp_business
+  # hdfs dfs -cp /samples/yelp/yelp_business /user/<username>/
 
 First we need to create table `yelp_business`. As we want to ingest CSV data, we
 are going to use `Hive CSV Serde <https://cwiki.apache.org/confluence/display/Hive/CSV+Serde>`_:
@@ -72,7 +71,7 @@ are going to use `Hive CSV Serde <https://cwiki.apache.org/confluence/display/Hi
        "escapeChar"    = '"'
     )
     STORED AS TEXTFILE
-    LOCATION '/user/<username>/samples/hive/yelp_business'
+    LOCATION '/user/<username>/yelp_business'
     TBLPROPERTIES("skip.header.line.count"="1");
 
 
@@ -86,7 +85,7 @@ commands to query the data
 .. code-block:: console
 
   No rows affected (0.412 seconds)
-  0: jdbc:hive2://<hive_host>:10000/test_y>
+  0: jdbc:hive2://master.edincubator.eu:10000/test_y>
   +-------------------------+-------------------------------+-----------------+--------+--+
   |       business_id       |             name              |      city       | state  |
   +-------------------------+-------------------------------+-----------------+--------+--+
@@ -112,7 +111,7 @@ commands to query the data
   | Gu-xs3NIQTj3Mj2xYoN2aw  | "Maxim Bakery & Restaurant"   | Richmond Hill   | ON     |
   +-------------------------+-------------------------------+-----------------+--------+--+
   20 rows selected (0.115 seconds)
-  0: jdbc:hive2://<hive_host>:10000/test_y>
+  0: jdbc:hive2://master.edincubator.eu:10000/test_y>
 
 Next, we can execute SQL queries over the table. In our case, we want to get the
 ordered list of states with most businesses:
@@ -209,7 +208,7 @@ ordered list of states with most businesses:
   | ZET    | 1      |
   +--------+--------+--+
   68 rows selected (6.436 seconds)
-  0: jdbc:hive2://<hive_host>:10000/test_>
+  0: jdbc:hive2://master.edincubator.eu:10000/test_>
 
 .. note::
 
