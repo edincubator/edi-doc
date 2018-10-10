@@ -268,78 +268,67 @@ Next, at stack-client docker cointainer, we can submit the job using the
 .. code-block:: console
 
   # cd /workdir
-  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /user/<username>/samples/yelp_business.csv <username>.yelp_business
+  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /samples/yelp/yelp_business/yelp_business.csv <username>.yelp_business
 
 .. code-block:: console
 
-  18/04/23 12:10:42 INFO zookeeper.RecoverableZooKeeper: Process identifier=hconnection-0x30f5a68a connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:zookeeper.version=3.4.6-91--1, built on 01/04/2018 09:27 GMT
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:host.name=944cf990549a
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:java.version=1.8.0_161
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:java.vendor=Oracle Corporation
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:java.home=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.161-0.b14.el7_4.x86_64/jre
+  18/10/10 13:41:01 INFO zookeeper.RecoverableZooKeeper: Process identifier=hconnection-0x482d776b connecting to ZooKeeper ensemble=master.edincubator.eu:2181,worker1.edincubator.eu:2181,worker2.edincubator.eu:2181,worker3.edincubator.eu:2181,worker4.edincubator.eu:2181
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:zookeeper.version=3.4.6-292--1, built on 05/11/2018 06:40 GMT
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:host.name=2c8b28d2fe62
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:java.version=1.8.0_181
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:java.vendor=Oracle Corporation
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:java.home=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64/jre
   [...]
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:java.library.path=:/usr/hdp/2.6.4.0-91/hadoop/lib/native/Linux-amd64-64:/usr/hdp/2.6.4.0-91/hadoop/lib/native
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:java.io.tmpdir=/tmp
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:java.compiler=<NA>
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:os.name=Linux
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:os.arch=amd64
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:os.version=3.10.0-693.11.6.el7.x86_64
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:user.name=root
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:user.home=/root
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Client environment:user.dir=/workdir
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@a5b0b86
-  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: Opening socket connection to server gauss.res.eng.it/192.168.125.113:2181. Will not attempt to authenticate using SASL (unknown error)
-  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /172.17.0.2:54576, server: gauss.res.eng.it/192.168.125.113:2181
-  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: Session establishment complete on server gauss.res.eng.it/192.168.125.113:2181, sessionid = 0x16189a8f21f15c8, negotiated timeout = 60000
-  18/04/23 12:10:42 INFO zookeeper.RecoverableZooKeeper: Process identifier=TokenUtil-getAuthToken connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@25ddbbbb
-  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: Opening socket connection to server gauss.res.eng.it/192.168.125.113:2181. Will not attempt to authenticate using SASL (unknown error)
-  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /172.17.0.2:54578, server: gauss.res.eng.it/192.168.125.113:2181
-  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: Session establishment complete on server gauss.res.eng.it/192.168.125.113:2181, sessionid = 0x16189a8f21f15c9, negotiated timeout = 60000
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Session: 0x16189a8f21f15c9 closed
-  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: EventThread shut down
-  18/04/23 12:10:42 INFO client.ConnectionManager$HConnectionImplementation: Closing zookeeper sessionid=0x16189a8f21f15c8
-  18/04/23 12:10:42 INFO zookeeper.ZooKeeper: Session: 0x16189a8f21f15c8 closed
-  18/04/23 12:10:42 INFO zookeeper.ClientCnxn: EventThread shut down
-  18/04/23 12:10:43 INFO client.RMProxy: Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
-  18/04/23 12:10:43 INFO client.AHSProxy: Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
-  18/04/23 12:10:43 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 589 for <username> on 192.168.125.113:8020
-  18/04/23 12:10:44 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 589 for <username>)
-  18/04/23 12:10:44 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524485443891, maxDate=1525090243891, sequenceNumber=261, masterKeyId=61)
-  18/04/23 12:10:45 INFO input.FileInputFormat: Total input paths to process : 1
-  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: number of splits:1
-  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1523347765873_0039
-  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524485443891, maxDate=1525090243891, sequenceNumber=261, masterKeyId=61)
-  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 589 for <username>)
-  18/04/23 12:10:45 INFO mapreduce.JobSubmitter: Kind: HBASE_AUTH_TOKEN, Service: b66e21cc-4378-4766-be86-2034dcca995c, Ident: (org.apache.hadoop.hbase.security.token.AuthenticationTokenIdentifier@3)
-  18/04/23 12:10:46 INFO impl.TimelineClientImpl: Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
-  18/04/23 12:10:47 INFO impl.YarnClientImpl: Submitted application application_1523347765873_0039
-  18/04/23 12:10:47 INFO mapreduce.Job: The url to track the job: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0039/
-  18/04/23 12:10:47 INFO mapreduce.Job: Running job: job_1523347765873_0039
-  18/04/23 12:10:59 INFO mapreduce.Job: Job job_1523347765873_0039 running in uber mode : false
-  18/04/23 12:10:59 INFO mapreduce.Job:  map 0% reduce 0%
-  18/04/23 12:11:14 INFO mapreduce.Job:  map 11% reduce 0%
-  18/04/23 12:11:17 INFO mapreduce.Job:  map 19% reduce 0%
-  18/04/23 12:11:20 INFO mapreduce.Job:  map 28% reduce 0%
-  18/04/23 12:11:23 INFO mapreduce.Job:  map 36% reduce 0%
-  18/04/23 12:11:26 INFO mapreduce.Job:  map 43% reduce 0%
-  18/04/23 12:11:29 INFO mapreduce.Job:  map 52% reduce 0%
-  18/04/23 12:11:32 INFO mapreduce.Job:  map 60% reduce 0%
-  18/04/23 12:11:35 INFO mapreduce.Job:  map 68% reduce 0%
-  18/04/23 12:11:38 INFO mapreduce.Job:  map 76% reduce 0%
-  18/04/23 12:11:41 INFO mapreduce.Job:  map 85% reduce 0%
-  18/04/23 12:11:44 INFO mapreduce.Job:  map 93% reduce 0%
-  18/04/23 12:11:47 INFO mapreduce.Job:  map 100% reduce 0%
-  18/04/23 12:11:48 INFO mapreduce.Job: Job job_1523347765873_0039 completed successfully
-  18/04/23 12:11:48 INFO mapreduce.Job: Counters: 30
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:java.library.path=:/usr/hdp/2.6.5.0-292/hadoop/lib/native/Linux-amd64-64:/usr/hdp/2.6.5.0-292/hadoop/lib/native
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:java.io.tmpdir=/tmp
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:java.compiler=<NA>
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:os.name=Linux
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:os.arch=amd64
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:os.version=4.15.0-34-generic
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:user.name=<username>
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:user.home=/home/<username>
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Client environment:user.dir=/workdir/stack-examples/hbaseexample/target
+  18/10/10 13:41:01 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=master.edincubator.eu:2181,worker1.edincubator.eu:2181,worker2.edincubator.eu:2181,worker3.edincubator.eu:2181,worker4.edincubator.eu:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@4eed46ee
+  18/10/10 13:41:01 INFO zookeeper.ClientCnxn: Opening socket connection to server worker3.edincubator.eu/192.168.1.23:2181. Will not attempt to authenticate using SASL (unknown error)
+  18/10/10 13:41:01 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /192.168.255.10:37824, server: worker3.edincubator.eu/192.168.1.23:2181
+  18/10/10 13:41:01 INFO zookeeper.ClientCnxn: Session establishment complete on server worker3.edincubator.eu/192.168.1.23:2181, sessionid = 0x46644dd3ff70063, negotiated timeout = 60000
+  18/10/10 13:41:02 INFO zookeeper.RecoverableZooKeeper: Process identifier=TokenUtil-getAuthToken connecting to ZooKeeper ensemble=master.edincubator.eu:2181,worker1.edincubator.eu:2181,worker2.edincubator.eu:2181,worker3.edincubator.eu:2181,worker4.edincubator.eu:2181
+  18/10/10 13:41:02 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=master.edincubator.eu:2181,worker1.edincubator.eu:2181,worker2.edincubator.eu:2181,worker3.edincubator.eu:2181,worker4.edincubator.eu:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@c65a5ef
+  18/10/10 13:41:02 INFO zookeeper.ClientCnxn: Opening socket connection to server worker1.edincubator.eu/192.168.1.21:2181. Will not attempt to authenticate using SASL (unknown error)
+  18/10/10 13:41:02 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /192.168.255.10:41372, server: worker1.edincubator.eu/192.168.1.21:2181
+  18/10/10 13:41:02 INFO zookeeper.ClientCnxn: Session establishment complete on server worker1.edincubator.eu/192.168.1.21:2181, sessionid = 0x26644dd3ff80050, negotiated timeout = 60000
+  18/10/10 13:41:02 INFO zookeeper.ZooKeeper: Session: 0x26644dd3ff80050 closed
+  18/10/10 13:41:02 INFO zookeeper.ClientCnxn: EventThread shut down
+  18/10/10 13:41:03 INFO client.ConnectionManager$HConnectionImplementation: Closing zookeeper sessionid=0x46644dd3ff70063
+  18/10/10 13:41:03 INFO zookeeper.ZooKeeper: Session: 0x46644dd3ff70063 closed
+  18/10/10 13:41:03 INFO zookeeper.ClientCnxn: EventThread shut down
+  18/10/10 13:41:03 INFO client.RMProxy: Connecting to ResourceManager at master.edincubator.eu/192.168.1.12:8050
+  18/10/10 13:41:04 INFO client.AHSProxy: Connecting to Application History server at master.edincubator.eu/192.168.1.12:10200
+  18/10/10 13:41:05 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 491 for <username> on 192.168.1.12:8020
+  18/10/10 13:41:05 INFO security.TokenCache: Got dt for hdfs://master.edincubator.eu:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.1.12:8020, Ident: (HDFS_DELEGATION_TOKEN token 491 for <username>)
+  18/10/10 13:41:35 INFO input.FileInputFormat: Total input paths to process : 1
+  18/10/10 13:41:36 INFO mapreduce.JobSubmitter: number of splits:1
+  18/10/10 13:41:37 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1539159936594_0013
+  18/10/10 13:41:37 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.1.12:8020, Ident: (HDFS_DELEGATION_TOKEN token 491 for <username>)
+  18/10/10 13:41:37 INFO mapreduce.JobSubmitter: Kind: HBASE_AUTH_TOKEN, Service: a5fb7077-f1b8-49d0-abdc-8d73fe4e0ef5, Ident: (org.apache.hadoop.hbase.security.token.AuthenticationTokenIdentifier@0)
+  18/10/10 13:41:44 INFO impl.TimelineClientImpl: Timeline service address: http://master.edincubator.eu:8188/ws/v1/timeline/
+  18/10/10 13:41:46 INFO impl.YarnClientImpl: Submitted application application_1539159936594_0013
+  18/10/10 13:41:46 INFO mapreduce.Job: The url to track the job: http://master.edincubator.eu:8088/proxy/application_1539159936594_0013/
+  18/10/10 13:41:46 INFO mapreduce.Job: Running job: job_1539159936594_0013
+  18/10/10 13:41:54 INFO mapreduce.Job: Job job_1539159936594_0013 running in uber mode : false
+  18/10/10 13:41:54 INFO mapreduce.Job:  map 0% reduce 0%
+  18/10/10 13:42:05 INFO mapreduce.Job:  map 45% reduce 0%
+  18/10/10 13:42:08 INFO mapreduce.Job:  map 71% reduce 0%
+  18/10/10 13:42:11 INFO mapreduce.Job:  map 100% reduce 0%
+  18/10/10 13:42:11 INFO mapreduce.Job: Job job_1539159936594_0013 completed successfully
+  18/10/10 13:42:12 INFO mapreduce.Job: Counters: 30
   	File System Counters
   		FILE: Number of bytes read=0
-  		FILE: Number of bytes written=195397
+  		FILE: Number of bytes written=195824
   		FILE: Number of read operations=0
   		FILE: Number of large read operations=0
   		FILE: Number of write operations=0
-  		HDFS: Number of bytes read=31760804
+  		HDFS: Number of bytes read=31760817
   		HDFS: Number of bytes written=0
   		HDFS: Number of read operations=2
   		HDFS: Number of large read operations=0
@@ -347,23 +336,23 @@ Next, at stack-client docker cointainer, we can submit the job using the
   	Job Counters
   		Launched map tasks=1
   		Data-local map tasks=1
-  		Total time spent by all maps in occupied slots (ms)=92560
+  		Total time spent by all maps in occupied slots (ms)=494370
   		Total time spent by all reduces in occupied slots (ms)=0
-  		Total time spent by all map tasks (ms)=46280
-  		Total vcore-milliseconds taken by all map tasks=46280
-  		Total megabyte-milliseconds taken by all map tasks=71086080
+  		Total time spent by all map tasks (ms)=16479
+  		Total vcore-milliseconds taken by all map tasks=16479
+  		Total megabyte-milliseconds taken by all map tasks=506234880
   	Map-Reduce Framework
   		Map input records=174568
   		Map output records=174568
-  		Input split bytes=130
+  		Input split bytes=143
   		Spilled Records=0
   		Failed Shuffles=0
   		Merged Map outputs=0
-  		GC time elapsed (ms)=771
-  		CPU time spent (ms)=48760
-  		Physical memory (bytes) snapshot=299270144
-  		Virtual memory (bytes) snapshot=3266670592
-  		Total committed heap usage (bytes)=164626432
+  		GC time elapsed (ms)=123
+  		CPU time spent (ms)=17670
+  		Physical memory (bytes) snapshot=1843146752
+  		Virtual memory (bytes) snapshot=28693168128
+  		Total committed heap usage (bytes)=2084569088
   	File Input Format Counters
   		Bytes Read=31760674
   	File Output Format Counters
@@ -539,74 +528,72 @@ Next, at stack-client docker cointainer, we can submit the job using the
 
 .. code-block:: console
 
-  18/04/24 08:05:37 INFO zookeeper.RecoverableZooKeeper: Process identifier=hconnection-0x2cb3d0f7 connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:zookeeper.version=3.4.6-91--1, built on 01/04/2018 09:27 GMT
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:host.name=a4272422f4c8
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:java.version=1.8.0_161
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:java.vendor=Oracle Corporation
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:java.home=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.161-0.b14.el7_4.x86_64/jre
+  18/10/10 13:46:36 INFO zookeeper.RecoverableZooKeeper: Process identifier=hconnection-0x2b58f754 connecting to ZooKeeper ensemble=master.edincubator.eu:2181,worker1.edincubator.eu:2181,worker2.edincubator.eu:2181,worker3.edincubator.eu:2181,worker4.edincubator.eu:2181
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:zookeeper.version=3.4.6-292--1, built on 05/11/2018 06:40 GMT
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:host.name=2c8b28d2fe62
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:java.version=1.8.0_181
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:java.vendor=Oracle Corporation
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:java.home=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64/jre
   [...]
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:java.library.path=:/usr/hdp/2.6.4.0-91/hadoop/lib/native/Linux-amd64-64:/usr/hdp/2.6.4.0-91/hadoop/lib/native
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:java.io.tmpdir=/tmp
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:java.compiler=<NA>
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:os.name=Linux
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:os.arch=amd64
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:os.version=3.10.0-693.11.6.el7.x86_64
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:user.name=root
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:user.home=/root
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Client environment:user.dir=/workdir
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@34a75079
-  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: Opening socket connection to server gauss.res.eng.it/192.168.125.113:2181. Will not attempt to authenticate using SASL (unknown error)
-  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /172.17.0.4:46834, server: gauss.res.eng.it/192.168.125.113:2181
-  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: Session establishment complete on server gauss.res.eng.it/192.168.125.113:2181, sessionid = 0x16189a8f21f15cc, negotiated timeout = 60000
-  18/04/24 08:05:37 INFO zookeeper.RecoverableZooKeeper: Process identifier=TokenUtil-getAuthToken connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@6a62689d
-  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: Opening socket connection to server heidi.res.eng.it/192.168.125.101:2181. Will not attempt to authenticate using SASL (unknown error)
-  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /172.17.0.4:50892, server: heidi.res.eng.it/192.168.125.101:2181
-  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: Session establishment complete on server heidi.res.eng.it/192.168.125.101:2181, sessionid = 0x26189a8e78b9e47, negotiated timeout = 60000
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Session: 0x26189a8e78b9e47 closed
-  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: EventThread shut down
-  18/04/24 08:05:37 INFO client.ConnectionManager$HConnectionImplementation: Closing zookeeper sessionid=0x16189a8f21f15cc
-  18/04/24 08:05:37 INFO zookeeper.ZooKeeper: Session: 0x16189a8f21f15cc closed
-  18/04/24 08:05:37 INFO zookeeper.ClientCnxn: EventThread shut down
-  18/04/24 08:05:37 INFO client.RMProxy: Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
-  18/04/24 08:05:38 INFO client.AHSProxy: Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
-  18/04/24 08:05:38 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 593 for <username> on 192.168.125.113:8020
-  18/04/24 08:05:38 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 593 for <username>)
-  18/04/24 08:05:38 INFO security.TokenCache: Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524557138566, maxDate=1525161938566, sequenceNumber=265, masterKeyId=61)
-  18/04/24 08:05:40 INFO zookeeper.RecoverableZooKeeper: Process identifier=hconnection-0x545e57d7 connecting to ZooKeeper ensemble=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
-  18/04/24 08:05:40 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@2bc9a775
-  18/04/24 08:05:40 INFO zookeeper.ClientCnxn: Opening socket connection to server heidi.res.eng.it/192.168.125.101:2181. Will not attempt to authenticate using SASL (unknown error)
-  18/04/24 08:05:40 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /172.17.0.4:50972, server: heidi.res.eng.it/192.168.125.101:2181
-  18/04/24 08:05:40 INFO zookeeper.ClientCnxn: Session establishment complete on server heidi.res.eng.it/192.168.125.101:2181, sessionid = 0x26189a8e78b9e48, negotiated timeout = 60000
-  18/04/24 08:05:40 INFO util.RegionSizeCalculator: Calculating region sizes for table "<username>.yelp_business".
-  18/04/24 08:05:40 INFO client.ConnectionManager$HConnectionImplementation: Closing master protocol: MasterService
-  18/04/24 08:05:40 INFO client.ConnectionManager$HConnectionImplementation: Closing zookeeper sessionid=0x26189a8e78b9e48
-  18/04/24 08:05:40 INFO zookeeper.ZooKeeper: Session: 0x26189a8e78b9e48 closed
-  18/04/24 08:05:40 INFO zookeeper.ClientCnxn: EventThread shut down
-  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: number of splits:1
-  18/04/24 08:05:40 INFO Configuration.deprecation: io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
-  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1523347765873_0041
-  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524557138566, maxDate=1525161938566, sequenceNumber=265, masterKeyId=61)
-  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 593 for <username>)
-  18/04/24 08:05:40 INFO mapreduce.JobSubmitter: Kind: HBASE_AUTH_TOKEN, Service: b66e21cc-4378-4766-be86-2034dcca995c, Ident: (org.apache.hadoop.hbase.security.token.AuthenticationTokenIdentifier@5)
-  18/04/24 08:05:42 INFO impl.TimelineClientImpl: Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
-  18/04/24 08:05:42 INFO impl.YarnClientImpl: Submitted application application_1523347765873_0041
-  18/04/24 08:05:42 INFO mapreduce.Job: The url to track the job: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0041/
-  18/04/24 08:05:42 INFO mapreduce.Job: Running job: job_1523347765873_0041
-  18/04/24 08:05:53 INFO mapreduce.Job: Job job_1523347765873_0041 running in uber mode : false
-  18/04/24 08:05:53 INFO mapreduce.Job:  map 0% reduce 0%
-  18/04/24 08:06:12 INFO mapreduce.Job:  map 100% reduce 0%
-  18/04/24 08:06:20 INFO mapreduce.Job:  map 100% reduce 100%
-  18/04/24 08:06:21 INFO mapreduce.Job: Job job_1523347765873_0041 completed successfully
-  18/04/24 08:06:21 INFO mapreduce.Job: Counters: 60
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:java.library.path=:/usr/hdp/2.6.5.0-292/hadoop/lib/native/Linux-amd64-64:/usr/hdp/2.6.5.0-292/hadoop/lib/native
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:java.io.tmpdir=/tmp
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:java.compiler=<NA>
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:os.name=Linux
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:os.arch=amd64
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:os.version=4.15.0-34-generic
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:user.name=<username>
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:user.home=/home/<username>
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Client environment:user.dir=/workdir/stack-examples/hbaseexample/target
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=master.edincubator.eu:2181,worker1.edincubator.eu:2181,worker2.edincubator.eu:2181,worker3.edincubator.eu:2181,worker4.edincubator.eu:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@3954d008
+  18/10/10 13:46:36 INFO zookeeper.ClientCnxn: Opening socket connection to server worker2.edincubator.eu/192.168.1.22:2181. Will not attempt to authenticate using SASL (unknown error)
+  18/10/10 13:46:36 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /192.168.255.10:47266, server: worker2.edincubator.eu/192.168.1.22:2181
+  18/10/10 13:46:36 INFO zookeeper.ClientCnxn: Session establishment complete on server worker2.edincubator.eu/192.168.1.22:2181, sessionid = 0x36644dd41af0055, negotiated timeout = 60000
+  18/10/10 13:46:36 INFO zookeeper.RecoverableZooKeeper: Process identifier=TokenUtil-getAuthToken connecting to ZooKeeper ensemble=master.edincubator.eu:2181,worker1.edincubator.eu:2181,worker2.edincubator.eu:2181,worker3.edincubator.eu:2181,worker4.edincubator.eu:2181
+  18/10/10 13:46:36 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=master.edincubator.eu:2181,worker1.edincubator.eu:2181,worker2.edincubator.eu:2181,worker3.edincubator.eu:2181,worker4.edincubator.eu:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@1b0a7baf
+  18/10/10 13:46:36 INFO zookeeper.ClientCnxn: Opening socket connection to server worker2.edincubator.eu/192.168.1.22:2181. Will not attempt to authenticate using SASL (unknown error)
+  18/10/10 13:46:37 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /192.168.255.10:47268, server: worker2.edincubator.eu/192.168.1.22:2181
+  18/10/10 13:46:37 INFO zookeeper.ClientCnxn: Session establishment complete on server worker2.edincubator.eu/192.168.1.22:2181, sessionid = 0x36644dd41af0056, negotiated timeout = 60000
+  18/10/10 13:46:37 INFO zookeeper.ZooKeeper: Session: 0x36644dd41af0056 closed
+  18/10/10 13:46:37 INFO zookeeper.ClientCnxn: EventThread shut down
+  18/10/10 13:46:38 INFO client.ConnectionManager$HConnectionImplementation: Closing zookeeper sessionid=0x36644dd41af0055
+  18/10/10 13:46:38 INFO zookeeper.ZooKeeper: Session: 0x36644dd41af0055 closed
+  18/10/10 13:46:38 INFO zookeeper.ClientCnxn: EventThread shut down
+  18/10/10 13:46:38 INFO client.RMProxy: Connecting to ResourceManager at master.edincubator.eu/192.168.1.12:8050
+  18/10/10 13:46:38 INFO client.AHSProxy: Connecting to Application History server at master.edincubator.eu/192.168.1.12:10200
+  18/10/10 13:46:39 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 492 for <username> on 192.168.1.12:8020
+  18/10/10 13:46:39 INFO security.TokenCache: Got dt for hdfs://master.edincubator.eu:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.1.12:8020, Ident: (HDFS_DELEGATION_TOKEN token 492 for <username>)
+  18/10/10 13:47:07 INFO zookeeper.RecoverableZooKeeper: Process identifier=hconnection-0x2bc9a775 connecting to ZooKeeper ensemble=master.edincubator.eu:2181,worker1.edincubator.eu:2181,worker2.edincubator.eu:2181,worker3.edincubator.eu:2181,worker4.edincubator.eu:2181
+  18/10/10 13:47:07 INFO zookeeper.ZooKeeper: Initiating client connection, connectString=master.edincubator.eu:2181,worker1.edincubator.eu:2181,worker2.edincubator.eu:2181,worker3.edincubator.eu:2181,worker4.edincubator.eu:2181 sessionTimeout=90000 watcher=org.apache.hadoop.hbase.zookeeper.PendingWatcher@27b000f7
+  18/10/10 13:47:08 INFO zookeeper.ClientCnxn: Opening socket connection to server worker2.edincubator.eu/192.168.1.22:2181. Will not attempt to authenticate using SASL (unknown error)
+  18/10/10 13:47:08 INFO zookeeper.ClientCnxn: Socket connection established, initiating session, client: /192.168.255.10:47476, server: worker2.edincubator.eu/192.168.1.22:2181
+  18/10/10 13:47:08 INFO zookeeper.ClientCnxn: Session establishment complete on server worker2.edincubator.eu/192.168.1.22:2181, sessionid = 0x36644dd41af0057, negotiated timeout = 60000
+  18/10/10 13:47:08 INFO util.RegionSizeCalculator: Calculating region sizes for table "<username>.yelp_business".
+  18/10/10 13:47:10 INFO client.ConnectionManager$HConnectionImplementation: Closing master protocol: MasterService
+  18/10/10 13:47:10 INFO client.ConnectionManager$HConnectionImplementation: Closing zookeeper sessionid=0x36644dd41af0057
+  18/10/10 13:47:10 INFO zookeeper.ZooKeeper: Session: 0x36644dd41af0057 closed
+  18/10/10 13:47:10 INFO zookeeper.ClientCnxn: EventThread shut down
+  18/10/10 13:47:12 INFO mapreduce.JobSubmitter: number of splits:1
+  18/10/10 13:47:12 INFO Configuration.deprecation: io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum
+  18/10/10 13:47:13 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1539159936594_0014
+  18/10/10 13:47:13 INFO mapreduce.JobSubmitter: Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.1.12:8020, Ident: (HDFS_DELEGATION_TOKEN token 492 for <username>)
+  18/10/10 13:47:13 INFO mapreduce.JobSubmitter: Kind: HBASE_AUTH_TOKEN, Service: a5fb7077-f1b8-49d0-abdc-8d73fe4e0ef5, Ident: (org.apache.hadoop.hbase.security.token.AuthenticationTokenIdentifier@1)
+  18/10/10 13:47:19 INFO impl.TimelineClientImpl: Timeline service address: http://master.edincubator.eu:8188/ws/v1/timeline/
+  18/10/10 13:47:21 INFO impl.YarnClientImpl: Submitted application application_1539159936594_0014
+  18/10/10 13:47:21 INFO mapreduce.Job: The url to track the job: http://master.edincubator.eu:8088/proxy/application_1539159936594_0014/
+  18/10/10 13:47:21 INFO mapreduce.Job: Running job: job_1539159936594_0014
+  18/10/10 13:47:28 INFO mapreduce.Job: Job job_1539159936594_0014 running in uber mode : false
+  18/10/10 13:47:28 INFO mapreduce.Job:  map 0% reduce 0%
+  18/10/10 13:47:38 INFO mapreduce.Job:  map 100% reduce 0%
+  18/10/10 13:47:44 INFO mapreduce.Job:  map 100% reduce 100%
+  18/10/10 13:47:45 INFO mapreduce.Job: Job job_1539159936594_0014 completed successfully
+  18/10/10 13:47:45 INFO mapreduce.Job: Counters: 60
   	File System Counters
   		FILE: Number of bytes read=1575775
-  		FILE: Number of bytes written=3542671
+  		FILE: Number of bytes written=3543441
   		FILE: Number of read operations=0
   		FILE: Number of large read operations=0
   		FILE: Number of write operations=0
-  		HDFS: Number of bytes read=91
+  		HDFS: Number of bytes read=98
   		HDFS: Number of bytes written=425
   		HDFS: Number of read operations=5
   		HDFS: Number of large read operations=0
@@ -615,20 +602,20 @@ Next, at stack-client docker cointainer, we can submit the job using the
   		Launched map tasks=1
   		Launched reduce tasks=1
   		Rack-local map tasks=1
-  		Total time spent by all maps in occupied slots (ms)=32396
-  		Total time spent by all reduces in occupied slots (ms)=10978
-  		Total time spent by all map tasks (ms)=16198
-  		Total time spent by all reduce tasks (ms)=5489
-  		Total vcore-milliseconds taken by all map tasks=16198
-  		Total vcore-milliseconds taken by all reduce tasks=5489
-  		Total megabyte-milliseconds taken by all map tasks=24880128
-  		Total megabyte-milliseconds taken by all reduce tasks=11241472
+  		Total time spent by all maps in occupied slots (ms)=234570
+  		Total time spent by all reduces in occupied slots (ms)=140700
+  		Total time spent by all map tasks (ms)=7819
+  		Total time spent by all reduce tasks (ms)=4690
+  		Total vcore-milliseconds taken by all map tasks=7819
+  		Total vcore-milliseconds taken by all reduce tasks=4690
+  		Total megabyte-milliseconds taken by all map tasks=240199680
+  		Total megabyte-milliseconds taken by all reduce tasks=144076800
   	Map-Reduce Framework
   		Map input records=174568
   		Map output records=174568
   		Map output bytes=1226633
   		Map output materialized bytes=1575775
-  		Input split bytes=91
+  		Input split bytes=98
   		Combine input records=0
   		Combine output records=0
   		Reduce input groups=69
@@ -639,15 +626,15 @@ Next, at stack-client docker cointainer, we can submit the job using the
   		Shuffled Maps =1
   		Failed Shuffles=0
   		Merged Map outputs=1
-  		GC time elapsed (ms)=1641
-  		CPU time spent (ms)=23180
-  		Physical memory (bytes) snapshot=1481342976
-  		Virtual memory (bytes) snapshot=7029194752
-  		Total committed heap usage (bytes)=1422917632
+  		GC time elapsed (ms)=466
+  		CPU time spent (ms)=11300
+  		Physical memory (bytes) snapshot=3156611072
+  		Virtual memory (bytes) snapshot=57440337920
+  		Total committed heap usage (bytes)=3908042752
   	HBase Counters
   		BYTES_IN_REMOTE_RESULTS=134504069
   		BYTES_IN_RESULTS=134504069
-  		MILLIS_BETWEEN_NEXTS=6335
+  		MILLIS_BETWEEN_NEXTS=3048
   		NOT_SERVING_REGION_EXCEPTION=0
   		NUM_SCANNER_RESTARTS=0
   		NUM_SCAN_RESULTS_STALE=0
@@ -773,8 +760,8 @@ Phoenix. Apache Phoenix allows querying HBase tables using SQL queries.
   :ref:`technical-support`.
 
 For querying the table created previously in this tutorial, we must define
-a table view in Phoenix. Rember that this step has to be requested to EDI's
-Technical Support:
+a table view in Phoenix. **Remember that this step has to be requested to EDI's
+Technical Support**:
 
 .. code-block:: console
 
@@ -797,7 +784,7 @@ Technical Support:
   96/96 (100%) Done
   Done
   sqlline version 1.1.8
-  0: jdbc:phoenix:> CREATE VIEW "<username>"."yelp_business" (ROWKEY VARCHAR PRIMARY KEY, "info"."address" VARCHAR, "info"."categories" VARCHAR, "info"."city" VARCHAR, "info"."is_open" VARCHAR, "info"."longitude" VARCHAR, "info"."name" VARCHAR, "info"."neighborhood" VARCHAR, "info"."postal_code" VARCHAR, "info"."state" VARCHAR, "stats"."review_count" VARCHAR, "stats"."stars" VARCHAR) as select * from "docuser"."yelp_business";
+  0: jdbc:phoenix:> CREATE VIEW "<username>"."yelp_business" (ROWKEY VARCHAR PRIMARY KEY, "info"."address" VARCHAR, "info"."categories" VARCHAR, "info"."city" VARCHAR, "info"."is_open" VARCHAR, "info"."longitude" VARCHAR, "info"."name" VARCHAR, "info"."neighborhood" VARCHAR, "info"."postal_code" VARCHAR, "info"."state" VARCHAR, "stats"."review_count" VARCHAR, "stats"."stars" VARCHAR) as select * from "<username>"."yelp_business";
   No rows affected (0,218 seconds)
   0: jdbc:phoenix:> !tables
   +------------+---------------+------------------------+---------------+----------+------------+----------------------------+-----------------+--------------+-----------------+---------------+---------------+---+
