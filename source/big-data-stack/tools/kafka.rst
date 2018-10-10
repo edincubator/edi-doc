@@ -24,66 +24,32 @@ Basic functionalities
 For interacting with Kafka, you must point at its directory, located at
 `/usr/hdp/current/kafka-broker`. From here you can list existing topics:
 
-.. ifconfig:: releaselevel in ('dev')
+.. code-block:: console
 
-  .. code-block:: console
-
-    # cd /usr/hdp/current/kafka-broker
-    # bin/kafka-topics.sh --list --zookeeper gauss.res.eng.it:2181,heidi.res.eng.it:2181,peter.res.eng.it:2181
-    [...]
-    <username>_yelp_business
-
-.. ifconfig:: releaselevel in ('prod')
-
-  .. code-block:: console
-
-    # cd /usr/hdp/current/kafka-broker
-    # bin/kafka-topics.sh --list --zookeeper <ZOOKEEPER_SERVERS>
-    [...]
-    <username>_yelp_business
-
+  # cd /usr/hdp/current/kafka-broker
+  # bin/kafka-topics.sh --list --zookeeper master.edincubator.eu:2181,worker1.edincubator.eu:2181,worker2.edincubator.eu:2181,worker3.edincubator.eu:2181,worker4.edincubator.eu:2181
+  [...]
+  <username>_test
 
 Launch a message producer and start typing messages:
 
-.. ifconfig:: releaselevel in ('dev')
+.. code-block:: console
 
-  .. code-block:: console
-
-    # bin/kafka-console-producer.sh --broker-list gauss.res.eng.it:6667 --security-protocol SASL_PLAINTEXT --topic <username>_test
-    Hi!
-    How are you?
-
-.. ifconfig:: releaselevel in ('prod')
-
-  .. code-block:: console
-
-    # bin/kafka-console-producer.sh --broker-list <KAFKA_BROKERS> --security-protocol SASL_PLAINTEXT --topic <username>_test
-    Hi!
-    How are you?
+  # bin/kafka-console-producer.sh --broker-list master.edincubator.eu:6667 --security-protocol SASL_PLAINTEXT --topic <username>_test
+  Hi!
+  How are you?
 
 In another terminal, launch a message consumer:
 
-.. ifconfig:: releaselevel in ('dev')
 
-  .. code-block:: console
+.. code-block:: console
 
-    # bin/kafka-console-consumer.sh --bootstrap-server gauss.res.eng.it:6667 --security-protocol SASL_PLAINTEXT --topic <username>_test --from-beginning
-    Hi!
-    How are you?
+  # bin/kafka-console-consumer.sh --bootstrap-server master.edincubator.eu:6667 --security-protocol SASL_PLAINTEXT --topic <username>_test --from-beginning
+  Hi!
+  How are you?
 
-.. ifconfig:: releaselevel in ('prod')
-
-  .. code-block:: console
-
-    # bin/kafka-console-consumer.sh --bootstrap-server <KAFKA_BROKERS> --security-protocol SASL_PLAINTEXT --topic <username>_test --from-beginning
-    Hi!
-    How are you?
 
 You can see that messages typed in the message producer appear in the consumer.
-
-.. todo::
-
-  Replace gauss, heidi and peter by production servers
 
 You can find how to code your own message producers and consumers at
 `​Producing Events/Messages to Kafka on a Secured Cluster <https://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.6.4/bk_security/content/secure-kafka-produce-events.html>`_
