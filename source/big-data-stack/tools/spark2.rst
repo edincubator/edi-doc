@@ -17,53 +17,30 @@ operations over the sample dataset introduced at :ref:`hdfs`.
 spark-shell
 -----------
 
-.. note::
+.. warning::
 
-  Spark shell is intented to be used for testing your scripts and algorithms
-  before putting them in production. Please, be sure to use a small sample of
-  your data (~10%) instead using the entire dataset when using Spark shell.
+  Spark shell executes computation locally and produces a wide amount of data transfer
+  between the HDFS cluster and your machine, as data has to be downloaded to
+  your machine to be computed. **Spark shell is intended to be used for testing your
+  code before executing it at production stage**.
+  For avoiding this problem, Spark allows sampling
+  the data. **Be sure to always use a sample of size of 0.1 (10%) when executing
+  spark-shell!** The network usage is monitored at the cluster for
+  detecting huge amounts of data transfers outside the cluster.
+  See the :ref:`spark-yelp-example` for learning how to sample data in Spark2.
 
-For accessing the Spark2 interactive shell, there are two alternatives:
 
-* `--master yarn`: the computation is executed on cluster's YARN deployment.
-* `--master local`: the computation is executed locally in user's computer.
-
-We recommend using YARN as execution engine whenever possible for avoiding
-network overload caused by the data transfer between the cluster and your
-local machine.
-
-.. _yarn-as-execution-engine:
-
-YARN as execution engine
-........................
-
-For computing shell commands in the cluster, at first, you must execute EDI's
-Big Data Stack docker image with the following parameters:
-
-.. note::
-
-  `--network host` Docker parameter is available only in UNIX host machines.
-  For executing spark-shell in Docker containers hosted at Windows or OSX
-  machines, please follow guidelines at :ref:`local-machine-execution`.
+You can start spark-shell executing `pyspark` (Python version) or `spark-shell`
+(Scala version). In this example `pyspark` is used:
 
 .. code-block:: console
 
-  $ docker run -ti -p 43247:43247 -v ${PWD}:/workdir --network host edincubator/stack-client /bin/bash
-
-Once logged with Kerberos, you must set `SPARK_LOCAL_IP` environment variable and
-you can launch spark-shell (in this example we use Python shell):
-
-.. code-block:: console
-
-  # export SPARK_LOCAL_IP=<my-public-ip>
-  # pyspark --master yarn --conf spark.driver.port=43247 --conf spark.driver.host=<my-public-ip>
-  Python 2.7.5 (default, Apr 11 2018, 07:36:10)
+  # pyspark
+  Python 2.7.5 (default, Jul 13 2018, 13:06:57)
   [GCC 4.8.5 20150623 (Red Hat 4.8.5-28)] on linux2
   Type "help", "copyright", "credits" or "license" for more information.
   Setting default log level to "WARN".
   To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-  18/09/05 10:44:29 WARN util.Utils: Service 'SparkUI' could not bind on port 4040. Attempting port 4041.
-  18/09/05 10:44:29 WARN util.Utils: Service 'SparkUI' could not bind on port 4041. Attempting port 4042.
   Welcome to
         ____              __
        / __/__  ___ _____/ /__
@@ -71,28 +48,9 @@ you can launch spark-shell (in this example we use Python shell):
      /__ / .__/\_,_/_/ /_/\_\   version 2.3.0.2.6.5.0-292
         /_/
 
-  Using Python version 2.7.5 (default, Apr 11 2018 07:36:10)
+  Using Python version 2.7.5 (default, Jul 13 2018 13:06:57)
   SparkSession available as 'spark'.
-
-
-.. _local-machine-execution:
-
-Local machine as execution engine
-.................................
-
-If you cannot use :ref:`yarn-as-execution-engine`, you can compute commands
-launched at the shell locally. For that, you only have to execute the `pyspark`
-command.
-
-.. warning::
-
-  Computing Spark shell commands locally produces a wide amount of data transfer
-  between the HDFS cluster and your machine, as data has to be downloaded to
-  your machine to be computed. For avoiding this problem, Spark allows sampling
-  the data. **Be sure to always use a sample of size of 0.1 (10%) when executing
-  spark-shell locally!** The network usage is monitored at the cluster for
-  detecting huge amounts of data transfers outside the cluster.
-  See the :ref:`spark-yelp-example` for learning how to sample data in Spark2.
+  >>>
 
 
 .. _spark-yelp-example:
@@ -104,7 +62,7 @@ First, we will load the sample file yelp_business.csv and get a sample of 10%:
 
 .. code-block:: console
 
-  >>> business_df = spark.read.csv('/user/<username>/samples/yelp_business.csv', header=True, quote='"', escape='"').sample(False, 0.1, 77)
+  >>> business_df = spark.read.csv('/samples/yelp/yelp_business.csv', header=True, quote='"', escape='"').sample(False, 0.1, 77)
   >>> business_df.show()
   +--------------------+--------------------+------------------+--------------------+--------------+-----+-----------+-------------+--------------+-----+------------+-------+--------------------+
   |         business_id|                name|      neighborhood|             address|          city|state|postal_code|     latitude|     longitude|stars|review_count|is_open|          categories|
@@ -304,15 +262,24 @@ the `spark2example` folder from
 
 .. code-block:: python
 
+  import argparse
   from pyspark.sql import SparkSession
 
-  spark = SparkSession.builder.appName("YelpExample").getOrCreate()
-  business_df = spark.read.csv('/user/<username>/samples/yelp_business.csv',
+  parser = argparse.ArgumentParser(description='Execute Spark2 Yelp example.')
+  parser.add_argument(
+      '--app_name', type=str, help="Application name", default='YelpExample')
+  parser.add_argument('input_file', type=str, help="Input CSV file")
+  parser.add_argument('output_dir', type=str, help="Output directory")
+
+  args = parser.parse_args()
+
+  spark = SparkSession.builder.appName(args.app_name).getOrCreate()
+  business_df = spark.read.csv(args.input_file,
                                header=True, quote='"', escape='"')
 
   state_count = business_df.groupBy(business_df.state).count()
   sorted_state_count = state_count.sort("count", ascending=False)
-  sorted_state_count.write.csv('/user/<username>/spark-csv-output')
+  sorted_state_count.write.csv(args.output_dir)
 
 Copy the `yelp_example.py` file to your workspace and execute `spark-submit`
 command:
@@ -322,75 +289,88 @@ command:
   Don't forget to include `--master yarn` and `--deploy-mode cluster` parameters
   in order to compute the job in the cluster instead of locally.
 
+.. warning::
+
+  YARN does not overwrite non empty directories. Ensure to delete
+  `/user/<username>/spark-csv-output` directory before submiting the job again.
+
 .. code-block:: console
 
-  # spark-submit --master yarn --deploy-mode cluster /workdir/yelp_example.py
-  18/04/13 13:06:47 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
-  18/04/13 13:06:49 WARN shortcircuit.DomainSocketFactory: The short-circuit local reads feature cannot be used because libhadoop cannot be loaded.
-  18/04/13 13:06:49 INFO client.RMProxy: Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
-  18/04/13 13:06:49 INFO yarn.Client: Requesting a new application from cluster with 3 NodeManagers
-  18/04/13 13:06:50 INFO yarn.Client: Verifying our application has not requested more than the maximum memory capability of the cluster (9216 MB per container)
-  18/04/13 13:06:50 INFO yarn.Client: Will allocate AM container, with 1408 MB memory including 384 MB overhead
-  18/04/13 13:06:50 INFO yarn.Client: Setting up container launch context for our AM
-  18/04/13 13:06:50 INFO yarn.Client: Setting up the launch environment for our AM container
-  18/04/13 13:06:50 INFO yarn.Client: Preparing resources for our AM container
-  18/04/13 13:06:50 INFO security.HadoopFSCredentialProvider: getting token for: hdfs://gauss.res.eng.it:8020/user/<username>
-  18/04/13 13:06:50 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 535 for <username> on 192.168.125.113:8020
-  18/04/13 13:06:52 INFO yarn.Client: Use hdfs cache file as spark.yarn.archive for HDP, hdfsCacheFile:hdfs://gauss.res.eng.it:8020/hdp/apps/2.6.4.0-91/spark2/spark2-hdp-yarn-archive.tar.gz
-  18/04/13 13:06:52 INFO yarn.Client: Source and destination file systems are the same. Not copying hdfs://gauss.res.eng.it:8020/hdp/apps/2.6.4.0-91/spark2/spark2-hdp-yarn-archive.tar.gz
-  18/04/13 13:06:52 INFO yarn.Client: Uploading resource file:/workdir/yelp_example.py -> hdfs://gauss.res.eng.it:8020/user/<username>/.sparkStaging/application_1523347765873_0011/yelp_example.py
-  18/04/13 13:06:53 INFO yarn.Client: Uploading resource file:/usr/hdp/current/spark2-client/python/lib/pyspark.zip -> hdfs://gauss.res.eng.it:8020/user/<username>/.sparkStaging/application_1523347765873_0011/pyspark.zip
-  18/04/13 13:06:53 INFO yarn.Client: Uploading resource file:/usr/hdp/current/spark2-client/python/lib/py4j-0.10.4-src.zip -> hdfs://gauss.res.eng.it:8020/user/<username>/.sparkStaging/application_1523347765873_0011/py4j-0.10.4-src.zip
-  18/04/13 13:06:53 INFO yarn.Client: Uploading resource file:/tmp/spark-49a33464-cde1-46bb-9662-9ff14a26db39/__spark_conf__2421542858529915483.zip -> hdfs://gauss.res.eng.it:8020/user/<username>/.sparkStaging/application_1523347765873_0011/__spark_conf__.zip
-  18/04/13 13:06:53 INFO spark.SecurityManager: Changing view acls to: root,<username>
-  18/04/13 13:06:53 INFO spark.SecurityManager: Changing modify acls to: root,<username>
-  18/04/13 13:06:53 INFO spark.SecurityManager: Changing view acls groups to:
-  18/04/13 13:06:53 INFO spark.SecurityManager: Changing modify acls groups to:
-  18/04/13 13:06:53 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(root, <username>); groups with view permissions: Set(); users  with modify permissions: Set(root, <username>); groups with modify permissions: Set()
-  18/04/13 13:06:53 INFO yarn.Client: Submitting application application_1523347765873_0011 to ResourceManager
-  18/04/13 13:06:53 INFO impl.YarnClientImpl: Submitted application application_1523347765873_0011
-  18/04/13 13:06:54 INFO yarn.Client: Application report for application_1523347765873_0011 (state: ACCEPTED)
-  18/04/13 13:06:54 INFO yarn.Client:
+  # spark-submit --master yarn --deploy-mode cluster yelp_example.py /samples/yelp/yelp_business.csv /user/<username>/spark-csv-output --app_name <username>YelpExample
+  18/10/10 10:38:14 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+  18/10/10 10:38:15 WARN shortcircuit.DomainSocketFactory: The short-circuit local reads feature cannot be used because libhadoop cannot be loaded.
+  18/10/10 10:38:15 INFO client.RMProxy: Connecting to ResourceManager at master.edincubator.eu/192.168.1.12:8050
+  18/10/10 10:38:16 INFO yarn.Client: Requesting a new application from cluster with 4 NodeManagers
+  18/10/10 10:38:17 INFO yarn.Client: Verifying our application has not requested more than the maximum memory capability of the cluster (101376 MB per container)
+  18/10/10 10:38:17 INFO yarn.Client: Will allocate AM container, with 1408 MB memory including 384 MB overhead
+  18/10/10 10:38:17 INFO yarn.Client: Setting up container launch context for our AM
+  18/10/10 10:38:17 INFO yarn.Client: Setting up the launch environment for our AM container
+  18/10/10 10:38:17 INFO yarn.Client: Preparing resources for our AM container
+  18/10/10 10:38:17 INFO security.HadoopFSDelegationTokenProvider: getting token for: DFS[DFSClient[clientName=DFSClient_NONMAPREDUCE_-1732315395_1, ugi=<username>@EDINCUBATOR.EU (auth:KERBEROS)]]
+  18/10/10 10:38:18 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 486 for <username> on 192.168.1.12:8020
+  18/10/10 10:38:20 INFO yarn.Client: Use hdfs cache file as spark.yarn.archive for HDP, hdfsCacheFile:hdfs://master.edincubator.eu:8020/hdp/apps/2.6.5.0-292/spark2/spark2-hdp-yarn-archive.tar.gz
+  18/10/10 10:38:20 INFO yarn.Client: Source and destination file systems are the same. Not copying hdfs://master.edincubator.eu:8020/hdp/apps/2.6.5.0-292/spark2/spark2-hdp-yarn-archive.tar.gz
+  18/10/10 10:38:21 INFO yarn.Client: Uploading resource file:/workdir/stack-examples/spark2example/yelp_example.py -> hdfs://master.edincubator.eu:8020/user/<username>/.sparkStaging/application_1539159936594_0011/yelp_example.py
+  18/10/10 10:38:23 INFO yarn.Client: Uploading resource file:/usr/hdp/current/spark2-client/python/lib/pyspark.zip -> hdfs://master.edincubator.eu:8020/user/<username>/.sparkStaging/application_1539159936594_0011/pyspark.zip
+  18/10/10 10:38:26 INFO yarn.Client: Uploading resource file:/usr/hdp/current/spark2-client/python/lib/py4j-0.10.6-src.zip -> hdfs://master.edincubator.eu:8020/user/<username>/.sparkStaging/application_1539159936594_0011/py4j-0.10.6-src.zip
+  18/10/10 10:38:28 INFO yarn.Client: Uploading resource file:/tmp/spark-fa20d514-3a9d-4de3-9a9e-bc356c5c2032/__spark_conf__1996256534625877583.zip -> hdfs://master.edincubator.eu:8020/user/<username>/.sparkStaging/application_1539159936594_0011/__spark_conf__.zip
+  18/10/10 10:38:31 INFO spark.SecurityManager: Changing view acls to: <username>
+  18/10/10 10:38:31 INFO spark.SecurityManager: Changing modify acls to: <username>
+  18/10/10 10:38:31 INFO spark.SecurityManager: Changing view acls groups to:
+  18/10/10 10:38:31 INFO spark.SecurityManager: Changing modify acls groups to:
+  18/10/10 10:38:31 INFO spark.SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(<username>); groups with view permissions: Set(); users  with modify permissions: Set(<username>); groups with modify permissions: Set()
+  18/10/10 10:38:31 INFO yarn.Client: Submitting application application_1539159936594_0011 to ResourceManager
+  18/10/10 10:38:32 INFO impl.YarnClientImpl: Submitted application application_1539159936594_0011
+  18/10/10 10:38:33 INFO yarn.Client: Application report for application_1539159936594_0011 (state: ACCEPTED)
+  18/10/10 10:38:33 INFO yarn.Client:
   	 client token: Token { kind: YARN_CLIENT_TOKEN, service:  }
   	 diagnostics: AM container is launched, waiting for AM container to Register with RM
   	 ApplicationMaster host: N/A
   	 ApplicationMaster RPC port: -1
   	 queue: default
-  	 start time: 1523624813615
+  	 start time: 1539167911783
   	 final status: UNDEFINED
-  	 tracking URL: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0011/
+  	 tracking URL: http://master.edincubator.eu:8088/proxy/application_1539159936594_0011/
   	 user: <username>
-  18/04/13 13:06:55 INFO yarn.Client: Application report for application_1523347765873_0011 (state: ACCEPTED)
-  ...
-  18/04/13 13:07:03 INFO yarn.Client: Application report for application_1523347765873_0011 (state: ACCEPTED)
-  18/04/13 13:07:04 INFO yarn.Client: Application report for application_1523347765873_0011 (state: RUNNING)
-  18/04/13 13:07:04 INFO yarn.Client:
+  18/10/10 10:38:34 INFO yarn.Client: Application report for application_1539159936594_0011 (state: ACCEPTED)
+  18/10/10 10:38:35 INFO yarn.Client: Application report for application_1539159936594_0011 (state: ACCEPTED)
+  18/10/10 10:38:36 INFO yarn.Client: Application report for application_1539159936594_0011 (state: ACCEPTED)
+  18/10/10 10:38:37 INFO yarn.Client: Application report for application_1539159936594_0011 (state: RUNNING)
+  18/10/10 10:38:37 INFO yarn.Client:
   	 client token: Token { kind: YARN_CLIENT_TOKEN, service:  }
   	 diagnostics: N/A
-  	 ApplicationMaster host: 192.168.125.100
+  	 ApplicationMaster host: 192.168.1.24
   	 ApplicationMaster RPC port: 0
   	 queue: default
-  	 start time: 1523624813615
+  	 start time: 1539167911783
   	 final status: UNDEFINED
-  	 tracking URL: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0011/
+  	 tracking URL: http://master.edincubator.eu:8088/proxy/application_1539159936594_0011/
   	 user: <username>
-  18/04/13 13:07:05 INFO yarn.Client: Application report for application_1523347765873_0011 (state: RUNNING)
-  ...
-  18/04/13 13:08:36 INFO yarn.Client: Application report for application_1523347765873_0011 (state: RUNNING)
-  18/04/13 13:08:37 INFO yarn.Client: Application report for application_1523347765873_0011 (state: FINISHED)
-  18/04/13 13:08:37 INFO yarn.Client:
-  	 client token: Token { kind: YARN_CLIENT_TOKEN, service:  }
+  18/10/10 10:38:38 INFO yarn.Client: Application report for application_1539159936594_0011 (state: RUNNING)
+  18/10/10 10:38:40 INFO yarn.Client: Application report for application_1539159936594_0011 (state: RUNNING)
+  18/10/10 10:38:41 INFO yarn.Client: Application report for application_1539159936594_0011 (state: RUNNING)
+  18/10/10 10:38:42 INFO yarn.Client: Application report for application_1539159936594_0011 (state: RUNNING)
+  18/10/10 10:38:43 INFO yarn.Client: Application report for application_1539159936594_0011 (state: RUNNING)
+  18/10/10 10:38:44 INFO yarn.Client: Application report for application_1539159936594_0011 (state: RUNNING)
+  18/10/10 10:38:45 INFO yarn.Client: Application report for application_1539159936594_0011 (state: RUNNING)
+  18/10/10 10:38:46 INFO yarn.Client: Application report for application_1539159936594_0011 (state: RUNNING)
+  18/10/10 10:38:48 INFO yarn.Client: Application report for application_1539159936594_0011 (state: RUNNING)
+  18/10/10 10:38:49 INFO yarn.Client: Application report for application_1539159936594_0011 (state: RUNNING)
+  18/10/10 10:38:50 INFO yarn.Client: Application report for application_1539159936594_0011 (state: FINISHED)
+  18/10/10 10:38:50 INFO yarn.Client:
+  	 client token: N/A
   	 diagnostics: N/A
-  	 ApplicationMaster host: 192.168.125.100
+  	 ApplicationMaster host: 192.168.1.24
   	 ApplicationMaster RPC port: 0
   	 queue: default
-  	 start time: 1523624813615
+  	 start time: 1539167911783
   	 final status: SUCCEEDED
-  	 tracking URL: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0011/
+  	 tracking URL: http://master.edincubator.eu:8088/proxy/application_1539159936594_0011/
   	 user: <username>
-  18/04/13 13:08:37 INFO util.ShutdownHookManager: Shutdown hook called
-  18/04/13 13:08:37 INFO util.ShutdownHookManager: Deleting directory /tmp/spark-49a33464-cde1-46bb-9662-9ff14a26db39
+  18/10/10 10:38:50 INFO util.ShutdownHookManager: Shutdown hook called
+  18/10/10 10:38:50 INFO util.ShutdownHookManager: Deleting directory /tmp/spark-447b8972-64d0-43db-b233-3ded18ee4dea
+  18/10/10 10:38:50 INFO util.ShutdownHookManager: Deleting directory /tmp/spark-fa20d514-3a9d-4de3-9a9e-bc356c5c2032
 
 You can find more information about the job at
-|resourcemanager_url|. Check
+`<http://master.edincubator.eu:8088/cluster>`_. Check
 `/user/<username>/spark-csv-output` directory for the results.
