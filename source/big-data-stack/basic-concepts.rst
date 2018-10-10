@@ -3,22 +3,52 @@
 EDI client's basic concepts
 ===========================
 
+Connect to Big Data Stack's VPN
+-------------------------------
+
+All services provided by EDI's Big Data Stack are only accessible through its
+own VPN. This VPN network is restricted to Big Data Stack's private network and
+it has not access to the public Internet. For this reason, if you connect to the
+VPN using the client provided by your SO, you will be only enable to connect to
+EDI services, without Internet access. For avoinding this situation, we provide instructions
+for launching OpenVPN client in a `Docker <http://docker.io>`_ container, to allow
+stack-client container and a custom Firefox browser connecting to the VPN, while
+the rest of your SO remained connected to your default network with Internet access.
+
+For installing Docker in your SO, follow instructions at `<https://docs.docker.com/install/>`_.
+
+At first, you must store your OpenVPN config file (`edi.ovpn`) into a folder in
+your system. In this example we suppose that this config file is in `/some/path`
+folder. Use the following commands for launching the OpenVPN client:
+
+.. code-block:: console
+
+  $ docker run -it --cap-add=NET_ADMIN --device /dev/net/tun --name vpn \
+            -v /some/path:/vpn --dns 192.168.1.11 --dns-search edincubator.eu \
+            -d dperson/openvpn-client
+  $ docker restart vpn
+
+For connecting other containers to the VPN, you can use the `--net=container:vpn`
+parameter, as explained later.
+
+Big Data Stack's Client
+-----------------------
+
 EDI provides a `Docker <http://docker.io>`_ image with a set of already installed
 tools for interacting with the Big Data Stack . In order to create a Docker
 container using this image, you must perform the following steps:
 
-#. Install Docker in your system according to the following `instructions <https://docs.docker.com/install/>`_.
-#. Pull the docker image from EDI registry:
+1. Pull the docker image from EDI registry:
 
 .. code-block:: console
 
   $ docker pull edincubator/stack-client
 
-3. Run and access to the container:
+2. Run and access to the container:
 
 .. code-block :: console
 
-  $ docker run -ti -v <workdir>:/workdir edincubator/stack-client /bin/bash
+  $ docker run -ti --net=container:vpn -v <workdir>:/workdir edincubator/stack-client /bin/bash
   Enter your username : <username>
   $
 
@@ -45,52 +75,53 @@ client/server applications by using secret-key cryptography.
 
 For authenticating yourself you must introduce the following command:
 
-.. ifconfig:: releaselevel in ('dev')
+.. code-block:: console
 
-  .. code-block:: console
+  # kinit <user>
+  Password for <user>@EDINCUBATOR.EU: <enter your password>
+  #
 
-    # kinit <user>@GAUSS.RES.ENG.IT
-    Password for <user>@GAUSS.RES.ENG.IT: <enter your password>
-    #
-
-.. ifconfig:: releaselevel in ('prod')
-
-  .. code-block:: console
-
-    # kinit <user>@<REALM>
-    Password for <user>@<REALM>: <enter your password>
-    #
 
 You can check the status of your Kerberos ticket using the `klist` command:
 
-.. ifconfig:: releaselevel in ('dev')
+.. code-block:: console
 
-  .. code-block:: console
+  # klist
+  Ticket cache: FILE:/tmp/krb5cc_0
+  Default principal: <user>@EDINCUBATOR.EU
 
-    # klist
-    Ticket cache: FILE:/tmp/krb5cc_0
-    Default principal: <user>@GAUSS.RES.ENG.IT
+  Valid starting     Expires            Service principal
+  04/12/18 09:53:28  04/13/18 09:53:28  krbtgt/EDINCUBATOR.EU@EDINCUBATOR.EU
 
-    Valid starting     Expires            Service principal
-    04/12/18 09:53:28  04/13/18 09:53:28  krbtgt/gauss.res.eng.it@GAUSS.RES.ENG.IT
-
-.. ifconfig:: releaselevel in ('prod')
-
-  .. code-block:: console
-
-    # klist
-    Ticket cache: FILE:/tmp/krb5cc_0
-    Default principal: <user>@<REALM>
-
-    Valid starting     Expires            Service principal
-    04/12/18 09:53:28  04/13/18 09:53:28  krbtgt/<REALM>@<REALM>
 
 Once you have a valid ticket, you can work at EDI Big Data Stack until the
 ticket expires. If the ticket expires, you must execute again `kinit` command.
 
-.. todo::
 
-  Replace REALM by production realm.
+.. _firefox:
+
+Launching a Firefox browser
+---------------------------
+
+For accessing to :ref:`ambari-views` and other web-based tools provided by the
+Big Data Stack you must be connected to the VPN. As explained before, connecting
+to the VPN at a system level will restrict your connectivity to EDI's Big Data Stack
+private network. To avoid this, you can launch a Firefox browser into a Docker
+container connected to the VPN this way:
+
+.. note::
+
+  You must allow connections to your X11 server with the following command:
+
+  $ xhost local:root
+
+.. code-block:: console
+
+  $ docker run -it --net=container:vpn --cpuset-cpus 0 --memory 512mb -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY --name firefox jess/firefox
+
+Once the container is created, you can re-open firefox using `docker restart firefox`
+commnad.
+
 
 Tools provided by EDI Big Data Stack
 ------------------------------------
