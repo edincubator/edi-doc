@@ -55,8 +55,8 @@ This action clears paths used by other tasks as output to avoid errors.
   <action name="fs_1">
     <fs>
       <name-node>${nameNode}</name-node>
-      <delete path="/user/docuser/pig-output"></delete>
-      <delete path="/user/docuser/spark-oozie-output"></delete>
+      <delete path="/user/${user}/${examplesRoot}/pig-output"></delete>
+      <delete path="/user/${user}/${examplesRoot}/spark-oozie-output"></delete>
     </fs>
     <ok to="pig_1"/>
     <error to="pig_1"/>
@@ -85,7 +85,9 @@ This action executes a Pig script.
     <pig>
       <job-tracker>${jobTracker}</job-tracker>
       <name-node>${nameNode}</name-node>
-      <script>/user/docuser/pig/scripts/yelpbusiness-2018-06-07_12-45.pig</script>
+      <script>/user/${user}/${examplesRoot}/yelp_business.pig</script>
+      <argument>-param</argument>
+      <argument>output_dir=/user/${user}/${examplesRoot}/pig-output</argument>
     </pig>
     <ok to="spark_1"/>
     <error to="kill"/>
@@ -110,8 +112,11 @@ This action executes a Spark script.
       <job-tracker>${jobTracker}</job-tracker>
       <name-node>${nameNode}</name-node>
       <master>yarn-cluster</master>
-      <name>SparkOozieTest</name>
-      <jar>hdfs://gauss.res.eng.it:8020/user/docuser/workflows/spark.py</jar>
+      <name>${user}SparkOozieTest</name>
+      <jar>${nameNode}/user/${user}/${examplesRoot}/spark.py</jar>
+      <arg>--app_name=${user}SparkOozieExample</arg>
+      <arg>--username=${user}</arg>
+      <arg>--example_dir=${examplesRoot}</arg>
     </spark>
     <ok to="end"/>
     <error to="kill"/>
@@ -144,10 +149,11 @@ parameters and variables used by the Oozie job:
 
 .. code-block:: properties
 
-  nameNode=hdfs://gauss.res.eng.it:8020
-  jobTracker=gauss.res.eng.it:8050
+  nameNode=hdfs://master.edincubator.eu:8020
+  jobTracker=master.edincubator.eu:8050
   master=yarn-cluster
   examplesRoot=oozie-example
+  user=<username>
   oozie.use.system.libpath=true
   oozie.wf.application.path=${nameNode}/user/${user.name}/${examplesRoot}/
 
@@ -213,4 +219,4 @@ You can check logs from a job using `oozie job -log` command
 
 
 When Oozie job finishes, you can check its results at
-`/user/docuser/spark-oozie-output`.
+`/user/<username>/oozie-example/spark-oozie-output`.
