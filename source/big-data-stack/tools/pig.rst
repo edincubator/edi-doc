@@ -24,21 +24,21 @@ starting a Pig shell you must type `pig` command:
 .. code-block:: console
 
   # pig
-  18/04/24 13:52:01 INFO pig.ExecTypeProvider: Trying ExecType : LOCAL
-  18/04/24 13:52:01 INFO pig.ExecTypeProvider: Trying ExecType : MAPREDUCE
-  18/04/24 13:52:01 INFO pig.ExecTypeProvider: Trying ExecType : TEZ_LOCAL
-  18/04/24 13:52:01 INFO pig.ExecTypeProvider: Trying ExecType : TEZ
-  18/04/24 13:52:01 INFO pig.ExecTypeProvider: Picked TEZ as the ExecType
-  2018-04-24 13:52:01,284 [main] INFO  org.apache.pig.Main - Apache Pig version 0.16.0.2.6.4.0-91 (rexported) compiled Jan 04 2018, 10:39:57
-  2018-04-24 13:52:01,284 [main] INFO  org.apache.pig.Main - Logging error messages to: /usr/hdp/2.6.4.0-91/kafka/pig_1524577921282.log
-  2018-04-24 13:52:01,327 [main] INFO  org.apache.pig.impl.util.Utils - Default bootup file /root/.pigbootup not found
-  2018-04-24 13:52:02,426 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
-  2018-04-24 13:52:02,427 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
-  2018-04-24 13:52:02,427 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: hdfs://gauss.res.eng.it:8020
-  2018-04-24 13:52:03,661 [main] INFO  org.apache.pig.PigServer - Pig Script ID for the session: PIG-default-a952444f-2296-4628-b423-2e5d9ee54f18
-  2018-04-24 13:52:04,593 [main] INFO  org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl - Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
-  2018-04-24 13:52:04,964 [main] INFO  org.apache.pig.backend.hadoop.PigATSClient - Created ATS Hook
-  2018-04-24 13:52:04,995 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+  18/10/10 15:16:43 INFO pig.ExecTypeProvider: Trying ExecType : LOCAL
+  18/10/10 15:16:43 INFO pig.ExecTypeProvider: Trying ExecType : MAPREDUCE
+  18/10/10 15:16:43 INFO pig.ExecTypeProvider: Trying ExecType : TEZ_LOCAL
+  18/10/10 15:16:43 INFO pig.ExecTypeProvider: Trying ExecType : TEZ
+  18/10/10 15:16:43 INFO pig.ExecTypeProvider: Picked TEZ as the ExecType
+  2018-10-10 15:16:43,214 [main] INFO  org.apache.pig.Main - Apache Pig version 0.16.0.2.6.5.0-292 (rUnversioned directory) compiled May 11 2018, 07:56:28
+  2018-10-10 15:16:43,215 [main] INFO  org.apache.pig.Main - Logging error messages to: /workdir/pig_1539184603214.log
+  2018-10-10 15:16:43,235 [main] INFO  org.apache.pig.impl.util.Utils - Default bootup file /home/test23/.pigbootup not found
+  2018-10-10 15:16:43,790 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+  2018-10-10 15:16:43,791 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
+  2018-10-10 15:16:43,791 [main] INFO  org.apache.pig.backend.hadoop.executionengine.HExecutionEngine - Connecting to hadoop file system at: hdfs://master.edincubator.eu:8020
+  2018-10-10 15:16:44,563 [main] INFO  org.apache.pig.PigServer - Pig Script ID for the session: PIG-default-31e0e22b-9d25-423f-adda-0e3e0ebda301
+  2018-10-10 15:16:44,994 [main] INFO  org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl - Timeline service address: http://master.edincubator.eu:8188/ws/v1/timeline/
+  2018-10-10 15:16:45,855 [main] INFO  org.apache.pig.backend.hadoop.PigATSClient - Created ATS Hook
+  2018-10-10 15:16:45,885 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
   grunt>
 
 Next, we can load and operate over sample data:
@@ -51,7 +51,7 @@ Next, we can load and operate over sample data:
 
 .. code-block:: console
 
-    grunt> yelp_business = LOAD '/user/<username>/samples/yelp_business.csv' using CSVLoader AS (
+    grunt> yelp_business = LOAD '/samples/yelp/yelp_business/yelp_business.csv' using CSVLoader AS (
       business_id:chararray,
       name:chararray,
       neighborhood:chararray,
@@ -107,8 +107,8 @@ Next, we can dump the result into the shell.
 
   grunt> DUMP counted_business;
   2018-04-24 15:19:46,891 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 600 for <username> on 192.168.125.113:8020
-  2018-04-24 15:19:47,000 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 600 for <username>)
-  2018-04-24 15:19:47,000 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524583186940, maxDate=1525187986940, sequenceNumber=272, masterKeyId=62)
+  2018-04-24 15:19:47,000 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 600 for <username>)
+  2018-04-24 15:19:47,000 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524583186940, maxDate=1525187986940, sequenceNumber=272, masterKeyId=62)
   2018-04-24 15:19:47,006 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: GROUP_BY
   2018-04-24 15:19:47,055 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
   2018-04-24 15:19:47,059 [main] INFO  org.apache.pig.data.SchemaTupleBackend - Key [pig.schematuple] was not set... will not generate code.
@@ -120,8 +120,8 @@ Next, we can dump the result into the shell.
   2018-04-24 15:19:47,551 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.CombinerOptimizerUtil - Choosing to move algebraic foreach to combiner
   2018-04-24 15:19:47,616 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapreduce.inputformat.class is deprecated. Instead, use mapreduce.job.inputformat.class
   2018-04-24 15:19:47,686 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 601 for <username> on 192.168.125.113:8020
-  2018-04-24 15:19:47,712 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 601 for <username>)
-  2018-04-24 15:19:47,712 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524583187706, maxDate=1525187987706, sequenceNumber=273, masterKeyId=62)
+  2018-04-24 15:19:47,712 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 601 for <username>)
+  2018-04-24 15:19:47,712 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524583187706, maxDate=1525187987706, sequenceNumber=273, masterKeyId=62)
   2018-04-24 15:19:47,716 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
   2018-04-24 15:19:47,717 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
   2018-04-24 15:19:47,784 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
@@ -145,23 +145,23 @@ Next, we can dump the result into the shell.
   2018-04-24 15:19:48,926 [main] INFO  org.apache.pig.backend.hadoop.executionengine.tez.TezJobCompiler - Total estimated parallelism is 2
   2018-04-24 15:19:49,057 [PigTezLauncher-0] INFO  org.apache.pig.tools.pigstats.tez.TezScriptState - Pig script settings are added to the job
   2018-04-24 15:19:49,083 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Tez Client Version: [ component=tez-api, version=0.7.0.2.6.4.0-91, revision=0daef967e122a98f83b824f3b14991e792f5dd4d, SCM-URL=scm:git:https://git-wip-us.apache.org/repos/asf/tez.git, buildTime=2018-01-04T09:08:42Z ]
-  2018-04-24 15:19:49,155 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.RMProxy - Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
-  2018-04-24 15:19:49,345 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.AHSProxy - Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
+  2018-04-24 15:19:49,155 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.RMProxy - Connecting to ResourceManager at master.edincubator.eu/192.168.125.113:8050
+  2018-04-24 15:19:49,345 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.AHSProxy - Connecting to Application History server at master.edincubator.eu/192.168.125.113:10200
   2018-04-24 15:19:49,351 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Session mode. Starting session.
   2018-04-24 15:19:49,356 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClientUtils - Using tez.lib.uris value from configuration: /hdp/apps/2.6.4.0-91/tez/tez.tar.gz
   2018-04-24 15:19:49,377 [PigTezLauncher-0] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 602 for <username> on 192.168.125.113:8020
-  2018-04-24 15:19:49,411 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 602 for <username>)
-  2018-04-24 15:19:49,412 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524583189407, maxDate=1525187989407, sequenceNumber=274, masterKeyId=62)
-  2018-04-24 15:19:49,466 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Tez system stage directory hdfs://gauss.res.eng.it:8020/tmp/root/staging/.tez/application_1523347765873_0043 doesn't exist and is created
+  2018-04-24 15:19:49,411 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 602 for <username>)
+  2018-04-24 15:19:49,412 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524583189407, maxDate=1525187989407, sequenceNumber=274, masterKeyId=62)
+  2018-04-24 15:19:49,466 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Tez system stage directory hdfs://master.edincubator.eu:8020/tmp/root/staging/.tez/application_1523347765873_0043 doesn't exist and is created
   2018-04-24 15:19:49,473 [PigTezLauncher-0] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
-  2018-04-24 15:19:49,748 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl - Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
+  2018-04-24 15:19:49,748 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl - Timeline service address: http://master.edincubator.eu:8188/ws/v1/timeline/
   2018-04-24 15:19:50,312 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.api.impl.YarnClientImpl - Submitted application application_1523347765873_0043
-  2018-04-24 15:19:50,315 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - The url to track the Tez Session: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0043/
+  2018-04-24 15:19:50,315 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - The url to track the Tez Session: http://master.edincubator.eu:8088/proxy/application_1523347765873_0043/
   2018-04-24 15:19:59,550 [PigTezLauncher-0] INFO  org.apache.pig.backend.hadoop.executionengine.tez.TezJob - Submitting DAG PigLatin:DefaultJobName-0_scope-0
   2018-04-24 15:19:59,550 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Submitting dag to TezSession, sessionName=PigLatin:DefaultJobName, applicationId=application_1523347765873_0043, dagName=PigLatin:DefaultJobName-0_scope-0, callerContext={ context=PIG, callerType=PIG_SCRIPT_ID, callerId=PIG-default-6eddcb9e-3548-4424-8d82-ee8ad63e9b61 }
   2018-04-24 15:20:00,156 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Submitted dag to TezSession, sessionName=PigLatin:DefaultJobName, applicationId=application_1523347765873_0043, dagName=PigLatin:DefaultJobName-0_scope-0
-  2018-04-24 15:20:00,258 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.RMProxy - Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
-  2018-04-24 15:20:00,259 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.AHSProxy - Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
+  2018-04-24 15:20:00,258 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.RMProxy - Connecting to ResourceManager at master.edincubator.eu/192.168.125.113:8050
+  2018-04-24 15:20:00,259 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.AHSProxy - Connecting to Application History server at master.edincubator.eu/192.168.125.113:10200
   2018-04-24 15:20:00,262 [PigTezLauncher-0] INFO  org.apache.pig.backend.hadoop.executionengine.tez.TezJob - Submitted DAG PigLatin:DefaultJobName-0_scope-0. Application id: application_1523347765873_0043
   2018-04-24 15:20:00,987 [main] INFO  org.apache.pig.backend.hadoop.executionengine.tez.TezLauncher - HadoopJobId: job_1523347765873_0043
   2018-04-24 15:20:01,264 [Timer-0] INFO  org.apache.pig.backend.hadoop.executionengine.tez.TezJob - DAG Status: status=RUNNING, progress=TotalTasks: 2 Succeeded: 0 Running: 0 Failed: 0 Killed: 0, diagnostics=, counters=null
@@ -318,17 +318,17 @@ Next, we can dump the result into the shell.
   Vertex Stats:
   VertexId Parallelism TotalTasks   InputRecords   ReduceInputRecords  OutputRecords  FileBytesRead FileBytesWritten  HdfsBytesRead HdfsBytesWritten Alias	Feature	Outputs
   scope-52           1          1         174568                    0         174568             32              677       31760674                0 counted_business,grouped_business,yelp_business
-  scope-53           1          1              0                   69             69            677                0              0              772 counted_business	GROUP_BY	hdfs://gauss.res.eng.it:8020/tmp/temp-735280935/tmp-1627710868,
+  scope-53           1          1              0                   69             69            677                0              0              772 counted_business	GROUP_BY	hdfs://master.edincubator.eu:8020/tmp/temp-735280935/tmp-1627710868,
 
   Input(s):
   Successfully read 174568 records (31760674 bytes) from: "/user/<username>/samples/yelp_business.csv"
 
   Output(s):
-  Successfully stored 69 records (772 bytes) in: "hdfs://gauss.res.eng.it:8020/tmp/temp-735280935/tmp-1627710868"
+  Successfully stored 69 records (772 bytes) in: "hdfs://master.edincubator.eu:8020/tmp/temp-735280935/tmp-1627710868"
 
   2018-04-24 15:20:14,010 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 603 for <username> on 192.168.125.113:8020
-  2018-04-24 15:20:14,033 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 603 for <username>)
-  2018-04-24 15:20:14,034 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524583214028, maxDate=1525188014028, sequenceNumber=275, masterKeyId=62)
+  2018-04-24 15:20:14,033 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 603 for <username>)
+  2018-04-24 15:20:14,034 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524583214028, maxDate=1525188014028, sequenceNumber=275, masterKeyId=62)
   2018-04-24 15:20:14,047 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
   2018-04-24 15:20:14,047 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
   (,1)
@@ -411,8 +411,8 @@ can store this output into HDFS as a CSV file:
   2018-04-24 15:44:10,488 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
   2018-04-24 15:44:10,500 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - mapred.textoutputformat.separator is deprecated. Instead, use mapreduce.output.textoutputformat.separator
   2018-04-24 15:44:10,504 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 604 for <username> on 192.168.125.113:8020
-  2018-04-24 15:44:10,765 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 604 for <username>)
-  2018-04-24 15:44:10,765 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524584650761, maxDate=1525189450761, sequenceNumber=276, masterKeyId=62)
+  2018-04-24 15:44:10,765 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 604 for <username>)
+  2018-04-24 15:44:10,765 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524584650761, maxDate=1525189450761, sequenceNumber=276, masterKeyId=62)
   2018-04-24 15:44:10,809 [main] INFO  org.apache.pig.tools.pigstats.ScriptState - Pig features used in the script: GROUP_BY
   2018-04-24 15:44:10,842 [main] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
   2018-04-24 15:44:10,843 [main] INFO  org.apache.pig.data.SchemaTupleBackend - Key [pig.schematuple] was not set... will not generate code.
@@ -422,8 +422,8 @@ can store this output into HDFS as a CSV file:
   2018-04-24 15:44:10,884 [main] INFO  org.apache.pig.backend.hadoop.executionengine.tez.plan.TezCompiler - File concatenation threshold: 100 optimistic? false
   2018-04-24 15:44:10,887 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.CombinerOptimizerUtil - Choosing to move algebraic foreach to combiner
   2018-04-24 15:44:10,910 [main] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 605 for <username> on 192.168.125.113:8020
-  2018-04-24 15:44:10,933 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 605 for <username>)
-  2018-04-24 15:44:10,933 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524584650929, maxDate=1525189450929, sequenceNumber=277, masterKeyId=62)
+  2018-04-24 15:44:10,933 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 605 for <username>)
+  2018-04-24 15:44:10,933 [main] INFO  org.apache.hadoop.mapreduce.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524584650929, maxDate=1525189450929, sequenceNumber=277, masterKeyId=62)
   2018-04-24 15:44:10,935 [main] INFO  org.apache.hadoop.mapreduce.lib.input.FileInputFormat - Total input paths to process : 1
   2018-04-24 15:44:10,935 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths to process : 1
   2018-04-24 15:44:10,938 [main] INFO  org.apache.pig.backend.hadoop.executionengine.util.MapRedUtil - Total input paths (combined) to process : 1
@@ -445,23 +445,23 @@ can store this output into HDFS as a CSV file:
   2018-04-24 15:44:11,135 [main] INFO  org.apache.pig.backend.hadoop.executionengine.tez.TezJobCompiler - Total estimated parallelism is 2
   2018-04-24 15:44:11,235 [PigTezLauncher-0] INFO  org.apache.pig.tools.pigstats.tez.TezScriptState - Pig script settings are added to the job
   2018-04-24 15:44:11,237 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Tez Client Version: [ component=tez-api, version=0.7.0.2.6.4.0-91, revision=0daef967e122a98f83b824f3b14991e792f5dd4d, SCM-URL=scm:git:https://git-wip-us.apache.org/repos/asf/tez.git, buildTime=2018-01-04T09:08:42Z ]
-  2018-04-24 15:44:11,277 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.RMProxy - Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
-  2018-04-24 15:44:11,278 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.AHSProxy - Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
+  2018-04-24 15:44:11,277 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.RMProxy - Connecting to ResourceManager at master.edincubator.eu/192.168.125.113:8050
+  2018-04-24 15:44:11,278 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.AHSProxy - Connecting to Application History server at master.edincubator.eu/192.168.125.113:10200
   2018-04-24 15:44:11,279 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Session mode. Starting session.
   2018-04-24 15:44:11,279 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClientUtils - Using tez.lib.uris value from configuration: /hdp/apps/2.6.4.0-91/tez/tez.tar.gz
   2018-04-24 15:44:11,289 [PigTezLauncher-0] INFO  org.apache.hadoop.hdfs.DFSClient - Created HDFS_DELEGATION_TOKEN token 606 for <username> on 192.168.125.113:8020
-  2018-04-24 15:44:11,323 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 606 for <username>)
-  2018-04-24 15:44:11,323 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://gauss.res.eng.it:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524584651318, maxDate=1525189451318, sequenceNumber=278, masterKeyId=62)
-  2018-04-24 15:44:11,335 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Tez system stage directory hdfs://gauss.res.eng.it:8020/tmp/root/staging/.tez/application_1523347765873_0044 doesn't exist and is created
+  2018-04-24 15:44:11,323 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: HDFS_DELEGATION_TOKEN, Service: 192.168.125.113:8020, Ident: (HDFS_DELEGATION_TOKEN token 606 for <username>)
+  2018-04-24 15:44:11,323 [PigTezLauncher-0] INFO  org.apache.tez.common.security.TokenCache - Got dt for hdfs://master.edincubator.eu:8020; Kind: kms-dt, Service: 192.168.125.113:9292, Ident: (owner=<username>, renewer=yarn, realUser=, issueDate=1524584651318, maxDate=1525189451318, sequenceNumber=278, masterKeyId=62)
+  2018-04-24 15:44:11,335 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Tez system stage directory hdfs://master.edincubator.eu:8020/tmp/root/staging/.tez/application_1523347765873_0044 doesn't exist and is created
   2018-04-24 15:44:11,339 [PigTezLauncher-0] INFO  org.apache.hadoop.conf.Configuration.deprecation - fs.default.name is deprecated. Instead, use fs.defaultFS
-  2018-04-24 15:44:11,555 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl - Timeline service address: http://gauss.res.eng.it:8188/ws/v1/timeline/
+  2018-04-24 15:44:11,555 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.api.impl.TimelineClientImpl - Timeline service address: http://master.edincubator.eu:8188/ws/v1/timeline/
   2018-04-24 15:44:11,872 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.api.impl.YarnClientImpl - Submitted application application_1523347765873_0044
-  2018-04-24 15:44:11,874 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - The url to track the Tez Session: http://gauss.res.eng.it:8088/proxy/application_1523347765873_0044/
+  2018-04-24 15:44:11,874 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - The url to track the Tez Session: http://master.edincubator.eu:8088/proxy/application_1523347765873_0044/
   2018-04-24 15:44:20,548 [PigTezLauncher-0] INFO  org.apache.pig.backend.hadoop.executionengine.tez.TezJob - Submitting DAG PigLatin:DefaultJobName-0_scope-2
   2018-04-24 15:44:20,548 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Submitting dag to TezSession, sessionName=PigLatin:DefaultJobName, applicationId=application_1523347765873_0044, dagName=PigLatin:DefaultJobName-0_scope-2, callerContext={ context=PIG, callerType=PIG_SCRIPT_ID, callerId=PIG-default-6eddcb9e-3548-4424-8d82-ee8ad63e9b61 }
   2018-04-24 15:44:21,111 [PigTezLauncher-0] INFO  org.apache.tez.client.TezClient - Submitted dag to TezSession, sessionName=PigLatin:DefaultJobName, applicationId=application_1523347765873_0044, dagName=PigLatin:DefaultJobName-0_scope-2
-  2018-04-24 15:44:21,195 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.RMProxy - Connecting to ResourceManager at gauss.res.eng.it/192.168.125.113:8050
-  2018-04-24 15:44:21,198 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.AHSProxy - Connecting to Application History server at gauss.res.eng.it/192.168.125.113:10200
+  2018-04-24 15:44:21,195 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.RMProxy - Connecting to ResourceManager at master.edincubator.eu/192.168.125.113:8050
+  2018-04-24 15:44:21,198 [PigTezLauncher-0] INFO  org.apache.hadoop.yarn.client.AHSProxy - Connecting to Application History server at master.edincubator.eu/192.168.125.113:10200
   2018-04-24 15:44:21,198 [PigTezLauncher-0] INFO  org.apache.pig.backend.hadoop.executionengine.tez.TezJob - Submitted DAG PigLatin:DefaultJobName-0_scope-2. Application id: application_1523347765873_0044
   2018-04-24 15:44:22,179 [main] INFO  org.apache.pig.backend.hadoop.executionengine.tez.TezLauncher - HadoopJobId: job_1523347765873_0044
   2018-04-24 15:44:22,199 [Timer-1] INFO  org.apache.pig.backend.hadoop.executionengine.tez.TezJob - DAG Status: status=RUNNING, progress=TotalTasks: 2 Succeeded: 0 Running: 0 Failed: 0 Killed: 0, diagnostics=, counters=null
@@ -734,14 +734,14 @@ This job can be coded as a Pig file (`*.pig`):
 
   grouped_business = GROUP yelp_business BY state;
   counted_business = FOREACH grouped_business GENERATE group, COUNT(yelp_business);
-  STORE counted_business INTO '/user/<username>/pig-output' USING PigStorage(',');
+  STORE counted_business INTO '$output_dir' USING PigStorage(',');
 
 
-And execute using `pig <script>.pig`:
+And execute using `pig <script>.pig`, as you can see at `stack-examples/pigexample`:
 
 .. code-block:: pig
 
-  # pig yelp_business.pig
+  # pig -p output_dir=/user/<username>/pig-output yelp_business.pig
 
 And the same result is generated.
 

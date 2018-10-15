@@ -164,7 +164,7 @@ For executing the workflow, you must follow those steps:
   # hdfs dfs -put stack-examples/oozieexample/workflow.xml /user/<username>/oozie-example
   # hdfs dfs -put stack-examples/pigexample/yelp_business.pig /user/<username>/oozie-example
   # hdfs dfs -put stack-examples/oozieexample/spark.py /user/<username>/oozie-example
-  # oozie job -oozie http://gauss.res.eng.it:11000/oozie -config oozieexample/job.properties -run
+  # oozie job -oozie http://master.edincubator.eu:11000/oozie -config stack-examples/oozieexample/job.properties -run
   job: 0000007-180608111137903-oozie-oozi-W
 
 
