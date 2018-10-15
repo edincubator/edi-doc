@@ -19,7 +19,7 @@ Creating a NiFi Flow
   `username_processgroupname` convention.
 
 NiFi web interface is accessible at
-`https://gauss.res.eng.it:9091/nifi/ <https://gauss.res.eng.it:9091/nifi/>`_.
+`https://master.edincubator.eu:9091/nifi/ <https://master.edincubator.eu:9091/nifi/>`_.
 From here, you must enter your EDI Big Data Stack credentials.
 
 .. image:: img/nifi-login.png
@@ -65,7 +65,7 @@ Here, you must configure at least the following properties:
 * **Hadoop Configuration Files**: at this property you must set the path to
   Hadoop and HBase configuration files. In this case, the value of this
   property must be `/usr/hdp/current/hadoop-client/conf/core-site.xml,/usr/hdp/current/hbase-client/conf/hbase-site.xml`.
-* **Kerberos Principal**: your Kerberos principal, i.e. `username@GAUSS.RES.ENG.IT`.
+* **Kerberos Principal**: your Kerberos principal, i.e. `username@EDINCUBATOR.EU`.
 * **Kerberos Keytab**: your Kerberos NiFi keytab in the following format:
   `/home/nifi/{your-kerberos-nifi-keytab}`.
 
@@ -93,7 +93,7 @@ we are going to save results at HDFS. For that, we are going to use the
 For configuring the `PutHDFS` processor, the EDI technical support team must
 know at least the value for the following properties:
 
-* **Kerberos Principal**: your Kerberos principal, i.e. `username@GAUSS.RES.ENG.IT`.
+* **Kerberos Principal**: your Kerberos principal, i.e. `username@EDINCUBATOR.EU`.
 * **Kerberos Keytab**: your Kerberos NiFi keytab in the following format:
   `/home/nifi/{your-kerberos-nifi-keytab}`.
 * **Directory**: the HDFS directory in which the processor must save its output.
