@@ -9,12 +9,9 @@ Data Stack are Livy2 (Spark2), JDBC (Hive and Phoenix), Markdown and Angular.
 In this example we explain how to reproduce the Spark, Hive and HBase example
 from this documentation at a Zeppelin notebook.
 
-First, access to Zeppelin at http://gauss.res.eng.it:9995 and click into `Login`
+First, access to Zeppelin at https://master.edincubator.eu:9995 and click into `Login`
 button to access with your credentials.
 
-.. todo::
-
-  Replace Zeppelin URL by production URL.
 
 .. image:: img/zeppelin-login.png
 
@@ -30,7 +27,7 @@ following code in the paragraph and run it:
 .. code-block:: python
 
   %livy2.pyspark
-  business_df = spark.read.csv('/user/<username>/samples/yelp_business.csv', header=True, quote='"', escape='"')
+  business_df = spark.read.csv('/samples/yelp/yelp_business/yelp_business.csv', header=True, quote='"', escape='"')
   state_count = business_df.groupBy(business_df.state).count()
   sorted_state_count = state_count.sort("count", ascending=False)
   sorted_state_count.write.csv('/user/<username>/zeppelin-spark-csv-output')
