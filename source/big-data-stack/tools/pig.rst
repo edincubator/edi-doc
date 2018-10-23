@@ -717,7 +717,7 @@ This job can be coded as a Pig file (`*.pig`):
   REGISTER /usr/hdp/current/pig-client/piggybank.jar
   define CSVLoader org.apache.pig.piggybank.storage.CSVLoader();
 
-  yelp_business = LOAD '/user/<username>/samples/yelp_business.csv' using CSVLoader AS (
+  yelp_business = LOAD '/samples/yelp/yelp_business/yelp_business.csv' using CSVLoader AS (
     business_id:chararray,
     name:chararray,
     neighborhood:chararray,
