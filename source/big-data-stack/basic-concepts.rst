@@ -48,13 +48,19 @@ container using this image, you must perform the following steps:
 
 .. code-block :: console
 
-  $ docker run -ti --net=container:vpn -v <workdir>:/workdir edincubator/stack-client /bin/bash
+  $ docker run -ti --net=container:vpn -v <workdir>:/workdir --name stack-client edincubator/stack-client /bin/bash
   Enter your username : <username>
   $
 
 Being `<workdir>` the directory where your source code, scripts, etc. are.
 The `-v` param creates a Docker volume mounted at `/workdir` inside the container,
 from which you can access to your files.
+
+If you need an additional CLI window, you can run:
+
+.. code-block :: console
+
+  $ docker exec -ti stack_client /bin/bash
 
 .. note::
 
