@@ -31,6 +31,13 @@ folder. Use the following commands for launching the OpenVPN client:
 For connecting other containers to the VPN, you can use the `--net=container:vpn`
 parameter, as explained later.
 
+.. warning::
+
+  Big Data Stack's VPN only allow one connection by user, so be sure that you
+  don't run more than one VPN client containers at the same time. If you need
+  additional VPN accounts for working in parallel with other people from your
+  company, please contact with :ref:`technical-support`.
+
 Big Data Stack's Client
 -----------------------
 
