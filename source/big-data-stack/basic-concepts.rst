@@ -72,7 +72,7 @@ If you need an additional CLI window, you can run:
 
 .. code-block :: console
 
-  $ docker exec -ti stack_client /bin/bash
+  $ docker exec -ti --name <username> stack_client /bin/bash
 
 .. note::
 
