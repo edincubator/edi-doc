@@ -114,4 +114,5 @@ The Big Data Stack client could be deployed at an Ubuntu 16.04 or a Centos 7 ins
 
   $ kinit <username>
 
+
   * Check the validity of your Kerberos ticket using `klist` command.
