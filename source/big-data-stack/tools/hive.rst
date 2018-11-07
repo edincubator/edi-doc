@@ -19,7 +19,7 @@ Stack.
   databases must follow the `username_databasename` convention.
 
 
-For connecting to the Hive database `test_yelp`, we must execute the `beeline` client with the following
+For connecting to the Hive database `<username>_yelp`, we must execute the `beeline` client with the following
 parameters:
 
 .. code-block:: console

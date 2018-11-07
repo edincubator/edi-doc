@@ -763,6 +763,14 @@ For querying the table created previously in this tutorial, we must define
 a table view in Phoenix. **Remember that this step has to be requested to EDI's
 Technical Support**:
 
+For example, the following command, which will create the table view, must be sent
+to admins and executed by them:
+
+.. code-block:: console
+
+   CREATE VIEW "<username>"."yelp_business" (ROWKEY VARCHAR PRIMARY KEY, "info"."address" VARCHAR, "info"."categories" VARCHAR, "info"."city" VARCHAR, "info"."is_open" VARCHAR, "info"."longitude" VARCHAR, "info"."name" VARCHAR, "info"."neighborhood" VARCHAR, "info"."postal_code" VARCHAR, "info"."state" VARCHAR, "stats"."review_count" VARCHAR, "stats"."stars" VARCHAR) as select * from "<username>"."yelp_business";
+
+
 .. code-block:: console
 
   # phoenix-sqlline
@@ -784,8 +792,6 @@ Technical Support**:
   96/96 (100%) Done
   Done
   sqlline version 1.1.8
-  0: jdbc:phoenix:> CREATE VIEW "<username>"."yelp_business" (ROWKEY VARCHAR PRIMARY KEY, "info"."address" VARCHAR, "info"."categories" VARCHAR, "info"."city" VARCHAR, "info"."is_open" VARCHAR, "info"."longitude" VARCHAR, "info"."name" VARCHAR, "info"."neighborhood" VARCHAR, "info"."postal_code" VARCHAR, "info"."state" VARCHAR, "stats"."review_count" VARCHAR, "stats"."stars" VARCHAR) as select * from "<username>"."yelp_business";
-  No rows affected (0,218 seconds)
   0: jdbc:phoenix:> !tables
   +------------+---------------+------------------------+---------------+----------+------------+----------------------------+-----------------+--------------+-----------------+---------------+---------------+---+
   | TABLE_CAT  |  TABLE_SCHEM  |       TABLE_NAME       |  TABLE_TYPE   | REMARKS  | TYPE_NAME  | SELF_REFERENCING_COL_NAME  | REF_GENERATION  | INDEX_STATE  | IMMUTABLE_ROWS  | SALT_BUCKETS  | MULTI_TENANT  | V |
