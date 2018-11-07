@@ -54,9 +54,3 @@ Contents
    application-infrastructure/index
    technical-support/index
    reference/index
-
-
-TODO-list
----------
-
-.. todolist::

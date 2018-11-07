@@ -15,6 +15,11 @@ for launching OpenVPN client in a `Docker <http://docker.io>`_ container, to all
 stack-client container and a custom Firefox browser connecting to the VPN, while
 the rest of your SO remained connected to your default network with Internet access.
 
+.. note::
+
+  You can also launch Big Data Stack's client at FI-WARE. See
+  :ref:`deploying-stack-client` for more information.
+
 For installing Docker in your SO, follow instructions at `<https://docs.docker.com/install/>`_.
 
 At first, you must store your OpenVPN config file (`edi.ovpn`) into a folder in
@@ -45,7 +50,7 @@ EDI provides a `Docker <http://docker.io>`_ image with a set of already installe
 tools for interacting with the Big Data Stack . In order to create a Docker
 container using this image, you must perform the following steps:
 
-1. Pull the docker image from EDI registry:
+1. Pull the docker image from Docker Hub:
 
 .. code-block:: console
 
