@@ -72,7 +72,7 @@ More information of FI-WARE Lab can be found on `FI-WARE Lab Help page`_ and on 
 .. _deploying-stack-client:
 
 Deploying Big Data Stack client at FI-WARE
-==========================================
+------------------------------------------
 
 The Big Data Stack client could be deployed at an Ubuntu 16.04 or a Centos 7 instance at FIWARE following those steps:
 
