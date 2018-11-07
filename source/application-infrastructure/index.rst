@@ -78,9 +78,9 @@ The Big Data Stack client could be deployed at an Ubuntu 16.04 or a Centos 7 ins
 
 * Deploy an Ubuntu 16.04 instance in FIWARE Lab and connect via SSH.
 * Install Docker following instructions at
-  * Ubuntu: `<https://docs.docker.com/install/linux/docker-ce/ubuntu/>`_.
-  * Centos: `<https://docs.docker.com/install/linux/docker-ce/centos/>`_.
-  * Don't forget performing `Post-Installation steps for Linux <https://docs.docker.com/install/linux/linux-postinstall/>`_.
+    * Ubuntu: `<https://docs.docker.com/install/linux/docker-ce/ubuntu/>`_.
+    * Centos: `<https://docs.docker.com/install/linux/docker-ce/centos/>`_.
+    * Don't forget performing `Post-Installation steps for Linux <https://docs.docker.com/install/linux/linux-postinstall/>`_.
 * Upload your VPN credentials file (edi.ovpn) to your instance (e.g. to `/home/ubuntu` folder on Ubuntu or `/home/centos` on Centos).
 * Launch a VPN client container (replace `/path/to/vpn-credentials` by `/home/ubuntu` or `/home/centos`):
 
