@@ -3,6 +3,10 @@
 EDI client's basic concepts
 ===========================
 
+.. note::
+
+  If you use OSX, please read :ref:`stack-client-osx`.
+
 Connect to Big Data Stack's VPN
 -------------------------------
 
