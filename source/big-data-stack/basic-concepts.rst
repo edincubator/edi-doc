@@ -21,7 +21,7 @@ the rest of your SO remained connected to your default network with Internet acc
 
 .. note::
 
-  You can also launch Big Data Stack's client at FI-WARE. See
+  You can also launch Big Data Stack's client at FIWARE. See
   :ref:`deploying-stack-client` for more information.
 
 For installing Docker in your SO, follow instructions at `<https://docs.docker.com/install/>`_.
