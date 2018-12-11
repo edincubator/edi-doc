@@ -14,10 +14,10 @@ The Application Infrastructure tries to meet the following requirements:
 * **Data and application security**. Possibility and easiness to apply the usage terms established by the data providers and the legislations about data and application security.
 * **Pre-built Services**. Provided to support and extend what has been developed.
 
-FI-WARE Lab
+FIWARE Lab
 -----------
-`FI-WARE Lab`_ is a working instance of `FI-WARE Platform`_ available for experimentations: it enables to build basic virtual infrastructures,
-deploy applications and use the *Generic Enablers*. FI-WARE lab Accounts can be categorized into two types: *Trial* and *Community*. Trial accounts provide
+`FIWARE Lab`_ is a working instance of `FIWARE Platform`_ available for experimentations: it enables to build basic virtual infrastructures,
+deploy applications and use the *Generic Enablers*. FIWARE lab Accounts can be categorized into two types: *Trial* and *Community*. Trial accounts provide
 limited resources for a reduced period. A Trial Account provides the following **default** quotas:
 
 * **14 days** of duration
@@ -33,7 +33,7 @@ The Trial Accounts are useful to start the first tests: the applicants that admi
 
 .. image:: ./img/fiware-lab.png
 
-FI-WARE Lab Usage
+FIWARE Lab Usage
 -----------------
 In order to create a *Trial Account* the following operations are needed:
 
@@ -45,7 +45,7 @@ In order to create a *Trial Account* the following operations are needed:
 
 .. image:: ./img/fiware-lab-account-form.png
 
-3. Wait for the confirmation from FI-WARE staff
+3. Wait for the confirmation from FIWARE staff
 
 .. raw:: html
 
@@ -53,25 +53,25 @@ In order to create a *Trial Account* the following operations are needed:
    <strong>mandatory</strong> to obtain the extension of the trial period. <font color="red"> Please do not forget to send the request</font>.</p>
 
 
-Besides the Virtual Infrastructure and the set of Virtual Machines, FI-WARE Lab also provides a set of pre-built servces: the  **Generic Enablers** (*GE*).
-In particular, FI-WARE Generic Enablers are services that can be combined to extend existing applications by introducing more complex functionalities.
-They can be found on `FI-WARE Catalogue`_ page and can be used by selecting an appropriate *image* in the list on `FI-WARE Lab`_ page.
+Besides the Virtual Infrastructure and the set of Virtual Machines, FIWARE Lab also provides a set of pre-built servces: the  **Generic Enablers** (*GE*).
+In particular, FIWARE Generic Enablers are services that can be combined to extend existing applications by introducing more complex functionalities.
+They can be found on `FIWARE Catalogue`_ page and can be used by selecting an appropriate *image* in the list on `FIWARE Lab`_ page.
 
-More information of FI-WARE Lab can be found on `FI-WARE Lab Help page`_ and on `FI-WARE Guide`_, which includes useful information on the Generic Enablers.
-
-
+More information of FIWARE Lab can be found on `FIWARE Step-by-Step page`_ and on `FIWARE Guide`_, which includes useful information on the Generic Enablers.
 
 
-.. _FI-WARE Lab: https://cloud.lab.fiware.org
-.. _FI-WARE Platform: https://www.fiware.org/
-.. _FI-WARE Lab Help page: http://help.lab.fiware.org/
-.. _FI-WARE Guide: https://fiwaretourguide.readthedocs.io/en/latest/
-.. _FI-WARE Catalogue: https://store.lab.fiware.org/
+
+
+.. _FIWARE Lab: https://cloud.lab.fiware.org
+.. _FIWARE Platform: https://www.fiware.org
+.. _FIWARE Step-by-Step page: https://fiware-tutorials.readthedocs.io/en/latest/
+.. _FIWARE Guide: https://www.fiware.org/developers/tour-guide/
+.. _FIWARE Catalogue: https://www.fiware.org/developers/catalogue/
 
 
 .. _deploying-stack-client:
 
-Deploying Big Data Stack client at FI-WARE
+Deploying Big Data Stack client at FIWARE
 ------------------------------------------
 
 The Big Data Stack client could be deployed at an Ubuntu 16.04 or a Centos 7 instance at FIWARE following those steps:
