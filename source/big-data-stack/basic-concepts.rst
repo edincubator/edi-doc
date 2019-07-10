@@ -19,7 +19,9 @@ services through its web CLI terminal. In addition it provides a set of kernels
 in order to allow interactively accessing to different services at the Big Data
 Stack. For accessing to your Jupyter Notebook instance, you must access to
 `<https://jupyter.edincubator.eu>`_ and enter your credentials. Once your
-instance is spawned, you can start working at the Big Data Stack.
+instance is spawned, you can start working at the Big Data Stack. You can learn
+more about JupyterLab at
+`<https://jupyterlab.readthedocs.io/en/stable/user/interface.html>`_.
 
 TODO: screenshots.
 
