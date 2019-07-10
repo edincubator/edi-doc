@@ -15,12 +15,12 @@ Hadoop environments, and is the one available at EDI Big Data Stack.
 At this guide, we explain basic commands to manipulate files and directories in
 HDFS.
 
-**From inside the Docker container**, you can create and upload files to your HDFS workspace.
-Every selected team at EDI has its own workspace at `/user/<username>` directory.
+From a terminal at Jupyter Notebook, you can create and upload files to your
+HDFS workspace. Every selected team at EDI has its own workspace at
+`/user/<username>` directory.
 
 .. code-block :: console
 
-  # cd /workdir
   # hdfs dfs -mkdir /user/<username>/test
   # hdfs dfs -ls /user/<username>
   Found 1 items
@@ -36,10 +36,12 @@ Every selected team at EDI has its own workspace at `/user/<username>` directory
   foo
   #
 
+TODO: screenshot
+
 As you can see, the command for manipulating files and directories at HDFS is
 `hdfs dfs`. Indistinctly, you can use `hadoop fs` command too. The complete
 description of all the operations provided by this command is available at
-`Apache Hadoop File System Shell Guide <https://hadoop.apache.org/docs/r2.7.3/hadoop-project-dist/hadoop-common/FileSystemShell.html>`_.
+`Apache Hadoop File System Shell Guide <https://hadoop.apache.org/docs/r3.1.0/hadoop-project-dist/hadoop-common/FileSystemShell.html>`_.
 
 .. note::
 
