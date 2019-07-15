@@ -36,7 +36,8 @@ HDFS workspace. Every selected team at EDI has its own workspace at
   foo
   #
 
-TODO: screenshot
+.. image:: img/hdfs/hdfs.png
+
 
 As you can see, the command for manipulating files and directories at HDFS is
 `hdfs dfs`. Indistinctly, you can use `hadoop fs` command too. The complete

@@ -25,6 +25,8 @@ more about JupyterLab at
 
 TODO: screenshots.
 
+.. _authenticating-with-kerberos:
+
 Authenticating with Kerberos
 ----------------------------
 
@@ -35,6 +37,11 @@ client/server applications by using secret-key cryptography.
 
 For authenticating yourself, first you must upload the keytab provided within
 your credentials.
+
+.. image:: img/kerberos/kerberos_1.png
+
+.. image:: img/kerberos/kerberos_2.png
+
 
 Next, you must launch a new terminal and introduce the following command:
 
@@ -52,6 +59,8 @@ You can check the status of your Kerberos ticket using the `klist` command:
 
   Valid starting     Expires            Service principal
   04/12/18 09:53:28  04/13/18 09:53:28  krbtgt/EDINCUBATOR.EU@EDINCUBATOR.EU
+
+.. image:: img/kerberos/kerberos_3.png
 
 
 Once you have a valid ticket, you can work at EDI Big Data Stack until the
@@ -83,3 +92,4 @@ a global view of tools provided by EDI Big Data Stack.
    tools/zeppelin
    tools/views
    tools/jupyterhub
+   tools/docker-over-yarn
