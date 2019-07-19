@@ -10,48 +10,33 @@ Spark2
 ======
 
 EDI Big Data Stack includes Spark2 engine. In this tutorial, we explain how to
-interact with Spark2 through its Python interactive shell and how to submit a
-Python file to the cluster. For illustrating this, we are going to perform some
-operations over the sample dataset introduced at :ref:`hdfs`.
+interact with Spark2 through SparkMagic kernel provided by JupyterLab and how
+to submit a Python job to the cluster. For illustrating this, we are going to
+perform some operations over the sample dataset introduced at :ref:`hdfs`.
 
-spark-shell
------------
+SparkMagic
+----------
 
-.. warning::
+`SparkMagic <https://github.com/jupyter-incubator/sparkmagic>`_ is a Jupyter kernel which allows communicating interactively with a
+Spark remote cluster. Available kernels within SparkMagic are PySpark,
+PySpark3, Spark and SparkR.
 
-  Spark shell executes computation locally and produces a wide amount of data transfer
-  between the HDFS cluster and your machine, as data has to be downloaded to
-  your machine to be computed. **Spark shell is intended to be used for testing your
-  code before executing it at production stage**.
-  For avoiding this problem, Spark allows sampling
-  the data. **Be sure to always use a sample of size of 0.1 (10%) when executing
-  spark-shell!** The network usage is monitored at the cluster for
-  detecting huge amounts of data transfers outside the cluster.
-  See the :ref:`spark-yelp-example` for learning how to sample data in Spark2.
+TODO: check availability of PySpark3
 
+.. note::
 
-You can start spark-shell executing `pyspark` (Python version) or `spark-shell`
-(Scala version). In this example `pyspark` is used:
+  SparkMagic doesn't allow importing libraries not included with Spark, Scala,
+  R or Python by default. If you need to use additional dependencies to process
+  your data, you could do it separately in another different job. See :ref:`docker-over-yarn`
+  for learning how to launch your custom Docker images at the cluster.
 
-.. code-block:: console
+You can launch a new notebook selecting one of those kernels at the welcome
+window at JupyterLab. In this tutorial we are going to use the PySpark kernel:
 
-  # pyspark
-  Python 2.7.5 (default, Jul 13 2018, 13:06:57)
-  [GCC 4.8.5 20150623 (Red Hat 4.8.5-28)] on linux2
-  Type "help", "copyright", "credits" or "license" for more information.
-  Setting default log level to "WARN".
-  To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
-  Welcome to
-        ____              __
-       / __/__  ___ _____/ /__
-      _\ \/ _ \/ _ `/ __/  '_/
-     /__ / .__/\_,_/_/ /_/\_\   version 2.3.0.2.6.5.0-292
-        /_/
+.. image:: img/spark/spark-launcher.png
 
-  Using Python version 2.7.5 (default, Jul 13 2018 13:06:57)
-  SparkSession available as 'spark'.
-  >>>
-
+At the notebook, you can interact with the SparkContext and SparkSession at
+`sc` and `spark` variables:
 
 .. _spark-yelp-example:
 
@@ -62,7 +47,7 @@ First, we will load the sample file yelp_business.csv and get a sample of 10%:
 
 .. code-block:: console
 
-  >>> business_df = spark.read.csv('/samples/yelp/yelp_business/yelp_business.csv', header=True, quote='"', escape='"').sample(False, 0.1, 77)
+  >>> business_df = spark.read.csv('/samples/yelp/yelp_business/yelp_business.csv', header=True, quote='"', escape='"')
   >>> business_df.show()
   +--------------------+--------------------+------------------+--------------------+--------------+-----+-----------+-------------+--------------+-----+------------+-------+--------------------+
   |         business_id|                name|      neighborhood|             address|          city|state|postal_code|     latitude|     longitude|stars|review_count|is_open|          categories|
@@ -89,7 +74,6 @@ First, we will load the sample file yelp_business.csv and get a sample of 10%:
   |Gu-xs3NIQTj3Mj2xY...|"Maxim Bakery & R...|              null|"9665 Bayview Ave...| Richmond Hill|   ON|    L4C 9V4|   43.8675648|   -79.4126618|  3.5|          34|      1|French;Food;Baker...|
   +--------------------+--------------------+------------------+--------------------+--------------+-----+-----------+-------------+--------------+-----+------------+-------+--------------------+
   only showing top 20 rows
-
   >>>
 
 See that with Spark2 we can easily load and preview a CSV file. Like in the
@@ -127,8 +111,9 @@ See that with Spark2 we can easily load and preview a CSV file. Like in the
 
   >>>
 
-Although some data cleaning is needed, with Spark2 we can operate over data easily.
-Now, we are going to sort the result and store into HDFS.
+
+Although some data cleaning is needed, with Spark2 we can operate over data
+easily. Now, we are going to sort the result and store into HDFS.
 
 .. code-block:: console
 
@@ -158,50 +143,43 @@ Now, we are going to sort the result and store into HDFS.
   |  WLN|   38|
   |    C|   28|
   +-----+-----+
+
   only showing top 20 rows
 
   >>> sorted_state_count.write.csv('/user/<username>/spark-csv-output')
 
-If we check contents of '/user/<username>/spark-csv-output', we can see that a set
-of CSV files have been generated, one for each partition.
+
+If we check contents of '/user/<username>/spark-csv-output', we can see that
+a set of CSV files have been generated, one for each partition.
 
 .. code-block:: console
 
   # hdfs dfs -ls /user/<username>/spark-csv-output
-  Found 32 items
-  -rw-------   3 <username> <username>          0 2018-04-13 12:34 /user/<username>/spark-csv-output/_SUCCESS
-  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00000-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00001-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00002-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00003-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00004-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00005-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00006-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00007-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          9 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00008-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00009-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00010-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          7 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00011-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00012-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00013-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00014-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          8 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00015-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          7 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00016-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          7 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00017-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          7 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00018-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          5 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00019-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          6 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00020-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          7 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00021-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          6 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00022-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>         12 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00023-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          5 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00024-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>         11 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00025-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>         11 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00026-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>         21 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00027-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>         33 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00028-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>        145 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00029-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  -rw-------   3 <username> <username>          0 2018-04-13 12:34 /user/<username>/spark-csv-output/part-00030-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
-  # hdfs dfs -cat /user/<username>/spark-csv-output/part-00000-8671f284-9829-40c7-98ab-5241cec03cac-c000.csv
+  Found 22 items
+  -rw-r--r--   3 <username> hdfs          0 2019-07-18 11:04 /user/<username>/spark-csv-output/_SUCCESS
+  -rw-r--r--   3 <username> hdfs          8 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00000-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          8 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00001-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          8 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00002-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          8 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00003-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          8 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00004-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          7 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00005-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          7 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00006-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          7 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00007-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          8 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00008-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          7 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00009-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          7 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00010-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          6 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00011-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          7 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00012-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          7 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00013-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          7 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00014-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          7 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00015-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          6 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00016-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          6 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00017-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs          6 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00018-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs         11 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00019-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+  -rw-r--r--   3 <username> hdfs         52 2019-07-18 11:04 /user/<username>/spark-csv-output/part-00020-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
+
+  # hdfs dfs -cat /user/<username>/spark-csv-output/part-00000-8ee0ea94-b478-42ec-9c22-90ac373500fb-c000.csv
   AZ,52214
   #
 
@@ -257,8 +235,7 @@ spark-submit
 
 In order to execute the same job in a distributed way, we are going to code the
 previous instructions into a Python file. You can find yelp_example.py inside
-the `spark2example` folder from
-`stack-client examples <https://github.com/edincubator/stack-examples>`_.
+the `spark2example` folder at examples directory.
 
 .. code-block:: python
 
@@ -281,9 +258,6 @@ the `spark2example` folder from
   sorted_state_count = state_count.sort("count", ascending=False)
   sorted_state_count.write.csv(args.output_dir)
 
-Copy the `yelp_example.py` file to your workspace and execute `spark-submit`
-command:
-
 .. note::
 
   Don't forget to include `--master yarn` and `--deploy-mode cluster` parameters
@@ -296,7 +270,7 @@ command:
 
 .. code-block:: console
 
-  # spark-submit --master yarn --deploy-mode cluster yelp_example.py /samples/yelp/yelp_business/yelp_business.csv /user/<username>/spark-csv-output --app_name <username>YelpExample
+  # spark-submit --master yarn --deploy-mode cluster examples/spark2example/yelp_example.py /samples/yelp/yelp_business/yelp_business.csv /user/<username>/spark-csv-output --app_name <username>YelpExample
   18/10/10 10:38:14 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
   18/10/10 10:38:15 WARN shortcircuit.DomainSocketFactory: The short-circuit local reads feature cannot be used because libhadoop cannot be loaded.
   18/10/10 10:38:15 INFO client.RMProxy: Connecting to ResourceManager at master.edincubator.eu/192.168.1.12:8050
@@ -372,5 +346,5 @@ command:
   18/10/10 10:38:50 INFO util.ShutdownHookManager: Deleting directory /tmp/spark-fa20d514-3a9d-4de3-9a9e-bc356c5c2032
 
 You can find more information about the job at
-`<http://master.edincubator.eu:8088/cluster>`_. Check
+`<https://edi-master.novalocal:8443/gateway/hdp/yarnuiv2/>`_. Check
 `/user/<username>/spark-csv-output` directory for the results.
