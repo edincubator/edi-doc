@@ -20,8 +20,7 @@ Loading data into HBase
 .. note::
 
   Before creating any table in HBase, you must contact with :ref:`technical-support` for
-  creating your namespace and give you the proper permissions. Once you have your
-  namespace set, you can continue with this tutorial.
+  creating your namespace and give you the proper permissions.
 
 Before loading data we must create the database using Hbase shell. All databases
 must follow the naming convention `workspace:database`. This database will be
@@ -38,21 +37,18 @@ Once the shell is started run the following command to create your database
 
 .. code-block:: console
 
-  hbase(main):001:0> create '<username>.yelp_business', 'info', 'stats'
+  hbase(main):001:0> create '<username>:yelp_business', 'info', 'stats'
   0 row(s) in 2.3740 seconds
-  => Hbase::Table - <username>.yelp_business
-  hbase(main):002:0> scan '<username>.yelp_business'
+  => Hbase::Table - <username>:yelp_business
+  hbase(main):002:0> scan '<username>:yelp_business'
   ROW                                                   COLUMN+CELL
   0 row(s) in 0.0440 seconds
 
-
-Clone the repository containing examples and move into
-hbaseexample dir.
+Move into hbaseexample dir.
 
 .. code-block:: console
 
-  $ git clone https://github.com/edincubator/stack-examples
-  $ cd stack-examples/hbaseexample
+  $ cd ~/work/examples/hbaseexample
 
 `HBaseLoadExample.java` contains the unique and main class of this MapReduce job.
 `HBaseLoadExample` class contains only the `HBaseWriterMapper` class, as this
@@ -234,8 +230,8 @@ submit to EDI Big Data Stack.
     </dependencies>
 
     <properties>
-        <hadoop.version>2.7.3</hadoop.version>
-        <hbase.version>1.1.2</hbase.version>
+        <hadoop.version>3.0.0</hadoop.version>
+        <hbase.version>2.0.0</hbase.version>
     </properties>
   </project>
 
@@ -251,7 +247,6 @@ At first, you must create the java package and copy it to your workspace:
 .. code-block:: console
 
   $ mvn clean package
-  $ cp target/hbaseexample-1.0-SNAPSHOT.jar <workdir>
 
 Before launching the job, we must download required third party libraries:
 
