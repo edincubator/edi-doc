@@ -37,7 +37,7 @@ Once the shell is started run the following command to create your database
 
 .. code-block:: console
 
-  hbase(main):001:0> create '<username>:yelp_business', 'info', 'stats'
+  hbase(main):001:0> create '<username>.yelp_business', 'info', 'stats'
   0 row(s) in 2.3740 seconds
   => Hbase::Table - <username>:yelp_business
   hbase(main):002:0> scan '<username>:yelp_business'
@@ -262,8 +262,8 @@ Next, at stack-client docker cointainer, we can submit the job using the
 
 .. code-block:: console
 
-  # cd /workdir
-  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /samples/yelp/yelp_business/yelp_business.csv <username>.yelp_business
+  # cd ..
+  # yarn jar target/hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /samples/yelp/yelp_business/yelp_business.csv <username>.yelp_business
 
 .. code-block:: console
 
@@ -512,14 +512,13 @@ The package is compiled as we saw in the previous example:
 .. code-block:: console
 
   $ mvn clean package
-  $ cp target/hbaseexample-1.0-SNAPSHOT.jar <workdir>
 
 Next, at stack-client docker cointainer, we can submit the job using the
 `hadoop jar` command.
 
 .. code-block:: console
 
-  # hadoop jar hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseReadExample <username>.yelp_business /user/<username>/hbase-output
+  # yarn jar target/hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseReadExample <username>.yelp_business /user/<username>/hbase-output
 
 .. code-block:: console
 
