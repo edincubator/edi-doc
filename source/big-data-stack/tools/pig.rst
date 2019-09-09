@@ -45,7 +45,7 @@ Next, we can load and operate over sample data:
 
 .. code-block:: console
 
-  grunt> REGISTER /usr/hdp/current/pig-client/piggybank.jar
+  grunt> REGISTER /opt/pig/lib/piggybank.jar
   grunt> define CSVLoader org.apache.pig.piggybank.storage.CSVLoader();
 
 
@@ -634,8 +634,8 @@ We can check the result at HDFS:
   # hdfs dfs -ls /user/<username>/pig-output
   Found 2 items
   -rw-------   3 <username> <username>          0 2018-04-24 15:44 /user/<username>/pig-output/_SUCCESS
-  -rw-------   3 <username> <username>        425 2018-04-24 15:44 /user/<username>/pig-output/part-v001-o000-r-00000
-  # hdfs dfs -cat /user/<username>/pig-output/part-v001-o000-r-00000
+  -rw-------   3 <username> <username>        425 2018-04-24 15:44 /user/<username>/pig-output/part-r-00000
+  # hdfs dfs -cat /user/<username>/pig-output/part-r-00000
   ,1
   3,1
   6,3
@@ -714,7 +714,7 @@ This job can be coded as a Pig file (`*.pig`):
 
 .. code-block:: pig
 
-  REGISTER /usr/hdp/current/pig-client/piggybank.jar
+  REGISTER /opt/pig/lib/piggybank.jar
   define CSVLoader org.apache.pig.piggybank.storage.CSVLoader();
 
   yelp_business = LOAD '/samples/yelp/yelp_business/yelp_business.csv' using CSVLoader AS (
