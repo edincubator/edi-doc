@@ -34,7 +34,7 @@ Launch a message producer and start typing messages:
 
 .. code-block:: console
 
-  # bin/kafka-console-producer.sh --broker-list master.edincubator.eu:6667 --producer-property security.protocol=SASL_PLAINTEXT --topic <username>_test
+  # kafka-console-producer.sh --broker-list master.edincubator.eu:6667 --producer-property security.protocol=SASL_PLAINTEXT --topic <username>_test
   Hi!
   How are you?
 
@@ -43,7 +43,7 @@ In another terminal, launch a message consumer:
 
 .. code-block:: console
 
-  # bin/kafka-console-consumer.sh --bootstrap-server master.edincubator.eu:6667 --consumer-property security.protocol=SASL_PLAINTEXT --topic <username>_test --from-beginning
+  # kafka-console-consumer.sh --bootstrap-server master.edincubator.eu:6667 --consumer-property security.protocol=SASL_PLAINTEXT --topic <username>_test --from-beginning
   Hi!
   How are you?
 
