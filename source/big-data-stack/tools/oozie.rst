@@ -32,8 +32,7 @@ at stack-examples repository:
 
 .. code-block :: console
 
-  $ git clone https://github.com/edincubator/stack-examples
-  $ cd stack-examples/oozieexmaple
+  $ cd ~/work/examples/oozieexample/
 
 This workflow defines three actions:
 
@@ -165,12 +164,11 @@ For executing the workflow, you must follow those steps:
 
 .. code-block:: console
 
-  # cd stack-examples
   # hdfs dfs -mkdir /user/<username>/oozie-example
-  # hdfs dfs -put stack-examples/oozieexample/workflow.xml /user/<username>/oozie-example
-  # hdfs dfs -put stack-examples/pigexample/yelp_business.pig /user/<username>/oozie-example
-  # hdfs dfs -put stack-examples/oozieexample/spark.py /user/<username>/oozie-example
-  # oozie job -oozie http://master.edincubator.eu:11000/oozie -config stack-examples/oozieexample/job.properties -run
+  # hdfs dfs -put workflow.xml /user/<username>/oozie-example
+  # hdfs dfs -put ../pigexample/yelp_business.pig /user/<username>/oozie-example
+  # hdfs dfs -put spark.py /user/<username>/oozie-example
+  # oozie job -oozie http://master.edincubator.eu:11000/oozie -config job.properties -run
   job: 0000007-180608111137903-oozie-oozi-W
 
 
