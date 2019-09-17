@@ -56,7 +56,7 @@ TODO: check availability of PySpark3
 
   SparkMagic doesn't allow importing libraries not included with Spark, Scala,
   R or Python by default. If you need to use additional dependencies to process
-  your data, you could do it separately in another different job. See :ref:`docker-over-yarn`
+  your data, you could do it separately in another different job. See :ref:`creating-docker-images`
   for learning how to launch your custom Docker images at the cluster.
 
 You can launch a new notebook selecting one of those kernels at the welcome

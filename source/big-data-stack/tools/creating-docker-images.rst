@@ -1,3 +1,5 @@
+.. _creating-docker-images:
+
 Running Docker containers over YARN
 ===================================
 

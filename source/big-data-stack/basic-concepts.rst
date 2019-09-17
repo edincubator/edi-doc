@@ -30,8 +30,8 @@ TODO: screenshots.
   You can install custom Python libraries through `pip` and `conda`
   package managers at your JupyterLab instance. However, we advice against
   executing anything "locally" at your JupyterLab instance, because its
-  restricted computation resources. See :ref:`docker-over-yarn` for learning
-  how to launch custom Docker images at the cluster.
+  restricted computation resources. See :ref:`creating-docker-images` for
+  learning how to launch custom Docker images at the cluster.
 
 .. _authenticating-with-kerberos:
 
