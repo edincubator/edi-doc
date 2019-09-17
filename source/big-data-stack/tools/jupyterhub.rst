@@ -1,3 +1,5 @@
+.. _jupyterhub-section:
+
 JupyterHub
 ==========
 
