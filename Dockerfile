@@ -1,14 +1,13 @@
-FROM python:2
+FROM nginx
+
+RUN apt-get update && apt-get install -y python3 python3-pip
 
 RUN mkdir /workdir
-ADD . /workdir
+ADD /doc /workdir
 WORKDIR /workdir
 
-RUN pip install -r requirements.txt
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
 RUN make clean html
-WORKDIR /workdir/build/html
 
-EXPOSE 8000
-
-ADD entrypoint.sh entrypoint.sh
-ENTRYPOINT ["/workdir/build/html/entrypoint.sh"]
+ADD nginx.conf /etc/nginx/nginx.conf
