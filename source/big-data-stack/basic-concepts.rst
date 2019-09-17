@@ -100,4 +100,4 @@ a global view of tools provided by EDI Big Data Stack.
    tools/zeppelin
    tools/views
    tools/jupyterhub
-   tools/docker-over-yarn
+   tools/creating-docker-images
