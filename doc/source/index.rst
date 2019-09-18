@@ -51,7 +51,6 @@ Contents
 
    big-data-stack/architecture
    big-data-stack/basic-concepts
-   big-data-stack/instructions-for-osx
    application-infrastructure/index
    technical-support/index
    reference/index
