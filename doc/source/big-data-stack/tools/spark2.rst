@@ -72,7 +72,7 @@ At the notebook, you can interact with the SparkContext and SparkSession at
 Yelp example
 ............
 
-First, we will load the sample file yelp_business.csv and get a sample of 10%:
+First, we will load the sample file yelp_business.csv:
 
 .. code-block:: console
 

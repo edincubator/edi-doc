@@ -226,8 +226,7 @@ command:
 
 .. code-block:: console
 
-  # cd target/
-  # yarn jar mr-example-1.0-SNAPSHOT-jar-with-dependencies.jar /samples/yelp/yelp_business/yelp_business.csv /user/<username>/state-count-output
+  # yarn jar target/mr-example-1.0-SNAPSHOT-jar-with-dependencies.jar /samples/yelp/yelp_business/yelp_business.csv /user/<username>/state-count-output
   18/10/10 08:03:49 INFO client.RMProxy: Connecting to ResourceManager at master.edincubator.eu/192.168.1.12:8050
   18/10/10 08:03:49 INFO client.AHSProxy: Connecting to Application History server at master.edincubator.eu/192.168.1.12:10200
   18/10/10 08:03:51 INFO hdfs.DFSClient: Created HDFS_DELEGATION_TOKEN token 475 for <username> on 192.168.1.12:8020
