@@ -21,35 +21,6 @@ SparkMagic
 Spark remote cluster. Available kernels within SparkMagic are PySpark,
 PySpark3, Spark and SparkR.
 
-Configuring SparkMagic
-......................
-
-Before using SparkMagic, you must configure it. To do that, open the
-configuration file at `~/.sparkmagic/config.json` and replace `<username>` with
-your username:
-
-.. code-block:: console
-
-  # vim ~/.sparkmagic/config.json
-
-.. code-block:: json
-
-  {
-    "kernel_python_credentials" : {
-      "username": "<username>",
-      "url": "http://edi-master.novalocal:8999",
-      "auth": "Kerberos"
-    },
-
-    "kernel_scala_credentials" : {
-      "username": "<username>",
-      "url": "http://edi-master.novalocal:8999",
-      "auth": "Kerberos"
-    },
-    "custom_headers": {"X-Requested-By": "<username>"}
-  }
-
-
 TODO: check availability of PySpark3
 
 .. note::
