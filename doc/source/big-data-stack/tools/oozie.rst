@@ -1,3 +1,9 @@
+.. warning::
+
+  Remember that for interacting with EDI Big Data Stack you must be
+  authenticated at the system using `kinit` command. For more information, read
+  the documentation at :ref:`authenticating-with-kerberos`.
+
 .. _oozie:
 
 Oozie
@@ -97,11 +103,6 @@ Spark action
 ............
 
 This action executes a Spark script.
-
-.. warning::
-
-  The Spark2 Oozie action is a Technical Preview, so its usage is not
-  recommended for production environments.
 
 .. code-block:: xml
 
