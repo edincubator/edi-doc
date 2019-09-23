@@ -242,7 +242,7 @@ submitting the job.
 Compiling and submitting the job
 --------------------------------
 
-At first, you must create the java package and copy it to your workspace:
+At first, you must create the java package:
 
 .. code-block:: console
 
