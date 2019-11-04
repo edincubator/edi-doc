@@ -183,7 +183,7 @@ Next, we must push the image into repository:
 
 .. code-block:: console
 
-    # docker push registry.edincubator.eu/<username>/tf:cpu-v1
+    # docker push registry.edincubator.eu/<username>/tf:cpu-v1 .
 
 
 You must access to your :ref:`JupyterLab <jupyterhub-section>` environment to
