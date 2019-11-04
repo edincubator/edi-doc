@@ -27,17 +27,29 @@ The functionalities provided by the tools are the following:
 
 The tool supports a featured very comprehensive user management system that assures isolation between
 the projects and enables to report issues to the stakeholders involved in each artivity. More in details
-the users are organized in hierarchical groups related to the associated project, the challenge on which
-the project is based and having as root the group of EDI's Core Partners. 
+the users are organized in hierarchical groups related to the associated project and to the selected track.
+Since the role of the Data Providers depends on the track, also the visibility of the related participants 
+and projects changes. The following figures show the visibility structure for each track:
 
-.. image:: ./img/redmine-groups-structure.png
+.. image:: ./img/redmine-visibility-track1.png
 
-Each group has the visibility of the tickets related to the same group and its children. This means that
-the members of a specific `challenge`, who belong to the involved Data Provider (or Data Providers, for the
-Cross Sector Challenge) can see the tickets related to the projects that use their datasets. They cannot
-see the tickets concerning the projects affering to different challenges. Similar policy is valid to address the
-tickets: each group can address tickets to its ancestors. EDI's Core (technological) team has full visibility
-of the projects and the tickets.
+
+.. image:: ./img/redmine-visibility-track2.png
+
+
+.. image:: ./img/redmine-visibility-track3.png
+
+
+
+EDI's Core Partners Group has always full visibility of projects and challenges. 
+
+Each group has the visibility of the tickets related to the same group and its children. For instance, for
+track 1, the members of a specific `challenge`, who belong to the involved Data Provider can see the tickets
+related to the projects that use their datasets. They cannot see the tickets concerning the projects 
+affering to different challenges. Similar policy is valid to address the tickets: each group can address 
+tickets to its ancestors. EDI's Core (technological) team has full visibility of the projects and the 
+tickets.
+
 
 
 Account and usage
