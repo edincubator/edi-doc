@@ -19,7 +19,7 @@ Creating a NiFi Flow
   `username_processgroupname` convention.
 
 NiFi web interface is accessible at
-`https://master.edincubator.eu:9091/nifi/ <https://master.edincubator.eu:9091/nifi/>`_.
+`https://cluster.edincubator.eu/edincubator/dp-proxy/nifi-app/nifi/ <https://cluster.edincubator.eu/edincubator/dp-proxy/nifi-app/nifi/>`_.
 From here, you must enter your EDI Big Data Stack credentials.
 
 .. image:: img/nifi-login.png
