@@ -26,7 +26,7 @@ the following configuration at the first paragraph of the notebook:
 
 .. code-block:: console
 
-  $$ url=hive://<username>@edi-master.novalocal:10000/<username>
+  $$ url=hive://<username>@edincubator-m-3-20191031113524.c.edi-call2.internal:10000/<username>
   $$ connect_args={"auth": "KERBEROS","kerberos_service_name": "hive"}
 
 As Hive needs `all` permissions on dataset's folder, you must copy the

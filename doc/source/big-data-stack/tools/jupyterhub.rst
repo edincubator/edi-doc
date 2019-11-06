@@ -15,7 +15,7 @@ Jupyter Notebook allows you installing whatever Python library you need using
 `Anaconda <https://www.anaconda.com/>`_. The JupyterHub instance deployed at
 EDI allows launching Spark Scala and Python jobs.
 
-You can access to JupyterHub at `<https://manager.edincubator.eu>`_. You can
+You can access to JupyterHub at `<https://notebook.edincubator.eu>`_. You can
 use your EDI credentials for accessing to your Notebook. The first time you
 access to your Notebook it took take a while.
 

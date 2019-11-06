@@ -14,16 +14,14 @@ you access through each tool.
 Jupyter Notebook
 ----------------
 
-Jupyter Notebook (`<https://jupyter.edincubator.eu>`_) allows accessing to all
+Jupyter Notebook (`<https://notebook.edincubator.eu>`_) allows accessing to all
 services through its web CLI terminal. In addition it provides a set of kernels
 in order to allow interactively accessing to different services at the Big Data
 Stack. For accessing to your Jupyter Notebook instance, you must access to
-`<https://jupyter.edincubator.eu>`_ and enter your credentials. Once your
+`<https://notebook.edincubator.eu>`_ and enter your credentials. Once your
 instance is spawned, you can start working at the Big Data Stack. You can learn
 more about JupyterLab at
 `<https://jupyterlab.readthedocs.io/en/stable/user/interface.html>`_.
-
-TODO: screenshots.
 
 .. note::
 
@@ -74,8 +72,6 @@ You can check the status of your Kerberos ticket using the `klist` command:
 Once you have a valid ticket, you can work at EDI Big Data Stack until the
 ticket expires. If the ticket expires, you must execute again `kinit` command.
 
-TODO: screenshots
-
 Tools provided by EDI Big Data Stack
 ------------------------------------
 
@@ -97,7 +93,6 @@ a global view of tools provided by EDI Big Data Stack.
    tools/pig
    tools/oozie
    tools/nifi
-   tools/zeppelin
    tools/views
    tools/jupyterhub
    tools/creating-docker-images

@@ -307,9 +307,7 @@ If the job is successfully executed, the result is written to the
 `/user/<username>/state-count-output` directory. In case of any problem during
 its execution, the error will be printed to the console. For further details
 about the job, you can check the ResourceManager UI at
-`<https://edi-master.novalocal:8443/gateway/hdp/yarnuiv2>`_.
-
-TODO: update URL
+`<https://cluster.edincubator.eu/edincubator/dp-proxy/yarn>`_.
 
 Finally, if you check the output directory, you will see the result of the job
 as a part-r-00000 file. The execution of this job generated a single file

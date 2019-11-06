@@ -37,7 +37,7 @@ Once the shell is started run the following command to create your database
 
 .. code-block:: console
 
-  hbase(main):001:0> create '<username>.yelp_business', 'info', 'stats'
+  hbase(main):001:0> create '<username>:yelp_business', 'info', 'stats'
   0 row(s) in 2.3740 seconds
   => Hbase::Table - <username>:yelp_business
   hbase(main):002:0> scan '<username>:yelp_business'
@@ -257,13 +257,13 @@ Before launching the job, we must download required third party libraries:
   $ wget http://central.maven.org/maven2/com/opencsv/opencsv/4.1/opencsv-4.1.jar
 
 
-Next, at stack-client docker cointainer, we can submit the job using the
+Next, we can submit the job using the
 `hadoop jar` command. Notice the `-libjars` parameter:
 
 .. code-block:: console
 
   # cd ..
-  # yarn jar target/hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /samples/yelp/yelp_business/yelp_business.csv <username>.yelp_business
+  # yarn jar target/hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /samples/yelp/yelp_business/yelp_business.csv <username>:yelp_business
 
 .. code-block:: console
 

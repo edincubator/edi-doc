@@ -71,16 +71,13 @@ default by Hortonworks HDP, it is accessible thanks to the Hortonworks HDF and
 HDP integration.
 
 At last, but not least, we offer different services for interacting with those
-services: `Jupyter Notebook <https://jupyter.org/>`,
-`Apache Zeppelin <https://zeppelin.apache.org/>`_ and Ambari Views. All your
+services: `Jupyter Notebook <https://jupyter.org/>`_, and Ambari Views. All your
 interactions with the Big Data Stack must be done through those services that
 are accesible from your preferred web browser. Jupyter Notebook (accessible at
-`<https://jupyter.edincubator.eu>`_) provides an isolated work environment in
+`<https://notebook.edincubator.eu>`_) provides an isolated work environment in
 which each user can launch jobs at the Big Data Stack through its CLI terminal
-and interact with different services through its kernels. In a similar way,
-Apache Zeppelin (accesible at `<https://zeppelin.edincubator.eu>`_) allows
-creating interactive notebooks using technologies like Spark or Hive. On the
-other hand, Ambari Views (`<https://ambari.edincubator.eu>`_) allow accessing
+and interact with different services through its kernels. On the
+other hand, Ambari Views allow accessing
 to services like WebHDFS, Pig and Hive editors and Oozie visual workflow
 manager.
 
@@ -126,23 +123,23 @@ In the following table versions of the different tools of the stack are shown:
 +-----------+---------+
 | Tool      | Version |
 +===========+=========+
-| Hadoop    | 3.1.0   |
+| Hadoop    | 3.1.1   |
 +-----------+---------+
 | Tez       | 0.9.1   |
 +-----------+---------+
 | Hive      | 3.1.0   |
 +-----------+---------+
-| HBase     | 2.0.0   |
+| HBase     | 2.0.2   |
 +-----------+---------+
 | Pig       | 0.16.0  |
 +-----------+---------+
 | Oozie     | 4.3.1   |
 +-----------+---------+
-| Kafka     | 1.0.1   |
+| Kafka     | 2.0.0   |
 +-----------+---------+
-| Ranger    | 1.1.0   |
+| Ranger    | 1.2.0   |
 +-----------+---------+
-| Spark2    | 2.3.1   |
+| Spark2    | 2.3.2   |
 +-----------+---------+
 
 
@@ -151,17 +148,15 @@ Cluster URLs
 
 The following table shows useful URLs in the cluster:
 
-+-----------+-------------------------------------------------------------+
-| Tool      | URL                                                         |
-+===========+=============================================================+
-| Ambari    | `<https://ambari.edincubator.eu>`_                          |
-+-----------+-------------------------------------------------------------+
-| NiFi      | `<https://nifi.edincubator.eu>`_                            |
-+-----------+-------------------------------------------------------------+
-| Jupyter   | `<https://jupyter.edincubator.eu>`_                         |
-| Notebook  |                                                             |
-+-----------+-------------------------------------------------------------+
-| Zeppelin  | `<https://zeppelin.edincubator.eu>`_                        |
-+-----------+-------------------------------------------------------------+
-| YARN UI   | `<https://edi-master.novalocal:8443/gateway/hdp/yarnuiv2>`_ |
-+-----------+-------------------------------------------------------------+
++-----------+-------------------------------------------------------------------------+
+| Tool      | URL                                                                     |
++===========+=========================================================================+
+| Ambari    |                                                                         |
++-----------+-------------------------------------------------------------------------+
+| NiFi      | `<https://cluster.edincubator.eu/edincubator/dp-proxy/nifi-app/nifi/>`_ |
++-----------+-------------------------------------------------------------------------+
+| Jupyter   | `<https://notebook.edincubator.eu>`_                                    |
+| Notebook  |                                                                         |
++-----------+-------------------------------------------------------------------------+
+| YARN UI   | `<https://cluster.edincubator.eu/edincubator/dp-proxy/yarn>`_           |
++-----------+-------------------------------------------------------------------------+
