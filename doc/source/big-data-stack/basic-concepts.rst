@@ -95,4 +95,5 @@ a global view of tools provided by EDI Big Data Stack.
    tools/nifi
    tools/views
    tools/jupyterhub
+   tools/zeppelin
    tools/creating-docker-images

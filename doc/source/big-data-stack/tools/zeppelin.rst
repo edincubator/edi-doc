@@ -9,7 +9,7 @@ Data Stack are Livy2 (Spark2), JDBC (Hive and Phoenix), Markdown and Angular.
 In this example we explain how to reproduce the Spark, Hive and HBase example
 from this documentation at a Zeppelin notebook.
 
-First, access to Zeppelin at https://master.edincubator.eu:9995 and click into `Login`
+First, access to Zeppelin at `<https://cluster.edincubator.eu/edincubator/dp-proxy/zeppelin/>`_ and click into `Login`
 button to access with your credentials.
 
 
