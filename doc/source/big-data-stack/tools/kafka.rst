@@ -24,17 +24,22 @@ Basic functionalities
 For interacting with Kafka, you must point at its directory, located at
 `/usr/hdp/current/kafka-broker`. From here you can list existing topics:
 
+
+.. note::
+
+  You will see some warnings that you can ignore.
+
 .. code-block:: console
 
-  # kafka-topics.sh --list --zookeeper master.edincubator.eu:2181,worker1.edincubator.eu:2181,worker2.edincubator.eu:2181,worker3.edincubator.eu:2181,worker4.edincubator.eu:2181
+  # kafka-topics.sh --list --zookeeper edincubator-m-3-20191031113524.c.edi-call2.internal:2181
   [...]
   <username>_test
 
-Launch a message producer and start typing messages:
+Launch a message producer on one of available brokers (see below) and start typing messages:
 
 .. code-block:: console
 
-  # kafka-console-producer.sh --broker-list master.edincubator.eu:6667 --producer-property security.protocol=SASL_PLAINTEXT --topic <username>_test
+  # kafka-console-producer.sh --broker-list edincubator-w-1-20191031113554.c.edi-call2.internal:6667 --producer-property security.protocol=SASL_PLAINTEXT --topic <username>_test
   Hi!
   How are you?
 
@@ -43,7 +48,7 @@ In another terminal, launch a message consumer:
 
 .. code-block:: console
 
-  # kafka-console-consumer.sh --bootstrap-server master.edincubator.eu:6667 --consumer-property security.protocol=SASL_PLAINTEXT --topic <username>_test --from-beginning
+  # kafka-console-consumer.sh --bootstrap-server edincubator-w-1-20191031113554.c.edi-call2.internal:6667 --consumer-property security.protocol=SASL_PLAINTEXT --topic <username>_test --from-beginning
   Hi!
   How are you?
 
@@ -55,3 +60,11 @@ You can find how to code your own message producers and consumers at
 and
 `​Consuming Events/Messages from Kafka on a Secured Cluster <https://docs.cloudera.com/HDPDocuments/HDP3/HDP-3.0.0/authentication-with-kerberos/content/kerberos_kafka_consuming_events_or_messages_from_kafka_on_a_secured_cluster.html>`_
 .
+
+Available Kafka Brokers
+-----------------------
++--------------------------------------------------------------+
+| Host                                                         |
++--------------------------------------------------------------+
+| edincubator-w-[0-2]-20191031113554.c.edi-call2.internal:6667 |
++--------------------------------------------------------------+
