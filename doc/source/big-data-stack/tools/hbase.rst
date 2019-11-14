@@ -37,10 +37,10 @@ Once the shell is started run the following command to create your database
 
 .. code-block:: console
 
-  hbase(main):001:0> create '<username>:yelp_business', 'info', 'stats'
+  hbase(main):001:0> create '<username>.yelp_business', 'info', 'stats'
   0 row(s) in 2.3740 seconds
-  => Hbase::Table - <username>:yelp_business
-  hbase(main):002:0> scan '<username>:yelp_business'
+  => Hbase::Table - <username>.yelp_business
+  hbase(main):002:0> scan '<username>.yelp_business'
   ROW                                                   COLUMN+CELL
   0 row(s) in 0.0440 seconds
 
@@ -263,7 +263,7 @@ Next, we can submit the job using the
 .. code-block:: console
 
   # cd ..
-  # yarn jar target/hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /samples/yelp/yelp_business/yelp_business.csv <username>:yelp_business
+  # yarn jar target/hbaseexample-1.0-SNAPSHOT.jar eu.edincubator.stack.examples.hbase.HBaseLoadExample -libjars=libjars/opencsv-4.1.jar /samples/yelp/yelp_business/yelp_business.csv <username>.yelp_business
 
 .. code-block:: console
 
