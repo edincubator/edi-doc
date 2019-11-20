@@ -60,16 +60,16 @@ first one:
 
 .. code-block:: dockerfile
 
-    FROM tensorflow/tensorflow:1.12.3
+    FROM tensorflow/tensorflow:1.12.0
 
     RUN mkdir /source
     ADD tf_example.py /source
 
-This image is quite simple. It imports Tensorflow 1.12.3 and adds our code.
+This image is quite simple. It imports Tensorflow 1.12.0 and adds our code.
 
 .. warning::
 
-    The maximum Tensorflow version supported by Hadoop 3.0 is 1.12.3, as it is
+    The maximum Tensorflow version supported by Hadoop 3.1.0 is 1.12.0, as it is
     the last version build on Cuda 9.0.
 
 The `tf_example.py` file contains the source code of the imdb example. You
@@ -148,7 +148,7 @@ For executing this example at the cluster, we must build the Docker image:
 
     # docker build -t registry.edincubator.eu/<username>/tf:cpu-v1
     Sending build context to Docker daemon   5.12kB
-    Step 1/3 : FROM tensorflow/tensorflow:1.12.3
+    Step 1/3 : FROM tensorflow/tensorflow:1.12.0
     ---> 2715d5fd677a
     Step 2/3 : RUN mkdir /source
     ---> Using cache
@@ -192,8 +192,8 @@ and execute the following command:
 
 .. code-block:: console
 
-    # yarn jar /opt/hadoop/share/hadoop/yarn/hadoop-yarn-applications-distributedshell-3.1.0.jar \
-        -jar /opt/hadoop/share/hadoop/yarn/hadoop-yarn-applications-distributedshell-3.1.0.jar \
+    # yarn jar /opt/hadoop/share/hadoop/yarn/hadoop-yarn-applications-distributedshell-3.1.1.jar \
+        -jar /opt/hadoop/share/hadoop/yarn/hadoop-yarn-applications-distributedshell-3.1.1.jar \
         -shell_env YARN_CONTAINER_RUNTIME_TYPE=docker \
         -shell_env YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=registry.edincubator.eu/<username>/tf:cpu-v1 \
         -shell_env YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=/etc/passwd:/etc/passwd:ro,/etc/group:/etc/group:ro \
@@ -352,26 +352,26 @@ Dockerfile:
 
 .. code-block:: dockerfile
 
-    FROM tensorflow/tensorflow:1.12.3-gpu
+    FROM tensorflow/tensorflow:1.12.0-gpu
 
     RUN mkdir /source
     ADD tf_example.py /source
 
-Notice that we only have changed the source image from `tensorflow:1.12.3` to
-`tensorflow:1.12.3-gpu` for enabling GPU processing. Next, we can build and
+Notice that we only have changed the source image from `tensorflow:1.12.0` to
+`tensorflow:1.12.0-gpu` for enabling GPU processing. Next, we can build and
 push the image to the Docker registry:
 
 .. code-block:: console
 
     # docker build -t registry.edincubator.eu/<username>/tf:gpu-v1 .
-    # docker push registry.edincubator.eu/memaldi/tf:gpu-v1
+    # docker push registry.edincubator.eu/<username>/tf:gpu-v1
 
 Next, from JupyterLab, we launch the job:
 
 .. code-block:: console
 
-    yarn jar /opt/hadoop/share/hadoop/yarn/hadoop-yarn-applications-distributedshell-3.1.0.jar \
-    -jar /opt/hadoop/share/hadoop/yarn/hadoop-yarn-applications-distributedshell-3.1.0.jar \
+    yarn jar /opt/hadoop/share/hadoop/yarn/hadoop-yarn-applications-distributedshell-3.1.1.jar \
+    -jar /opt/hadoop/share/hadoop/yarn/hadoop-yarn-applications-distributedshell-3.1.1.jar \
     -shell_env YARN_CONTAINER_RUNTIME_TYPE=docker \
     -shell_env YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=registry.edincubator.eu/<username>/tf:gpu-v1 \
     -shell_env YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=/etc/passwd:/etc/passwd:ro,/etc/group:/etc/group:ro \
