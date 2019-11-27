@@ -502,3 +502,36 @@ check that each step has been executed slightly quickly than in the CPU example:
     End of LogType:stdout
     ***********************************************************************
     [...]
+
+
+Spark example
+.............
+
+It is possible to launch Spark jobs over Docker for including all your required
+libraries. For that you should create an image with the required Spark
+dependencies:
+
+.. code-block:: Dockerfile
+
+    FROM python:2
+
+    ENV PYSPARK_PYTHON=/usr/bin/python2.7
+    RUN pip install -U pip
+    RUN pip install pyspark==2.3.2
+
+Once you have built this image and pushed it to the repository, you can submit
+your application to the cluster with the following command:
+
+
+.. code-block:: console
+
+# spark-submit --master yarn --deploy-mode cluster \
+--conf spark.executorEnv.YARN_CONTAINER_RUNTIME_TYPE=docker \
+--conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=registry.edincubator.eu/<username>/spark-example:v0.0.3 \
+--conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=/etc/passwd:/etc/passwd:ro,/etc/group:/etc/group:ro,/etc/krb5.conf:/etc/krb5.conf:ro,/hadoopfs/fs1/yarn/nodemanager/log:/hadoopfs/fs1/yarn/nodemanager/log:ro,/usr/lib/jvm/java/:/usr/lib/jvm/java/:ro \
+--conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_DELAYED_REMOVAL=true \
+--conf spark.yarn.AppMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=registry.edincubator.eu/<username>/spark-example:v0.0.3 \
+--conf spark.yarn.AppMasterEnv.YARN_CONTAINER_RUNTIME_TYPE=docker \
+--conf spark.yarn.AppMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=/etc/passwd:/etc/passwd:ro,/etc/group:/etc/group:ro,/etc/krb5.conf:/etc/krb5.conf:ro,/usr/lib/jvm/java/:/usr/lib/jvm/java/:ro \
+--conf spark.yarn.AppMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_DELAYED_REMOVAL=true \
+examples/dockerexamples/spark/yelp_example.py /samples/yelp/yelp_business/yelp_business.csv /user/<username>/spark-csv-output --app_name <username>DockerYelpExample
