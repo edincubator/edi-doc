@@ -546,6 +546,6 @@ command:
     --conf spark.driver.bindAddress=0.0.0.0 \
     --conf spark.blockManager.port=<your_blockmanager_port> \
     --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_TYPE=docker \
-    --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=registry.edincubator.eu/<username>/spark-example:v0.0.3 \
+    --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=registry.edincubator.eu/<username>/<my-image>:v0.0.1 \
     --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=/etc/passwd:/etc/passwd:ro,/etc/group:/etc/group:ro,/etc/krb5.conf:/etc/krb5.conf:ro,/hadoopfs/fs1/yarn/nodemanager/log:/hadoopfs/fs1/yarn/nodemanager/log:ro,/usr/lib/jvm/java/:/usr/lib/jvm/java/:ro \
     examples/dockerexamples/spark/yelp_example.py /samples/yelp/yelp_business/yelp_business.csv /user/<username>/spark-csv-output --app_name <username>DockerYelpExample
