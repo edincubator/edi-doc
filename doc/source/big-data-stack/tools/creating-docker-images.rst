@@ -531,7 +531,7 @@ create your python2.7 environment at JupyterLab and install your dependencies:
 .. code-block:: console
 
     conda create --name <my_environment> python=2.7
-    source activate py2
+    source activate <my_environment>
     pip install <my-dependencies>
 
 
