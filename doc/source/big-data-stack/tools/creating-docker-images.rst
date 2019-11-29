@@ -507,6 +507,12 @@ check that each step has been executed slightly quickly than in the CPU example:
 Spark example
 .............
 
+.. note::
+
+    For launching Spark using Docker containers, you must launch with the
+    --deploy-mode client parameter. For that, you should request to the EDI
+    technical staff to setup your environment.
+
 It is possible to launch Spark jobs over Docker for including all your required
 libraries. For that you should create an image with the required Spark
 dependencies:
@@ -519,19 +525,27 @@ dependencies:
     RUN pip install -U pip
     RUN pip install pyspark==2.3.2
 
-Once you have built this image and pushed it to the repository, you can submit
-your application to the cluster with the following command:
-
+Once you have built this image and pushed it to the repository, you must
+create your python2.7 environment at JupyterLab and install your dependencies:
 
 .. code-block:: console
 
-# spark-submit --master yarn --deploy-mode cluster \
---conf spark.executorEnv.YARN_CONTAINER_RUNTIME_TYPE=docker \
---conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=registry.edincubator.eu/<username>/spark-example:v0.0.3 \
---conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=/etc/passwd:/etc/passwd:ro,/etc/group:/etc/group:ro,/etc/krb5.conf:/etc/krb5.conf:ro,/hadoopfs/fs1/yarn/nodemanager/log:/hadoopfs/fs1/yarn/nodemanager/log:ro,/usr/lib/jvm/java/:/usr/lib/jvm/java/:ro \
---conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_DELAYED_REMOVAL=true \
---conf spark.yarn.AppMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=registry.edincubator.eu/<username>/spark-example:v0.0.3 \
---conf spark.yarn.AppMasterEnv.YARN_CONTAINER_RUNTIME_TYPE=docker \
---conf spark.yarn.AppMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=/etc/passwd:/etc/passwd:ro,/etc/group:/etc/group:ro,/etc/krb5.conf:/etc/krb5.conf:ro,/usr/lib/jvm/java/:/usr/lib/jvm/java/:ro \
---conf spark.yarn.AppMasterEnv.YARN_CONTAINER_RUNTIME_DOCKER_DELAYED_REMOVAL=true \
-examples/dockerexamples/spark/yelp_example.py /samples/yelp/yelp_business/yelp_business.csv /user/<username>/spark-csv-output --app_name <username>DockerYelpExample
+    conda create --name py2 python=2.7
+    source activate py2
+    pip install <my-dependencies>
+
+
+Next, you can submit your application to the cluster with the following
+command:
+
+.. code-block:: console
+
+    # spark-submit --master yarn \
+    --conf spark.driver.host=<username>.jupyter.edincubator.eu \
+    --conf spark.driver.port=<your_driver_port> \
+    --conf spark.driver.bindAddress=0.0.0.0 \
+    --conf spark.blockManager.port=<your_blockmanager_port> \
+    --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_TYPE=docker \
+    --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=registry.edincubator.eu/<username>/spark-example:v0.0.3 \
+    --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=/etc/passwd:/etc/passwd:ro,/etc/group:/etc/group:ro,/etc/krb5.conf:/etc/krb5.conf:ro,/hadoopfs/fs1/yarn/nodemanager/log:/hadoopfs/fs1/yarn/nodemanager/log:ro,/usr/lib/jvm/java/:/usr/lib/jvm/java/:ro \
+    examples/dockerexamples/spark/yelp_example.py /samples/yelp/yelp_business/yelp_business.csv /user/<username>/spark-csv-output --app_name <username>DockerYelpExample
