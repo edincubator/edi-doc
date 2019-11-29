@@ -530,7 +530,7 @@ create your python2.7 environment at JupyterLab and install your dependencies:
 
 .. code-block:: console
 
-    conda create --name py2 python=2.7
+    conda create --name <my_environment> python=2.7
     source activate py2
     pip install <my-dependencies>
 
@@ -545,6 +545,8 @@ command:
     --conf spark.driver.port=<your_driver_port> \
     --conf spark.driver.bindAddress=0.0.0.0 \
     --conf spark.blockManager.port=<your_blockmanager_port> \
+    --conf spark.pyspark.driver.python=/opt/conda/envs/<my_environment>/bin/python \
+    --conf spark.pyspark.python=/usr/bin/python \
     --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_TYPE=docker \
     --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_IMAGE=registry.edincubator.eu/<username>/<my-image>:v0.0.1 \
     --conf spark.executorEnv.YARN_CONTAINER_RUNTIME_DOCKER_MOUNTS=/etc/passwd:/etc/passwd:ro,/etc/group:/etc/group:ro,/etc/krb5.conf:/etc/krb5.conf:ro,/hadoopfs/fs1/yarn/nodemanager/log:/hadoopfs/fs1/yarn/nodemanager/log:ro,/usr/lib/jvm/java/:/usr/lib/jvm/java/:ro \
