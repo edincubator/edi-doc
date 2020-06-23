@@ -1,0 +1,13 @@
+stages:
+- name: Build image
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: edi-doc:${CICD_EXECUTION_SEQUENCE}}
+- name: Deploy
+  steps:
+  - applyYamlConfig:
+      path: ./deployment.yaml
+timeout: 60
+notification: {}
