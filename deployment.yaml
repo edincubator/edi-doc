@@ -43,6 +43,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: doc.edi.apps.openshift.deustotech.eu
+  namespace: edi-doc
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
