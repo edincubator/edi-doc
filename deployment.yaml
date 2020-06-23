@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edi-doc
+  namespace: edi-doc
+  labels:
+    app: edi-doc
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 25%
+    type: RollingUpdate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edi-doc
+  template:
+    metadata:
+      labels:
+        app: edi-doc
+    spec:
+      imagePullSecrets:
+      - name: pipeline-docker-registry
+      containers:
+      - name: edi-doc
+        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edi-doc
+  namespace: edi-doc
+spec:
+  selector:
+    app: edi-doc
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
