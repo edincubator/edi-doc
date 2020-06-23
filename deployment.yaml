@@ -38,4 +38,23 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: doc.edi.apps.openshift.deustotech.eu
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  rules:
+  - host: doc.edi.apps.openshift.deustotech.eu
+    http:
+      paths:
+      - backend:
+          serviceName: edi-doc
+          servicePort: 80
+  tls:
+  - hosts:
+    - doc.edi.apps.openshift.deustotech.eu
+    secretName: edi-doc-cert
 
