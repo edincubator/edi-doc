@@ -9,6 +9,6 @@ WORKDIR /workdir
 RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
 RUN make clean html
-RUN cp /workdir/build/html/* /usr/share/nginx/html
+RUN cp -r /workdir/build/html/* /usr/share/nginx/html
 
 # ADD nginx.conf /etc/nginx/nginx.conf
