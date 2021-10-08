@@ -42,13 +42,13 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: doc.edi.apps.openshift.deustotech.eu
+  name: doc.edi.apps.deustotech.eu
   namespace: edi-doc
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
   rules:
-  - host: doc.edi.openshift.deustotech.eu
+  - host: doc.edi.apps.deustotech.eu
     http:
       paths:
       - backend:
@@ -56,6 +56,6 @@ spec:
           servicePort: 80
   tls:
   - hosts:
-    - doc.edi.openshift.deustotech.eu
+    - doc.edi.apps.deustotech.eu
     secretName: edi-doc-cert
 
