@@ -48,7 +48,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
   rules:
-  - host: doc.edi.apps.openshift.deustotech.eu
+  - host: doc.edi.openshift.deustotech.eu
     http:
       paths:
       - backend:
@@ -56,6 +56,6 @@ spec:
           servicePort: 80
   tls:
   - hosts:
-    - doc.edi.apps.openshift.deustotech.eu
+    - doc.edi.openshift.deustotech.eu
     secretName: edi-doc-cert
 
